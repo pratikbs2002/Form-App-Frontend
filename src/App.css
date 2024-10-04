@@ -1,0 +1,29 @@
+.container {
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #76abae;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.inside-container {
+  border: 1px solid rgba(0, 0, 0, 0.699);
+  border-radius: 5px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #76abae;
+}
+.inside-container:hover {
+  background-color: #94c4c7;
+}
+.title {
+  opacity: 60%;
+}
+
+.title-value {
+  font-size: 20px;
+  font-weight: 600;
+}

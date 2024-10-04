@@ -8,7 +8,7 @@ export default function DashBoard() {
     const fetchData = async () => {
       const { username, password } = authData;
 
-      const response = await fetch("http://localhost:9191/current-schema", {
+      const response = await fetch("http://localhost:8080/current-schema", {
         method: "GET",
         headers: {
           Authorization: "Basic " + btoa(`${username}:${password}`),
@@ -21,6 +21,7 @@ export default function DashBoard() {
       } else {
         console.log(response);
         const result = await response.json();
+        console.log(result);
         setData(result);
       }
     };
@@ -29,7 +30,19 @@ export default function DashBoard() {
   }, []);
   return (
     <div>
-      DashBoard:<br></br> {JSON.stringify(data)}
+      {/* DashBoard:<br></br> {JSON.stringify(data)} */}
+      {data && (
+        <div className="container">
+          <div className="inside-container">
+            <div className="title">SchemaName</div>
+            <div className="title-value">{data.schemaName}</div>
+          </div>
+          <div className="inside-container">
+            <div className="title">SchemaUUID</div>
+            <div className="title-value">{data.schemaUUID}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
