@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../service/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 
 export default function DashBoard() {
   const { authData } = useAuth();
@@ -27,7 +27,7 @@ export default function DashBoard() {
     };
 
     fetchData();
-  }, []);
+  }, [authData]);
   return (
     <div>
       {/* DashBoard:<br></br> {JSON.stringify(data)} */}
