@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
+import { getCurrentSchema } from "../services/schema-service";
 
 export default function DashBoard() {
   const { authData } = useAuth();
@@ -8,12 +9,7 @@ export default function DashBoard() {
     const fetchData = async () => {
       const { username, password } = authData;
 
-      const response = await fetch("http://localhost:8080/current-schema", {
-        method: "GET",
-        headers: {
-          Authorization: "Basic " + btoa(`${username}:${password}`),
-        },
-      });
+      const response = await getCurrentSchema();
 
       if (!response.ok) {
         const errorText = await response.text();

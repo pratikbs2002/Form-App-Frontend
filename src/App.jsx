@@ -9,6 +9,7 @@ import RootDashBoard from "./pages/root_admin/DashBoard";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
 import Login from "./pages/Login";
 import PageNotFound from "./components/PageNotFound";
+import LandingPage from "./LandingPage";
 
 function App() {
   const auth = useAuth();
@@ -23,28 +24,38 @@ function App() {
           <Route
             path="/"
             element={
-              isAuthenticated ? (
-                <Navigate to={"/dashboard"} />
-              ) : (
-                <Login
-                  isAuthenticated={isAuthenticated}
-                  setIsAuthenticated={setIsAuthenticated}
-                />
-              )
+              <LandingPage
+                isAuthenticated={isAuthenticated}
+                setIsAuthenticated={setIsAuthenticated}
+              />
             }
-          />
-          <Route
-            path="/dashboard"
-            element={isAuthenticated ? <DashBoard /> : <Navigate to={"/"} />}
-          />
+          >
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? (
+                  <Navigate to={"/dashboard"} />
+                ) : (
+                  <Login
+                    isAuthenticated={isAuthenticated}
+                    setIsAuthenticated={setIsAuthenticated}
+                  />
+                )
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={isAuthenticated ? <DashBoard /> : <Navigate to={"/"} />}
+            />
 
-          <Route
-            path="/root-admin/dashboard"
-            element={
-              isAuthenticated ? <RootDashBoard /> : <Navigate to={"/"} />
-            }
-          />
-          <Route path="*" element={<PageNotFound />}></Route>
+            <Route
+              path="/root-admin/dashboard"
+              element={
+                isAuthenticated ? <RootDashBoard /> : <Navigate to={"/"} />
+              }
+            />
+            <Route path="*" element={<PageNotFound />}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -1,13 +1,12 @@
 const hostUrl = `${import.meta.env.VITE_SERVER_URL}`;
 
-export async function getAllUser(username, password) {
-  console.log(username + password);
-
+export async function getAllUser() {
   return await fetch(`${hostUrl}/api/user/all`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Basic " + btoa(`${username}:${password}`),
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
     },
   });
 }
