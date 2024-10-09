@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { getCurrentSchema } from "../services/schema-service";
+import LocationCard from "../components/LocationCard";
 
 export default function DashBoard() {
   const { authData } = useAuth();
@@ -39,6 +40,9 @@ export default function DashBoard() {
           </div>
         </div>
       )}
+      <div>
+        <LocationCard />
+      </div>
     </div>
   );
 }
