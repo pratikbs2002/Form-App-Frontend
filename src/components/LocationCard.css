@@ -1,0 +1,7 @@
+.location-inside-container {
+  border: 1px solid rgba(0, 0, 0, 0.699);
+  border-radius: 5px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #76abae;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import "./LocationCard.css";
 export default function LocationCard({ parentId = null }) {
   const [locations, setLocations] = useState([]);
   const [open, setOpen] = useState(null);
@@ -34,12 +35,14 @@ export default function LocationCard({ parentId = null }) {
   return (
     <div>
       {locations.map((location) => (
-        <div className="inside-container" key={location.id}>
+        <div className="location-inside-container" key={location.id}>
           <div
             className="title-value"
             onClick={() => handleExpand(location.id)}
           >
             {location.name}
+            {location.children.length !== 0 &&
+              (!open ? <FaChevronDown /> : <FaChevronUp />)}
           </div>
           {open === location.id && (
             <div style={{ marginLeft: "20px" }}>
