@@ -33,23 +33,45 @@ export default function LocationCard({ parentId = null }) {
   };
 
   return (
-    <div>
+    <div
+      className=""
+      // style={{
+      //   borderLeft: "2px solid #252525",
+      //   borderBottom: "2px solid #252525",
+      // }}
+    >
       {locations.map((location) => (
-        <div className="location-inside-container" key={location.id}>
-          <div
-            className="title-value"
-            onClick={() => handleExpand(location.id)}
-          >
-            {location.name}
-            {location.children.length !== 0 &&
-              (!open ? <FaChevronDown /> : <FaChevronUp />)}
+        <>
+          <div className="location-inside-container" key={location.id}>
+            <div
+              className={`location-container ${
+                open === location.id && !location.children.length ? "hover" : ""
+              }`}
+              style={{
+                borderLeft:
+                  open === location.id && location.children.length
+                    ? "3px solid #0073e6"
+                    : "",
+                // borderBottom:
+                //   open === location.id && !location.children.length
+                //     ? "3px solid #0073e6"
+                //     : "",
+              }}
+              onClick={() => handleExpand(location.id)}
+            >
+              <div className="location-name">{location.name}</div>
+              <div className="location-icon">
+                {location.children.length !== 0 &&
+                  (open === location.id ? <FaChevronUp /> : <FaChevronDown />)}
+              </div>
+            </div>
           </div>
           {open === location.id && (
-            <div style={{ marginLeft: "20px" }}>
+            <div style={{ marginLeft: "40px" }}>
               <LocationCard parentId={location.id} />
             </div>
           )}
-        </div>
+        </>
       ))}
     </div>
   );

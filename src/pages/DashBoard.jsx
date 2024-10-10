@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { getCurrentSchema } from "../services/schema-service";
 import LocationCard from "../components/LocationCard";
+import LocationSidebar from "../components/LocationSidebar";
 
 export default function DashBoard() {
   const { authData } = useAuth();
@@ -41,7 +42,7 @@ export default function DashBoard() {
         </div>
       )}
       <div>
-        <LocationCard />
+        <LocationSidebar />
       </div>
     </div>
   );
