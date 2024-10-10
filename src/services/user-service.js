@@ -10,3 +10,14 @@ export async function getAllUser() {
     },
   });
 }
+
+export async function getUserWithUsername(username) {
+  return await fetch(`${hostUrl}/api/user/${username}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+  });
+}
