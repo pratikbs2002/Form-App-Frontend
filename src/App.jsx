@@ -10,7 +10,9 @@ import { AuthProvider, useAuth } from "./context/AuthProvider";
 import Login from "./pages/Login";
 import PageNotFound from "./components/PageNotFound";
 import LandingPage from "./LandingPage";
+import "react-toastify/dist/ReactToastify.css";
 
+import { ToastContainer } from "react-toastify";
 function App() {
   const auth = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -48,8 +50,15 @@ function App() {
               element={isAuthenticated ? <DashBoard /> : <Navigate to={"/"} />}
             />
 
-            <Route
+            {/* <Route
               path="/root-admin/dashboard"
+              element={
+                isAuthenticated ? <RootDashBoard /> : <Navigate to={"/"} />
+              }
+            /> */}
+
+            <Route
+              path="schema"
               element={
                 isAuthenticated ? <RootDashBoard /> : <Navigate to={"/"} />
               }
@@ -58,6 +67,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

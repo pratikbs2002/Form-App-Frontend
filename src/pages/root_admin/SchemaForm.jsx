@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { addSchema } from "../../services/schema-service";
-
+import "./SchemaForm.css";
 export default function SchemaForm() {
   const [schemaFormData, setSchemaFormData] = useState({});
   const [res, setRes] = useState({});
@@ -23,7 +23,6 @@ export default function SchemaForm() {
 
   return (
     <div>
-      <div>Schema Form</div>
       <form noValidate className="form">
         <div className="input-container">
           <label>SchemaName:</label>
@@ -31,6 +30,7 @@ export default function SchemaForm() {
         </div>
 
         <button
+          className="add-schema-button"
           disabled={!schemaFormData.schemaName}
           style={{
             cursor: !schemaFormData.schemaName ? "not-allowed" : "pointer",

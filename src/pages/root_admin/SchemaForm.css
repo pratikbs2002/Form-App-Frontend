@@ -1,0 +1,10 @@
+.add-schema-button {
+  float: right;
+  background-color: #0073e6;
+  padding: 10px 15px 10px 15px;
+  border: none;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 100px;
+}

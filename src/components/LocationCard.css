@@ -1,0 +1,31 @@
+.location-inside-container {
+  cursor: pointer;
+  background-color: #121212;
+}
+
+.location-inside-container :hover {
+  /* border-radius: 10px; */
+  background-color: #252525;
+}
+
+.location-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  gap: 10px;
+  .location-name {
+    font-size: 20px;
+  }
+  .location-icon {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.hover {
+  background-color: #262f37;
+  color: #0073e6;
+}

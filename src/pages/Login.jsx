@@ -3,6 +3,7 @@ import { login } from "../services/auth-service";
 import "./Login.css";
 import { useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router";
+import { Bounce, toast } from "react-toastify";
 export default function Login(props) {
   const { authenticated, setIsAuthenticated } = props;
   const [loginData, setLoginData] = useState({
@@ -21,10 +22,24 @@ export default function Login(props) {
       loginData.password
     );
     if (res.status === 401) {
-      alert("Wrong credentials");
+      toast.error("Wrong credentials", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
     }
     if (res.status === 200) {
-      alert("Login successfully");
+      toast.success("Logged in successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
       localStorage.setItem("username", loginData.username);
       localStorage.setItem("password", loginData.password);
       localStorage.setItem("auth", true);
@@ -43,8 +58,8 @@ export default function Login(props) {
   };
   return (
     <div>
-      <div>Login Page</div>
       <form noValidate className="form">
+        <div className="login-header">Login</div>
         <div className="input-container">
           <label>Username:</label>
           <input type="text" name="username" onChange={handleChange} />
@@ -55,7 +70,7 @@ export default function Login(props) {
           <input type="text" name="password" onChange={handleChange} />
         </div>
 
-        <button type="submit" onClick={handleLogin}>
+        <button className="login-button" type="submit" onClick={handleLogin}>
           Login
         </button>
       </form>
