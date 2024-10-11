@@ -1,0 +1,41 @@
+.user-table-inside-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-table-inside-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px;
+}
+.user-table-container {
+  padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(61, 71, 81, 0.3);
+}
+
+.user-table {
+  border-collapse: collapse;
+  padding: 50px;
+  border: 1px solid rgba(61, 71, 81, 0.3);
+  box-shadow: 0 1px 5px 0 rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.19);
+
+  th,
+  td {
+    border-collapse: collapse;
+    padding: 10px 20px 10px 20px;
+    border: 1px solid rgba(61, 71, 81, 0.3);
+  }
+
+  thead,
+  tbody {
+    border-collapse: collapse;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addSchema } from "../../services/schema-service";
 import "./SchemaForm.css";
+import { Bounce, toast } from "react-toastify";
 export default function SchemaForm() {
   const [schemaFormData, setSchemaFormData] = useState({});
   const [res, setRes] = useState({});
@@ -15,8 +16,38 @@ export default function SchemaForm() {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    const responce = await addSchema(schemaFormData.schemaName);
-    const data = await responce.json();
+    const schemaName = schemaFormData.schemaName.toLowerCase();
+
+    const isValidSchemaName = /^[a-zA-Z_]+$/.test(schemaName);
+
+    if (!isValidSchemaName) {
+      toast.error(
+        "Please enter a valid schema name with only alphabets and underscores",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          theme: "dark",
+          transition: Bounce,
+          pauseOnHover: false,
+        }
+      );
+      return;
+    }
+    if (schemaFormData.schemaName.length <= 2) {
+      toast.error("Please enter a valid schema name (Minimum 3 alphabets)", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      return;
+    }
+
+    const response = await addSchema(schemaFormData.schemaName);
+    const data = await response.json();
     console.log(data);
     setRes(data);
   };

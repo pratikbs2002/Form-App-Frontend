@@ -1,7 +1,7 @@
 .container {
   padding: 30px;
   border-radius: 10px;
-  background-color: #76abae;
+  background-color: #101316;
   color: black;
   display: flex;
   align-items: center;
@@ -10,20 +10,22 @@
 }
 
 .inside-container {
-  border: 1px solid rgba(0, 0, 0, 0.699);
+  border: 1px solid rgba(255, 255, 255, 0.699);
   border-radius: 5px;
   padding: 20px;
   cursor: pointer;
-  background-color: #76abae;
+  background-color: #101316;
 }
 .inside-container:hover {
-  background-color: #94c4c7;
+  background-color: #101316;
 }
 .title {
   opacity: 60%;
+  color: white;
 }
 
 .title-value {
+  color: white;
   font-size: 20px;
   font-weight: 600;
 }

@@ -18,7 +18,16 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("auth") === "true" ? true : false
   );
-
+  const [userType, setUserType] = useState(
+    localStorage.getItem("auth") === "true" ? localStorage.getItem("role") : ""
+  );
+  useEffect(() => {
+    setUserType(
+      localStorage.getItem("auth") === "true"
+        ? localStorage.getItem("role")
+        : ""
+    );
+  }, [isAuthenticated]);
   return (
     <>
       <BrowserRouter>
@@ -27,6 +36,7 @@ function App() {
             path="/"
             element={
               <LandingPage
+                userType={userType}
                 isAuthenticated={isAuthenticated}
                 setIsAuthenticated={setIsAuthenticated}
               />
@@ -60,7 +70,22 @@ function App() {
             <Route
               path="schema"
               element={
-                isAuthenticated ? <RootDashBoard /> : <Navigate to={"/"} />
+                isAuthenticated && userType === "global_admin" ? (
+                  <RootDashBoard />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />
+
+            <Route
+              path="user"
+              element={
+                isAuthenticated && userType === "global_admin" ? (
+                  <RootDashBoard />
+                ) : (
+                  <Navigate to={"/"} />
+                )
               }
             />
             <Route path="*" element={<PageNotFound />}></Route>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./SchemaTable.css";
+import "./UserTable.css";
 import { useAuth } from "../../context/AuthProvider";
 import { getAllUser } from "../../services/user-service";
 
-export default function SchemaTable() {
+export default function UserTable() {
   const [userData, setUserData] = useState([]);
   const auth = useAuth();
 
@@ -28,23 +28,28 @@ export default function SchemaTable() {
   }, [auth.authData.password, auth.authData.username]);
 
   return (
-    <div className="schema-table-outside-container">
-      <div className="schema-table-inside-container">
-        <div className="schema-table-container">
-          <table className="schema-table">
+    <div className="user-table-outside-container">
+      <div className="user-table-inside-container">
+        <div className="user-table-container">
+          <table className="user-table">
             <thead>
               <tr>
                 <th>UserId</th>
                 <th>Username</th>
                 <th>SchemaName</th>
+                <th>Role</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
               {userData.map((data, key) => (
                 <tr key={key}>
-                  <td>{data.id}</td>
+                  <td>{key}</td>
+                  {/* <td>{data.id}</td> */}
                   <td>{data.username}</td>
                   <td>{data.schemaName}</td>
+                  <td>{data.role}</td>
+                  <td>{new Date(data.created_at).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,11 +1,11 @@
-.schema-table-inside-container {
+.schema-mapping-table-inside-container {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.schema-table-inside-container {
+.schema-mapping-table-inside-container {
   width: 100%;
   display: flex;
   align-items: center;
@@ -13,7 +13,7 @@
   flex-direction: column;
   padding: 40px;
 }
-.schema-table-container {
+.schema-mapping-table-container {
   padding: 50px;
   display: flex;
   align-items: center;
@@ -21,10 +21,12 @@
   border: 1px solid rgba(61, 71, 81, 0.3);
 }
 
-.schema-table {
+.schema-mapping-table {
   border-collapse: collapse;
   padding: 50px;
   border: 1px solid rgba(61, 71, 81, 0.3);
+  box-shadow: 0 1px 5px 0 rgba(255, 255, 255, 0.2),
+    0 1px 5px 0 rgba(255, 255, 255, 0.19);
 
   th,
   td {

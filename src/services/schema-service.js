@@ -21,3 +21,15 @@ export async function addSchema(schemaName) {
     },
   });
 }
+
+
+export async function getAllSchema() {
+  return await fetch(`${hostUrl}/api/schema-map/all`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+  });
+}

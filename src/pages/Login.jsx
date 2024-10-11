@@ -43,7 +43,11 @@ export default function Login(props) {
       localStorage.setItem("username", loginData.username);
       localStorage.setItem("password", loginData.password);
       localStorage.setItem("auth", true);
+      const data = await res.json();
+      localStorage.setItem("role", data.role);
       auth.setAuthData({ ...loginData });
+      console.log(data);
+
       setIsAuthenticated(true);
       navigate(`dashboard`);
     }

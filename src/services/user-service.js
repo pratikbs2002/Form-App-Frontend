@@ -21,3 +21,18 @@ export async function getUserWithUsername(username) {
     },
   });
 }
+
+// to add admin (add by existing admin)
+export async function addAdmin() {
+  return await fetch(`${hostUrl}/api/user/add/admin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+    body: JSON.stringify({
+      username: "pratik",
+    }),
+  });
+}
