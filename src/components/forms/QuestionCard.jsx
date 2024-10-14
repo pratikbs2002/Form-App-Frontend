@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import AnswerOptions from "./AnswerOptions";
 
 import "./QuestionCard.css";
+import { MdClose } from "react-icons/md";
 
 export default function QuestionCard({
   id,
@@ -52,7 +53,30 @@ export default function QuestionCard({
 
   return (
     <div className="question-div">
-      <h4>Question {index + 1}</h4>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+        }}
+      >
+        <h2 style={{ marginTop: 0 }}>Question {index + 1}</h2>
+        <span
+          className="remove-link"
+          onClick={() => {
+            if (
+              window.confirm(
+                `Are you sure you want to remove question number ${index + 1}?`
+              )
+            ) {
+              removeQuestion(index, id);
+            }
+          }}
+          style={{ marginLeft: "10px", cursor: "pointer", color: "#d9534f" }}
+        >
+          <MdClose />
+        </span>
+      </div>
       <input
         type="text"
         value={question}
@@ -79,27 +103,14 @@ export default function QuestionCard({
         addOption={addOption}
         setOptions={setOptions}
       />
-      <span
-        className="remove-link"
-        onClick={() => {
-          if (
-            window.confirm(
-              `Are you sure you want to remove question number ${index + 1}?`
-            )
-          ) {
-            removeQuestion(index, id);
-          }
-        }}
-        style={{ marginLeft: "10px", cursor: "pointer", color: "#d9534f" }}
-      >
-        Remove
-      </span>
-      <div className="required-toggle" onClick={handleToggleRequired}>
-        <label className="switch">
-          <input type="checkbox" onChange={handleToggleRequired} />
-          <span className="slider round"></span>
-        </label>
-        <span className="required-text">Required*</span>
+      <div style={{height:'20px'}}>
+        <div className="required-toggle" onClick={handleToggleRequired}>
+          <label className="switch">
+            <input type="checkbox" onChange={handleToggleRequired} />
+            <span className="slider round"></span>
+          </label>
+          <span className="required-text">Required*</span>
+        </div>
       </div>
     </div>
   );

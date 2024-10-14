@@ -3,6 +3,7 @@
 import React from "react";
 
 import "./AnswerOptions.css";
+import { MdClose } from "react-icons/md";
 export default function AnswerOptions({
   answerType,
   options,
@@ -38,7 +39,7 @@ export default function AnswerOptions({
                     color: "#d9534f",
                   }}
                 >
-                  Remove
+                  <MdClose />
                 </span>
               )}
             </div>

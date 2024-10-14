@@ -1,11 +1,11 @@
 .form-entry {
-  background-color: rgb(36, 36, 36); /* Background for each form entry */
+  background-color: rgb(36, 36, 36); 
   padding: 20px;
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin: 10px 0; /* Space between entries */
-  width: 100%; /* Full width of the container */
-  max-width: 600px; /* Limit max width */
+  border-radius: 8px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  margin: 10px 0; 
+  width: 100%; 
+  max-width: 600px; 
   .button-container{
     display: flex;
     width: 100%;

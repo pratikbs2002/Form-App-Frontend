@@ -15,10 +15,21 @@
     max-width: 600px; 
     padding: 10px;
     margin-bottom: 20px; 
-    border: 1px solid #ccc;
+    border: none;
+    border-bottom: 1px solid rgb(0, 128, 255);
     border-radius: 4px;
-    font-size: 1rem; 
+    font-size: 36px; 
+    background-color: rgb(37, 37, 37);
+    transition: border-bottom 0.2s, background-color 0.2s;
   }
+
+  .form-title-input:focus {
+    border: none;
+    border-bottom: 5px solid rgb(0, 71, 143);
+    outline: none;
+    background-color: rgb(27, 27, 27);
+  }
+
   .button-container{
     display: flex;
     width: 100%;

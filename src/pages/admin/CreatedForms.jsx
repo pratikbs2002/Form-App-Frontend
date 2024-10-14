@@ -1,15 +1,18 @@
 /* eslint-disable no-unused-vars */
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FormEntry from "../../components/forms/FormEntry";
 import "./CreatedForms.css";
+import Loader from "../../context/Loader";
+import { LoaderContext } from "../../context/LoaderContext";
 
 export default function CreatedFormsContainer() {
   const [forms, setForms] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { state, dispatch } = useContext(LoaderContext);
   useEffect(() => {
     const fetchForms = async () => {
-      setIsLoading(true)
+      dispatch(true);
       const response = await fetch(
         "https://react-http-3830c-default-rtdb.firebaseio.com/formData.json"
       );
@@ -25,7 +28,8 @@ export default function CreatedFormsContainer() {
       }));
       setForms(formEntries);
       //   console.log(forms);
-      setIsLoading(false);
+
+      dispatch(false);
     };
 
     fetchForms();
@@ -45,8 +49,8 @@ export default function CreatedFormsContainer() {
   return (
     <div className="created-forms-container">
       <h1>Created Forms</h1>
-      {isLoading && <h2>Loading Forms...</h2>}
-      {!isLoading && forms.length === 0 && <h2>No Form Data Available</h2>}
+      <Loader />
+      {!state && forms.length === 0 && <h2>No Form Data Available</h2>}
       {forms.map((form) => (
         <FormEntry key={form.formId} form={form} onDelete={handleDelete} />
       ))}

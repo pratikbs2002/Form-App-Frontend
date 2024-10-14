@@ -25,6 +25,6 @@ const LoaderProvider = ({ children }) => {
       {children}
     </LoaderContext.Provider>
   );
-};
+};  
 
 export { LoaderContext, LoaderProvider };

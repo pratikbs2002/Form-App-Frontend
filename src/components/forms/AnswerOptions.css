@@ -1,36 +1,32 @@
 .answer-type-select {
-  width: 100%; /* Full width */
+  width: 100%; 
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-bottom: 10px; /* Space below select */
-  font-size: 1rem; /* Font size for better visibility */
+  margin-bottom: 10px; 
+  font-size: 1rem; 
 }
 
-/* Option Input Container */
 .option-input-container {
 display: flex;
-align-items: center; /* Align items vertically centered */
-margin-bottom: 10px; /* Space between options */
+align-items: center; 
+margin-bottom: 10px; 
 }
 
-/* Option Input Styles */
 .option-input {
-flex-grow: 1; /* Allow input to take remaining space */
+flex-grow: 1; 
 padding: 10px;
-border: 1px solid #ccc;
+border: none;
 border-radius: 4px;
-font-size: 1rem; /* Font size for better visibility */
-margin-right: 10px; /* Space between input and remove button */
+font-size: 1rem; 
+margin-right: 0px; 
 }
 
-/* Hover effect for option input */
 .option-input:hover {
-border-color: #1DA1F2; /* Change border color on hover */
+border-color: #1DA1F2; 
 }
 
-/* Option Input focus effect */
 .option-input:focus {
-outline: none; /* Remove default outline */
-border-color: #1DA1F2; /* Change border color on focus */
+outline: none; 
+border-color: #1DA1F2; 
 }
