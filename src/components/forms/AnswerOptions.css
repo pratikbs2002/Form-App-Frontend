@@ -1,0 +1,36 @@
+.answer-type-select {
+  width: 100%; /* Full width */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Space below select */
+  font-size: 1rem; /* Font size for better visibility */
+}
+
+/* Option Input Container */
+.option-input-container {
+display: flex;
+align-items: center; /* Align items vertically centered */
+margin-bottom: 10px; /* Space between options */
+}
+
+/* Option Input Styles */
+.option-input {
+flex-grow: 1; /* Allow input to take remaining space */
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 1rem; /* Font size for better visibility */
+margin-right: 10px; /* Space between input and remove button */
+}
+
+/* Hover effect for option input */
+.option-input:hover {
+border-color: #1DA1F2; /* Change border color on hover */
+}
+
+/* Option Input focus effect */
+.option-input:focus {
+outline: none; /* Remove default outline */
+border-color: #1DA1F2; /* Change border color on focus */
+}

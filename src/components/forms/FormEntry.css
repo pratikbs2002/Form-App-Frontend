@@ -1,0 +1,40 @@
+.form-entry {
+  background-color: rgb(36, 36, 36); /* Background for each form entry */
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 10px 0; /* Space between entries */
+  width: 100%; /* Full width of the container */
+  max-width: 600px; /* Limit max width */
+  .button-container{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .styled-button {
+    background-color: rgb(0, 115, 230);
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 25px; 
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .styled-button:hover {
+    background-color: rgb(0, 128, 255);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
+  }
+  
+  .styled-button:active {
+    background-color: rgb(0, 86, 172);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); 
+    transform: translateY(1px); 
+  }  
+}
