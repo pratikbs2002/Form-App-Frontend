@@ -35,7 +35,7 @@ export default function QuestionCard({
 
     // setSingleQuestion((prev) => ({ ...prev, options: newOptions }));
     setQuestions((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, options: newOptions } : p))
+      prev.map((p) => (p.question_id === id ? { ...p, options: newOptions } : p))
     );
   }
 
@@ -49,7 +49,7 @@ export default function QuestionCard({
   function handleToggleRequired() {
     setIsToggled((toggled) => !toggled);
     setQuestions((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, required: toggled } : p))
+      prev.map((p) => (p.question_id === id ? { ...p, required: toggled } : p))
     );
   }
   // console.log(toggled);

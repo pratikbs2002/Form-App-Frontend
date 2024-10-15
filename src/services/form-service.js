@@ -1,14 +1,14 @@
-const hostUrl = `${import.meta.env.VITE_SERVER_URL}/auth`;
+const hostUrl = `${import.meta.env.VITE_SERVER_URL}`;
 
 export async function addCreatedForm(data) {
-  return await fetch(`${hostUrl}/login`, {
+  return await fetch(`${hostUrl}/api/forms/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
     },
-    body: JSON.stringify({
-      createForm: data,
-    }),
+    body: JSON.stringify(data),
   });
 }
 

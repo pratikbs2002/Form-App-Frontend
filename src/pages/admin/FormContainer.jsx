@@ -7,6 +7,7 @@ import QuestionCard from "../../components/forms/QuestionCard";
 import "./FormContainer.css";
 import { redirect, useNavigate, useNavigation } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
+import { addCreatedForm } from "../../services/form-service";
 
 export default function FormContainer() {
   const [formTitle, setFormTitle] = useState("");
@@ -16,8 +17,8 @@ export default function FormContainer() {
 
   const [formQuestions, setFormQuestions] = useState([
     {
-      id: 1,
-      question: "",
+      question_id: 1,
+      question_text: "",
       answerType: "default",
       options: [],
       required: false,
@@ -28,7 +29,7 @@ export default function FormContainer() {
 
   function handleQuestionChange(index, value) {
     const newQuestions = [...formQuestions];
-    newQuestions[index].question = value;
+    newQuestions[index].question_text = value;
     setFormQuestions(newQuestions);
   }
 
@@ -47,8 +48,8 @@ export default function FormContainer() {
     setFormQuestions([
       ...formQuestions,
       {
-        id: formQuestions.length + 1,
-        question: "",
+        question_id: formQuestions.length + 1,
+        question_text: "",
         answerType: "default",
         options: [],
         required: false,
@@ -73,9 +74,9 @@ export default function FormContainer() {
     }
 
     for (let i = 0; i < formQuestions.length; i++) {
-      const { question, answerType, options } = formQuestions[i];
+      const { question_text, answerType, options } = formQuestions[i];
 
-      if (!question) {
+      if (!question_text) {
         alert(`Question field of question number ${i + 1} cannot be empty.`);
         return;
       }
@@ -115,31 +116,25 @@ export default function FormContainer() {
     const formattedDate = currentDate.toLocaleString("en-GB", options);
 
     // const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const createdAt = `${formattedDate}`;
-    const createdBy = localStorage.getItem("username");
-    console.log(createdBy);
-    
+    // const createdAt = `${formattedDate}`;
+    // const createdBy = localStorage.getItem("username");
+    // // console.log(createdBy);
+
+    //admin id 1
 
     const formData = {
-      title: formTitle,
-      formId,
+      adminId: 1,
       questions: formQuestions,
-      createdAt,
-      createdBy,
     };
 
     const sendRequest = async () => {
-      const response = await fetch(
-        "https://react-http-3830c-default-rtdb.firebaseio.com/formData.json",
-        {
-          method: "POST",
-          body: JSON.stringify(formData, null, 2),
-        }
-      );
+      const response = await addCreatedForm(formData);
+      console.log(response);
 
       if (!response.ok) {
         throw new Error("Form Creation failure: Sending form data failed");
       }
+      // console.log(formData);
     };
     try {
       await sendRequest();
@@ -182,10 +177,10 @@ export default function FormContainer() {
       />
       {formQuestions.map((q, index) => (
         <QuestionCard
-          id={q.id}
-          key={q.id}
+          id={q.question_id}
+          key={q.question_id}
           index={index}
-          question={q.question}
+          question={q.question_text}
           setQuestions={setFormQuestions}
           answerType={q.answerType}
           propOptions={q.options}

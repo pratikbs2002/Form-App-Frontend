@@ -23,7 +23,7 @@ export default function FormEntry({ form, onDelete }) {
 
   return (
     <div className="form-entry">
-      <h3>Form ID: {form.formId}</h3>
+      <h3>Form ID: {form.id}</h3>
       <h4>Form Name: {form.title}</h4>
       <p>Created At: {form.createdAt}</p>
       <div className="button-container">

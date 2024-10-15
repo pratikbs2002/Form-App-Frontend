@@ -48,14 +48,22 @@
   justify-content: space-between;
 }
 .rounded-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 5px;
   font-size: 15px;
   border: none;
   border-radius: 50%;
   margin: 0 5px;
-  justify-content: center;
   background-color: #0080ff;
   transition: color 0.1s, background-color 0.1s;
+}
+
+.button-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rounded-button:active{
@@ -64,6 +72,9 @@
 }
 
 .rounded-button-delete{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 5px;
   font-size: 15px;
   border: none;

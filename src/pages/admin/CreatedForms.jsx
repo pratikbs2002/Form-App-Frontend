@@ -6,6 +6,7 @@ import "./CreatedForms.css";
 import Loader from "../../context/Loader";
 import { LoaderContext } from "../../context/LoaderContext";
 import { MdDelete, MdEdit, MdRemoveRedEye } from "react-icons/md";
+import { getAllForms } from "../../services/form-service";
 
 export default function CreatedFormsContainer() {
   const [forms, setForms] = useState([]);
@@ -15,26 +16,24 @@ export default function CreatedFormsContainer() {
   useEffect(() => {
     const fetchForms = async () => {
       dispatch(true);
-      const response = await fetch(
-        "https://react-http-3830c-default-rtdb.firebaseio.com/formData.json"
-      );
+      const response = await getAllForms();
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (!data) {
         return;
       }
-      const formEntries = Object.entries(data).map(([key, value]) => ({
-        formId: value.formId,
-        title: value.title,
-        createdAt: value.createdAt,
-        createdBy: value.createdBy.slice(38),
-      }));
-      setForms(formEntries);
-        console.log(forms);
+      // const formEntries = Object.entries(data).map(([key, value]) => ({
+      //   formId: value.id,
+      //   title: value.title,
+      //   createdAt: value.createdAt,
+      //   // createdBy: value.createdBy.slice(38),
+      // }));
+      setForms(data);
+      // console.log(forms);
 
       dispatch(false);
     };
-    console.log(sortBy);
+    // console.log(sortBy);
 
     fetchForms();
   }, [sortBy]);
@@ -49,7 +48,7 @@ export default function CreatedFormsContainer() {
       }
     );
   };
-  console.log(state.loading);
+  // console.log(state.loading);
 
   return (
     <div className="created-forms-container">
@@ -91,7 +90,7 @@ export default function CreatedFormsContainer() {
       {!state.loading && forms.length === 0 && <h2>No Form Data Available</h2>}
       {viewStyle === "card" &&
         forms.map((form) => (
-          <FormEntry key={form.formId} form={form} onDelete={handleDelete} />
+          <FormEntry key={form.id} form={form} onDelete={handleDelete} />
         ))}
       {!state.loading && viewStyle === "table" && (
         <div className="user-table-container">
@@ -107,22 +106,24 @@ export default function CreatedFormsContainer() {
             </thead>
             <tbody>
               {forms.map((form) => (
-                <tr key={form.formId}>
-                  <td>{form.formId}</td>
+                <tr key={form.id}>
+                  <td>{form.id}</td>
                   {/* <td>{data.id}</td> */}
                   <td>{form.title}</td>
                   <td>{form.createdBy}</td>
                   <td>{form.createdAt}</td>
                   <td>
-                    <button className="rounded-button">
-                      <MdEdit />
-                    </button>
-                    <button className="rounded-button">
-                      <MdRemoveRedEye />
-                    </button>
-                    <button className="rounded-button-delete">
-                      <MdDelete />
-                    </button>
+                    <div className="button-div">
+                      <button className="rounded-button">
+                        <MdEdit />
+                      </button>
+                      <button className="rounded-button">
+                        <MdRemoveRedEye />
+                      </button>
+                      <button className="rounded-button-delete">
+                        <MdDelete />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
