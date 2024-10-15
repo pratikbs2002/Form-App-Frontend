@@ -30,3 +30,9 @@ border-color: #1DA1F2;
 outline: none; 
 border-color: #1DA1F2; 
 }
+
+.radio{
+  height: 20px;
+  width: 20px;
+  margin-right: 0.5rem;
+}

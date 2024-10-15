@@ -23,7 +23,8 @@ export default function FormContainer() {
       required: false,
     },
   ]);
-  console.log(formQuestions);
+
+  // console.log(formQuestions);
 
   function handleQuestionChange(index, value) {
     const newQuestions = [...formQuestions];
@@ -32,7 +33,7 @@ export default function FormContainer() {
   }
 
   function handleAnswerTypeChange(index, value) {
-    console.log(value);
+    // console.log(value);
     const newQuestions = [...formQuestions];
     newQuestions[index].answerType = value;
     newQuestions[index].options =
@@ -115,12 +116,16 @@ export default function FormContainer() {
 
     // const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const createdAt = `${formattedDate}`;
+    const createdBy = localStorage.getItem("username");
+    console.log(createdBy);
+    
 
     const formData = {
       title: formTitle,
       formId,
       questions: formQuestions,
       createdAt,
+      createdBy,
     };
 
     const sendRequest = async () => {
@@ -167,6 +172,7 @@ export default function FormContainer() {
 
   return (
     <div className="form-container">
+      {/* <p>Creating as india_admin</p> */}
       <input
         type="text"
         value={formTitle}
@@ -183,6 +189,7 @@ export default function FormContainer() {
           setQuestions={setFormQuestions}
           answerType={q.answerType}
           propOptions={q.options}
+          questionLength={formQuestions.length}
           onQuestionChange={handleQuestionChange}
           onAnswerTypeChange={handleAnswerTypeChange}
           removeQuestion={removeQuestion}

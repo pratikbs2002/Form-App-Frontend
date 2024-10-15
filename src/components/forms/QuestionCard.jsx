@@ -17,12 +17,15 @@ export default function QuestionCard({
   onQuestionChange,
   onAnswerTypeChange,
   removeQuestion,
+  questionLength,
 }) {
   // const [singleQuestion, setSingleQuestion] = useState(tempQ);
   const [options, setOptions] = useState(
     // propOptions != [""] ? propOptions : [""]
     [""]
   );
+  // console.log(propOptions);
+
   const [toggled, setIsToggled] = useState(false);
 
   function handleOptionChange(i, value) {
@@ -40,9 +43,9 @@ export default function QuestionCard({
     setOptions([...options, ""]);
   }
 
-  // useEffect(()=>{
-
-  // },[])
+  useEffect(() => {
+    setOptions(propOptions);
+  }, [propOptions]);
   function handleToggleRequired() {
     setIsToggled((toggled) => !toggled);
     setQuestions((prev) =>
@@ -61,21 +64,25 @@ export default function QuestionCard({
         }}
       >
         <h2 style={{ marginTop: 0 }}>Question {index + 1}</h2>
-        <span
-          className="remove-link"
-          onClick={() => {
-            if (
-              window.confirm(
-                `Are you sure you want to remove question number ${index + 1}?`
-              )
-            ) {
-              removeQuestion(index, id);
-            }
-          }}
-          style={{ marginLeft: "10px", cursor: "pointer", color: "#d9534f" }}
-        >
-          <MdClose />
-        </span>
+        {questionLength > 1 && (
+          <span
+            className="remove-link"
+            onClick={() => {
+              if (
+                window.confirm(
+                  `Are you sure you want to remove question number ${
+                    index + 1
+                  }?`
+                )
+              ) {
+                removeQuestion(index, id);
+              }
+            }}
+            style={{ marginLeft: "10px", cursor: "pointer", color: "#d9534f" }}
+          >
+            <MdClose />
+          </span>
+        )}
       </div>
       <input
         type="text"
@@ -103,7 +110,7 @@ export default function QuestionCard({
         addOption={addOption}
         setOptions={setOptions}
       />
-      <div style={{height:'20px'}}>
+      <div style={{ height: "20px" }}>
         <div className="required-toggle" onClick={handleToggleRequired}>
           <label className="switch">
             <input type="checkbox" onChange={handleToggleRequired} />

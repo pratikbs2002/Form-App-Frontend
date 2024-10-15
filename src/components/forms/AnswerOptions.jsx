@@ -19,6 +19,13 @@ export default function AnswerOptions({
         <>
           {options.map((option, index) => (
             <div key={index} className="option-input-container">
+              {answerType === "mcq" && (
+                <input type="radio" disabled className="radio" />
+              )}
+              {answerType === "multiple-select" && (
+                <input type="checkbox" disabled className="radio" />
+              )}
+              {answerType === "dropdown" && <p className="radio">{index+1}.</p>}
               <input
                 type="text"
                 value={option}
@@ -26,7 +33,7 @@ export default function AnswerOptions({
                 className="option-input"
                 placeholder={`Option ${index + 1}`}
               />
-              {index > 0 && (
+              {options.length > 1 && (
                 <span
                   className="remove-link"
                   onClick={() => {

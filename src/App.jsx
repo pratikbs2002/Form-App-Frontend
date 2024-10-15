@@ -72,7 +72,7 @@ function App() {
                     <p>Some error happened</p>
                     <p>
                       You are not allowed to access this page. Try&nbsp;
-                      <span><Link to="/">logging in</Link></span>
+                      <span><Link to="/">logging in</Link></span>&nbsp;as a country admin.
                     </p>
                   </>
                 )
@@ -89,7 +89,7 @@ function App() {
                     <p>Some error happened</p>
                     <p>
                       You are not allowed to access this page. Try&nbsp;
-                      <span><Link to="/">logging in</Link></span>
+                      <span><Link to="/">logging in</Link></span>&nbsp;as a country admin.
                     </p>
                   </>
                 )
