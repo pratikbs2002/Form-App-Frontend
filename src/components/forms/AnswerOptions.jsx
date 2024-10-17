@@ -10,6 +10,7 @@ export default function AnswerOptions({
   handleOptionChange,
   addOption,
   setOptions,
+  preview,
 }) {
   return (
     <div>
@@ -25,15 +26,19 @@ export default function AnswerOptions({
               {answerType === "multiple-select" && (
                 <input type="checkbox" disabled className="radio" />
               )}
-              {answerType === "dropdown" && <p className="radio">{index+1}.</p>}
+              {answerType === "dropdown" && (
+                <p className="radio">{index + 1}.</p>
+              )}
               <input
                 type="text"
                 value={option}
                 onChange={(e) => handleOptionChange(index, e.target.value)}
+                // onChange={(e) => console.log(e.target.value)}
                 className="option-input"
                 placeholder={`Option ${index + 1}`}
+                disabled={preview}
               />
-              {options.length > 1 && (
+              {options.length > 1 && !preview && (
                 <span
                   className="remove-link"
                   onClick={() => {
@@ -51,9 +56,11 @@ export default function AnswerOptions({
               )}
             </div>
           ))}
-          <button className="styled-button" onClick={addOption}>
-            Add Option
-          </button>
+          {!preview && (
+            <button className="styled-button" onClick={addOption}>
+              Add Option
+            </button>
+          )}
         </>
       ) : null}
     </div>

@@ -77,6 +77,14 @@ export default function Navbar(props) {
                   >
                     <div className="nav-button-value">Created Forms</div>
                   </NavLink>
+
+                  <NavLink
+                    // activeClassName="active-nav-link"
+                    className="nav-link"
+                    to={"/fillform"}
+                  >
+                    <div className="nav-button-value">Fill Form</div>
+                  </NavLink>
                 </>
               )}
 

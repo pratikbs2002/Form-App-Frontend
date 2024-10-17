@@ -9,7 +9,7 @@ import { MdDelete, MdEdit, MdRemoveRedEye } from "react-icons/md";
 import { deleteFormById, getAllForms } from "../../services/form-service";
 import { redirect, useNavigate } from "react-router";
 
-export default function CreatedFormsContainer() {
+export default function FormFillList() {
   const navigate = useNavigate()
   const [forms, setForms] = useState([]);
   const [sortBy, setSortBy] = useState("default");
@@ -99,7 +99,7 @@ export default function CreatedFormsContainer() {
       {!state.loading && forms.length === 0 && <h2>No Form Data Available</h2>}
       {viewStyle === "card" &&
         forms.map((form) => (
-          <FormEntry key={form.id} form={form} onDelete={handleDelete} edit={true}/>
+          <FormEntry key={form.id} form={form} onDelete={handleDelete} edit={false}/>
         ))}
       {!state.loading && viewStyle === "table" && (
         <div className="user-table-container">
@@ -110,7 +110,7 @@ export default function CreatedFormsContainer() {
                 <th>Form Name</th>
                 <th>Created By</th>
                 <th>Created At</th>
-                <th>Actions</th>
+                <th>Fill</th>
               </tr>
             </thead>
             <tbody>
@@ -126,12 +126,12 @@ export default function CreatedFormsContainer() {
                       <button className="rounded-button"onClick={()=>navigate(`/editform/${form.id}`)}>
                         <MdEdit />
                       </button>
-                      <button className="rounded-button" onClick={()=>navigate(`/formpreview/${form.id}`)}>
+                      {/* <button className="rounded-button" onClick={()=>navigate(`/formpreview/${form.id}`)}>
                         <MdRemoveRedEye />
-                      </button>
-                      <button className="rounded-button-delete" onClick={() => handleDelete(form.id)}>
+                      </button> */}
+                      {/* <button className="rounded-button-delete" onClick={() => handleDelete(form.id)}>
                         <MdDelete />
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                 </tr>
