@@ -21,10 +21,10 @@ export default function AnswerFill({
           {options.map((option, index) => (
             <div key={index} className="option-input-container">
               {answerType === "mcq" && (
-                <input type="radio" disabled className="radio" />
+                <input type="radio" className="radio" />
               )}
               {answerType === "multiple-select" && (
-                <input type="checkbox" disabled className="radio" />
+                <input type="checkbox" className="radio" />
               )}
               {answerType === "dropdown" && (
                 <p className="radio">{index + 1}.</p>

@@ -10,13 +10,16 @@ import AnswerFill from "./AnswerFill";
 
 export default function QuestionCardFill({
   id,
+  key,
   index,
   question,
   form,
   setQuestions,
   answerType,
+  mainAnswers,
   propOptions,
   requiredProp,
+  setAnswerOnChange,
   isFilling,
   onQuestionChange,
   onAnswerTypeChange,
@@ -28,47 +31,12 @@ export default function QuestionCardFill({
   const [options, setOptions] = useState(propOptions ? propOptions : [""]);
   const [toggled, setIsToggled] = useState(requiredProp);
   const [testForm, setTestForm] = useState(form);
+  const [answer, setAnswer] = useState([]);
 
   useEffect(() => {
     setOptions(propOptions);
   }, [propOptions]);
 
-  // useEffect(() => {
-  //   setTestForm(form);
-  // }, [form]);
-
-  // function handleOptionChange(index, value){}
-
-  function handleOptionChange(index, value) {
-    setOptions((prevOptions) => {
-      const newOptions = [...prevOptions];
-      newOptions[index] = value;
-      // console.log(index, options);
-      return newOptions;
-    });
-
-    // setTestForm({
-    //   ...testForm,
-    //   questions: testForm.questions.map((q) =>
-    //     q.question_id === id ? { ...q, options } : q
-    //   ),
-    // });
-  }
-  useEffect(() => {
-    setQuestions({
-      ...form,
-      questions: form.questions.map((q) =>
-        q.question_id === id ? { ...q, options, required: toggled } : q
-      ),
-    });
-    // setQuestions((prev) =>
-    //   prev?.questions.map((q) => (q.question_id === id ? { ...q, options } : q))
-    // );
-  }, [options, toggled]);
-
-  function addOption() {
-    setOptions([...options, ""]);
-  }
   let answer_type = "Default";
   if (answerType === "short answer") {
     answer_type = "Short Answer";
@@ -82,20 +50,29 @@ export default function QuestionCardFill({
     answer_type = "Dropdown";
   }
 
-  function handleToggleRequired() {
-    setIsToggled((toggled) => !toggled);
-    // setQuestions((prev) =>
-    //   prev.questions.map((p) =>
-    //     p.question_id === id ? { ...p, required: toggled } : p
-    //   )
-    // );
-  }
-  console.log(toggled);
-  // console.log(testForm.questions[index]);
+  useEffect(() => {
+    // const newMainAnswers = [...mainAnswers];
+    // newMainAnswers[index].answer = answer;
+    // setAnswerOnChange(newMainAnswers)
+    console.log("key" + key);
+    console.log(id);
+
+    setAnswerOnChange((prev) =>
+      prev.map((a) => (a.answer_id === id ? { ...a, answer: answer } : a))
+    );
+    console.log(answer);
+  }, [answer]);
+
+  const handleCheckbox = (o) => {
+    if (answer.includes(o)) {
+      setAnswer((prev) => prev.filter((a) => a !== o));
+    } else {
+      setAnswer((prev) => [...prev, o]);
+    }
+  };
 
   return (
     <div className="question-div">
-      {/* <div>{JSON.stringify(testForm.questions[index])}</div> */}
       <div
         style={{
           display: "flex",
@@ -103,68 +80,96 @@ export default function QuestionCardFill({
           justifyContent: "space-between",
         }}
       >
-        <h2 style={{ marginTop: 0 }}>Question {index + 1}</h2>
-        {questionLength > 1 && (
-          <span
-            className="remove-link"
-            onClick={() => {
-              if (
-                window.confirm(
-                  `Are you sure you want to remove question number ${
-                    index + 1
-                  }?`
-                )
-              ) {
-                removeQuestion(index, id);
-              }
-            }}
-            style={{ marginLeft: "10px", cursor: "pointer", color: "#d9534f" }}
-          >
-            <MdClose />
-          </span>
-        )}
-        
+        <h2 style={{ marginTop: 0, marginBottom: "10px" }}>
+          Question {index + 1}
+        </h2>
       </div>
-      {/* <input
-        type="text"
-        value={question}
-        onChange={(e) => onQuestionChange(index, e.target.value)}
-        placeholder="Enter your question"
-        className="question-input"
-        disabled={isFilling}
-      /> */}
-      {isFilling ? (
-        <div style={{ display: "flex" }}>
-          <p>Anwer Type: {answer_type}</p>
-        </div>
-      ) : (
-        <select
-          value={answerType}
-          onChange={(e) => onAnswerTypeChange(index, e.target.value)}
-          className="answer-type-select"
-        >
-          <option value="default">Select an answer type</option>
-          <option value="short answer">Short Answer</option>
-          <option value="long answer">Long Answer</option>
-          <option value="mcq">Multiple Choice (MCQ)</option>
-          <option value="multiple-select">Multiple Select</option>
-          <option value="dropdown">Dropdown</option>
-        </select>
-      )}
-      <AnswerFill
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+        }}
+      >
+        <h1 style={{ float: "left", marginTop: 0 }}>{question}</h1>
+      </div>
+
+      {/* <div>{JSON.stringify(form)}</div> */}
+      <div>
+        {answerType === "mcq" &&
+          options.map((o, index) => (
+            // <p>hello</p>
+            <div key={index} className="option-container">
+              <input
+                type="radio"
+                id={o}
+                name={`name_${question}`}
+                value={o}
+                className="radio"
+                onClick={() => setAnswer(o)}
+              />
+              <label className="option">{o}</label>
+              <br />
+            </div>
+          ))}
+        {answerType === "multiple-select" &&
+          options.map((o) => {
+            return (
+              <div key={index} className="option-container">
+                <input
+                  type="checkbox"
+                  id={o}
+                  name={o}
+                  value={o}
+                  onClick={() => handleCheckbox(o)}
+                  className="radio"
+                />
+                <label className="option"> {o}</label>
+                <br />
+              </div>
+            );
+          })}
+        {answerType === "dropdown" && (
+          <select
+            name="cars"
+            id="cars"
+            className="answer-type-select"
+            onChange={(e) => setAnswer(e.target.value)}
+          >
+            {options.map((o) => {
+              return (
+                <>
+                  <option value={o}>{o}</option>
+                </>
+              );
+            })}
+          </select>
+        )}
+        {answerType === "short answer" && (
+          <input
+            placeholder="Short Answer"
+            className="answer-input"
+            onChange={(e) => setAnswer(e.target.value)}
+          />
+        )}
+        {answerType === "long answer" && (
+          <textarea
+            placeholder="Long Answer"
+            className="answer-textbox"
+            onChange={(e) => setAnswer(e.target.value)}
+          />
+        )}
+      </div>
+
+      {/* <AnswerFill
         options={options}
         answerType={answerType}
         handleOptionChange={handleOptionChange}
         addOption={addOption}
         setOptions={setOptions}
         preview={isFilling}
-      />
+      /> */}
       <div style={{ height: "20px" }}>
-        <div
-          className="required-toggle"
-          // onClick={handleToggleRequired}
-          // disabled={preview}
-        >
+        <div className="required-toggle">
           <span>{toggled && "Required*"}</span>
         </div>
       </div>

@@ -10,7 +10,9 @@ function FormFill() {
   const [form, setForm] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const { formId } = useParams();
-  console.log(formId);
+  // console.log(formId);
+
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     const formDetails = async () => {
@@ -19,18 +21,36 @@ function FormFill() {
         const data = await response.json();
         setForm(data);
         setIsLoading(false);
-        console.log(data);
+        // console.log(data.questions.length);
+        setAnswers(
+          data.questions.map((q) => ({ answer_id: q.question_id, answer: "" }))
+        );
+        // if (!isLoading) {
+        //   for (let i = 0; i < data.question.length; i++) {
+        //     setAnswers((prev) => [...prev, { answer: "" }]);
+        //     console.log(answers);
+        //   }
+        // }
       }
     };
     formDetails();
     // console.log(form);
   }, [formId]);
 
+  const handleSubmitForm = () => {
+    const filledForm = {
+      formId,
+      userId: 50,
+      answers,
+      locationId: 1,
+    };
+    console.log("Form Submitted!: " + JSON.stringify(filledForm));
+  };
+
   return (
     <>
       <h1>Form Fill</h1>
       <div className="form-container">
-        {/* <p>Creating as india_admin</p> */}
         <input
           type="text"
           value="Form Title will go here"
@@ -39,7 +59,8 @@ function FormFill() {
           className="form-title-input"
           disabled
         />
-        {/* {!isLoading && JSON.stringify(form)} */}
+        {!isLoading && JSON.stringify(form)}
+        {!isLoading && answers && JSON.stringify(answers)}
         {!isLoading &&
           form.questions.map((q, index) => (
             <QuestionCardFill
@@ -48,32 +69,29 @@ function FormFill() {
               index={index}
               form={form}
               question={q.question_text}
-              setQuestions={() => {}}
               answerType={q.answerType}
               requiredProp={q.required}
               propOptions={q.options}
               isFilling={true}
-              // questionLength={formQuestions.length}
-              // onQuestionChange={handleQuestionChange}
-              // onAnswerTypeChange={handleAnswerTypeChange}
-              // removeQuestion={removeQuestion}
+              mainAnswers={answers}
+              setAnswerOnChange={setAnswers}
             />
           ))}
         <div className="button-container">
           <button
             className="styled-button"
-            onClick={() => navigate("/createdforms")}
+            onClick={() => navigate("/fillform")}
           >
             Back
           </button>
           <button
             className="styled-button"
-            onClick={() => {
-              navigate(`/editform/${formId}`);
-            }}
-            // disabled={isSubmitting}
+            onClick={
+              handleSubmitForm
+              // navigate(`/editform/${formId}`);
+            }
           >
-            Edit
+            Submit
           </button>
         </div>
       </div>

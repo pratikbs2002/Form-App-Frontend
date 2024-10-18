@@ -47,21 +47,15 @@ export default function FormFillList() {
     if (!data) {
       return;
     }
-    // const formEntries = Object.entries(data).map(([key, value]) => ({
-    //   formId: value.id,
-    //   title: value.title,
-    //   createdAt: value.createdAt,
-    //   // createdBy: value.createdBy.slice(38),
-    // }));
+    
     setForms(data);
-    // const updatedForms = forms.filter((form) => form.id !== formId);
-    // setForms(updatedForms);
   };
-  // console.log(state.loading);
+
+  
 
   return (
     <div className="created-forms-container">
-      <h1>Created Forms</h1>
+      <h1>Forms List</h1>
       <Loader />
       {!state.loading && (
         <div className="form-view">
@@ -81,7 +75,7 @@ export default function FormFillList() {
               </p>
             </nav>
           </div>
-          <select
+          {/* <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="sort-by-select"
@@ -92,7 +86,7 @@ export default function FormFillList() {
             <option value="name-asc">Form Name - Ascending</option>
             <option value="name-des">Form Name - Descending</option>
             <option value="form-id">Form ID</option>
-          </select>
+          </select> */}
         </div>
       )}
       <div>{state.loading}</div>
@@ -122,7 +116,6 @@ export default function FormFillList() {
               {forms.map((form) => (
                 <tr key={form.id}>
                   <td>{form.id}</td>
-                  {/* <td>{data.id}</td> */}
                   <td>{form.title}</td>
                   <td>{form.createdBy}</td>
                   <td>{form.createdAt}</td>
@@ -131,12 +124,6 @@ export default function FormFillList() {
                       <button className="rounded-button"onClick={()=>navigate(`/fillform/${form.id}`)}>
                         <MdEdit />
                       </button>
-                      {/* <button className="rounded-button" onClick={()=>navigate(`/formpreview/${form.id}`)}>
-                        <MdRemoveRedEye />
-                      </button> */}
-                      {/* <button className="rounded-button-delete" onClick={() => handleDelete(form.id)}>
-                        <MdDelete />
-                      </button> */}
                     </div>
                   </td>
                 </tr>
