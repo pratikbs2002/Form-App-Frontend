@@ -4,12 +4,22 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaChevronUp,
+  FaMinus,
+  FaPlus,
 } from "react-icons/fa";
 import "./LocationCard.css";
-import { MdArrowForwardIos } from "react-icons/md";
+import { MdArrowForwardIos, MdDelete } from "react-icons/md";
+import { addLocation, deleteLocation } from "../services/location-service";
+import { IoCloseSharp, IoRemoveOutline } from "react-icons/io5";
+import { Bounce, toast } from "react-toastify";
 export default function LocationCard({ parentId = null }) {
   const [locations, setLocations] = useState([]);
   const [open, setOpen] = useState(null);
+  const [dialog, setDialog] = useState(false);
+  const [addLocationData, setAddLocationData] = useState({
+    parentId: null,
+    name: "",
+  });
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -32,7 +42,7 @@ export default function LocationCard({ parentId = null }) {
     };
 
     fetchLocations();
-  }, [parentId]);
+  }, [dialog, parentId]);
 
   const handleExpand = (id) => {
     console.log(id);
@@ -42,6 +52,43 @@ export default function LocationCard({ parentId = null }) {
 
   const handleLocationClick = (name) => {
     console.log(name);
+  };
+  const handleAddLocationButton = async () => {
+    if (addLocationData.name === "") return;
+    if (addLocationData.parentId === null) return;
+    const res = await addLocation(addLocationData);
+    const result = await res.json();
+    console.log(result);
+    setDialog(false);
+    toast.success("Location added successfully", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      theme: "dark",
+      transition: Bounce,
+      pauseOnHover: false,
+    });
+    setAddLocationData((prev) => {
+      return { ...prev, name: "" };
+    });
+  };
+  const handleAddButton = (parentId) => {
+    setAddLocationData((p) => {
+      return { ...p, parentId: parentId };
+    });
+    setDialog(true);
+  };
+
+  const handleLocationNameChange = (e) => {
+    setAddLocationData((p) => {
+      return { ...p, name: e.target.value };
+    });
+  };
+
+  const handleDeleteLocation = async (id) => {
+    const res = await deleteLocation(id);
+    const result = await res.text();
+    console.log(result);
   };
 
   return (
@@ -58,17 +105,20 @@ export default function LocationCard({ parentId = null }) {
               //     open === location.id && location.havingChild
               //       ? "3px solid #0073e6"
               //       : "",
-              // }} 
+              // }}
               onClick={() => handleExpand(location.id)}
             >
               <div style={{ display: "flex", gap: "20px" }}>
                 <div className="location-icon">
-                  {location.havingChild &&
-                    (open === location.id ? (
+                  {location.havingChild ? (
+                    open === location.id ? (
                       <FaChevronUp />
                     ) : (
                       <FaChevronDown />
-                    ))}
+                    )
+                  ) : (
+                    <FaMinus />
+                  )}
                 </div>
                 <div
                   className="location-name"
@@ -77,7 +127,24 @@ export default function LocationCard({ parentId = null }) {
                   {location.name}
                 </div>
               </div>
-              <FaChevronRight />
+              <div style={{ display: "flex", gap: "30px" }}>
+                <div
+                  className="add-location-button"
+                  onClick={() => handleDeleteLocation(location.id)}
+                >
+                  <MdDelete />
+                </div>
+                <div
+                  className="add-location-button"
+                  // onClick={() => handleAddLocationButton(location.parent_id)}
+                  onClick={() => handleAddButton(location.id)}
+                >
+                  <FaPlus />
+                </div>
+                <div className="add-location-button">
+                  <FaChevronRight />
+                </div>
+              </div>
             </div>
           </div>
           {open === location.id && (
@@ -87,6 +154,65 @@ export default function LocationCard({ parentId = null }) {
           )}
         </div>
       ))}
+      <dialog className="dialog" open={dialog}>
+        <div className="dialog-container">
+          <div className="dialog-content-container">
+            <div style={{ width: "100%" }}>
+              <div
+                style={{
+                  fontSize: "20px",
+                  cursor: "pointer",
+                  color: "red",
+                  float: "right",
+                }}
+                onClick={() => setDialog(false)}
+              >
+                <IoCloseSharp />
+              </div>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                // width: "100%",
+                padding: "100px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                <div>
+                  <input
+                    name="addLocationData.name"
+                    placeholder="location name"
+                    onChange={handleLocationNameChange}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    width: "100%",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <button
+                    onClick={() => handleAddLocationButton(location.parent_id)}
+                  >
+                    Add
+                  </button>
+                  <button onClick={() => setDialog(false)}>Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 }
