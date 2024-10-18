@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getFormById } from "../../services/form-service";
-import QuestionCardPreview from "../../components/forms/QuestionCardPreview";
+import QuestionCardFill from "../../components/forms/QuestionCardFill";
 
 function FormFill() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function FormFill() {
 
   return (
     <>
-      <h1>Form Preview</h1>
+      <h1>Form Fill</h1>
       <div className="form-container">
         {/* <p>Creating as india_admin</p> */}
         <input
@@ -42,7 +42,7 @@ function FormFill() {
         {/* {!isLoading && JSON.stringify(form)} */}
         {!isLoading &&
           form.questions.map((q, index) => (
-            <QuestionCardPreview
+            <QuestionCardFill
               id={q.question_id}
               key={q.question_id}
               index={index}
@@ -52,7 +52,6 @@ function FormFill() {
               answerType={q.answerType}
               requiredProp={q.required}
               propOptions={q.options}
-              preview={true}
               isFilling={true}
               // questionLength={formQuestions.length}
               // onQuestionChange={handleQuestionChange}
