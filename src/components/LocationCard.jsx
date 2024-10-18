@@ -55,7 +55,6 @@ export default function LocationCard({ parentId = null }) {
   };
   const handleAddLocationButton = async () => {
     if (addLocationData.name === "") return;
-    if (addLocationData.parentId === null) return;
     const res = await addLocation(addLocationData);
     const result = await res.json();
     console.log(result);
@@ -128,12 +127,14 @@ export default function LocationCard({ parentId = null }) {
                 </div>
               </div>
               <div style={{ display: "flex", gap: "30px" }}>
-                <div
-                  className="add-location-button"
-                  onClick={() => handleDeleteLocation(location.id)}
-                >
-                  <MdDelete />
-                </div>
+                {!(location.parent_id === null) && (
+                  <div
+                    className="add-location-button"
+                    onClick={() => handleDeleteLocation(location.id)}
+                  >
+                    <MdDelete />
+                  </div>
+                )}
                 <div
                   className="add-location-button"
                   // onClick={() => handleAddLocationButton(location.parent_id)}
