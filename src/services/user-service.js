@@ -23,7 +23,7 @@ export async function getUserWithUsername(username) {
 }
 
 // to add admin (add by existing admin)
-export async function addAdmin() {
+export async function addAdmin(data) {
   return await fetch(`${hostUrl}/api/user/add/admin`, {
     method: "POST",
     headers: {
@@ -31,8 +31,6 @@ export async function addAdmin() {
       Authorization:
         "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
     },
-    body: JSON.stringify({
-      username: "pratik",
-    }),
+    body: JSON.stringify(data),
   });
 }

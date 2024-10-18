@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { getAllUser } from "../../services/user-service";
 import { getAllSchema } from "../../services/schema-service";
 
-export default function SchemaMappingTable() {
+export default function SchemaMappingTable(props) {
   const [schemasData, setschemasData] = useState([]);
   const auth = useAuth();
 
@@ -21,7 +21,7 @@ export default function SchemaMappingTable() {
     };
 
     fetchData();
-  }, [auth.authData.password, auth.authData.username]);
+  }, [auth.authData.password, auth.authData.username,props.load]);
 
   return (
     <div className="schema-mapping-table-outside-container">

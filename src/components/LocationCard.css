@@ -1,11 +1,11 @@
 .location-inside-container {
   cursor: pointer;
-  background-color: #121212;
+  background-color: var(--background-color);
 }
 
 .location-inside-container :hover {
   /* border-radius: 10px; */
-  background-color: #252525;
+  background-color: var(--secondary-background-color);
 }
 
 .location-container {
@@ -18,7 +18,7 @@
     font-size: 20px;
   }
   .location-icon {
-    font-size: 20px;
+    /* font-size: 20px; */
     display: flex;
     align-items: center;
     justify-content: center;

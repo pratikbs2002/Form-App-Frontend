@@ -7,26 +7,29 @@ import "./DashBoard.css";
 import { getAllSchema } from "../../services/schema-service";
 import SchemaMappingTable from "./SchemaMappingTable";
 import { useNavigate } from "react-router";
+import UserForm from "./UserForm";
 
 export default function DashBoard() {
+  const [load, setLoad] = useState(false);
+
   return (
     <div className="root-dashboard">
       <div className="root-section">
         <div className="root-section-title">User Table</div>
         <div className="root-section-data">
-          <UserTable />
+          <UserTable load={load} />
         </div>
       </div>
       <div className="root-section">
         <div className="root-section-title">Schema Table</div>
         <div className="root-section-data">
-          <SchemaMappingTable />
+          <SchemaMappingTable load={load} />
         </div>
       </div>
       <div className="root-section">
         <div className="root-section-title">Schema Form</div>
         <div className="root-section-data">
-          <SchemaForm />
+          <SchemaForm load={load} setLoad={setLoad} />
         </div>
       </div>
     </div>

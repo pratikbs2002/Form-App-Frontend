@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaChevronLeft,
+  FaChevronRight,
+  FaChevronUp,
+} from "react-icons/fa";
 import "./LocationCard.css";
+import { MdArrowForwardIos } from "react-icons/md";
 export default function LocationCard({ parentId = null }) {
   const [locations, setLocations] = useState([]);
   const [open, setOpen] = useState(null);
@@ -29,49 +35,57 @@ export default function LocationCard({ parentId = null }) {
   }, [parentId]);
 
   const handleExpand = (id) => {
+    console.log(id);
+
     setOpen(open === id ? null : id);
   };
 
+  const handleLocationClick = (name) => {
+    console.log(name);
+  };
+
   return (
-    <div
-      className=""
-      // style={{
-      //   borderLeft: "2px solid #252525",
-      //   borderBottom: "2px solid #252525",
-      // }}
-    >
+    <div>
       {locations.map((location) => (
-        <>
-          <div className="location-inside-container" key={location.id}>
+        <div key={location.id}>
+          <div className="location-inside-container">
             <div
               className={`location-container ${
-                open === location.id && !location.children.length ? "hover" : ""
+                open === location.id && !location.havingChild ? "hover" : ""
               }`}
-              style={{
-                borderLeft:
-                  open === location.id && location.children.length
-                    ? "3px solid #0073e6"
-                    : "",
-                // borderBottom:
-                //   open === location.id && !location.children.length
-                //     ? "3px solid #0073e6"
-                //     : "",
-              }}
+              // style={{
+              //   borderLeft:
+              //     open === location.id && location.havingChild
+              //       ? "3px solid #0073e6"
+              //       : "",
+              // }} 
               onClick={() => handleExpand(location.id)}
             >
-              <div className="location-name">{location.name}</div>
-              <div className="location-icon">
-                {location.children.length !== 0 &&
-                  (open === location.id ? <FaChevronUp /> : <FaChevronDown />)}
+              <div style={{ display: "flex", gap: "20px" }}>
+                <div className="location-icon">
+                  {location.havingChild &&
+                    (open === location.id ? (
+                      <FaChevronUp />
+                    ) : (
+                      <FaChevronDown />
+                    ))}
+                </div>
+                <div
+                  className="location-name"
+                  onClick={() => handleLocationClick(location.name)}
+                >
+                  {location.name}
+                </div>
               </div>
+              <FaChevronRight />
             </div>
           </div>
           {open === location.id && (
-            <div style={{ marginLeft: "40px" }}>
+            <div style={{ marginLeft: "60px" }}>
               <LocationCard parentId={location.id} />
             </div>
           )}
-        </>
+        </div>
       ))}
     </div>
   );

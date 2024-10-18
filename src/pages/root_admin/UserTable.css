@@ -1,4 +1,4 @@
-.user-table-inside-container {
+.user-table-outside-container {
   width: 100%;
   display: flex;
   align-items: center;
@@ -14,28 +14,39 @@
   padding: 40px;
 }
 .user-table-container {
-  padding: 50px;
+  width: 90%;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(61, 71, 81, 0.3);
+  overflow-x: auto;
+  border-radius: 8px;
 }
 
 .user-table {
+  table-layout: auto;
+  width: 100%;
   border-collapse: collapse;
   padding: 50px;
   border: 1px solid rgba(61, 71, 81, 0.3);
-  box-shadow: 0 1px 5px 0 rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.19);
+  box-shadow: 0 1px 5px 0 rgba(117, 63, 63, 0.2),
+    0 1px 5px 0 rgba(255, 255, 255, 0.19);
 
   th,
   td {
     border-collapse: collapse;
     padding: 10px 20px 10px 20px;
     border: 1px solid rgba(61, 71, 81, 0.3);
+    white-space: nowrap;
+    padding: 15px;
   }
 
-  thead,
+  /* thead,
   tbody {
     border-collapse: collapse;
-  }
+  } */
 }
+
+
+

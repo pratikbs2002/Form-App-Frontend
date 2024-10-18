@@ -4,8 +4,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-  background-color: #101316;
-  border: 2px solid #0f1214;
+  background-color: var(--secondary-background-color);
   border-radius: 20px;
   padding: 50px;
   min-width: 500px;
@@ -16,10 +15,17 @@
   align-items: flex-start;
   input {
     background-color: #0073e600;
-    border: 1px solid white;
+    border: 1px solid var(--text-color);
     border-radius: 5px;
     padding: 10px;
     width: 300px;
+    color: var(--text-color);
+    outline: none;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-color) !important;
   }
 }
 
@@ -30,7 +36,7 @@
 } */
 .login-button {
   float: right;
-  background-color: #0073e6;
+  background-color: var(--button-background);
   padding: 10px 15px 10px 15px;
   border: none;
   font-size: 18px;

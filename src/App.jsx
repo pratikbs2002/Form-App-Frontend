@@ -13,6 +13,8 @@ import LandingPage from "./LandingPage";
 import "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer } from "react-toastify";
+import LocationSidebar from "./components/LocationSidebar";
+import UserForm from "./pages/root_admin/UserForm";
 function App() {
   const auth = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -59,14 +61,12 @@ function App() {
               path="/dashboard"
               element={isAuthenticated ? <DashBoard /> : <Navigate to={"/"} />}
             />
-
             {/* <Route
               path="/root-admin/dashboard"
               element={
                 isAuthenticated ? <RootDashBoard /> : <Navigate to={"/"} />
               }
             /> */}
-
             <Route
               path="schema"
               element={
@@ -77,12 +77,21 @@ function App() {
                 )
               }
             />
-
             <Route
               path="user"
               element={
-                isAuthenticated && userType === "global_admin" ? (
-                  <RootDashBoard />
+                isAuthenticated && userType === "admin" ? (
+                  <UserForm />
+                ) : (
+                  <Navigate to={"/"} />
+                )
+              }
+            />{" "}
+            <Route
+              path="location"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <LocationSidebar />
                 ) : (
                   <Navigate to={"/"} />
                 )

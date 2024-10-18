@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: var(--background-color);
   height: 40px;
   padding: 10px;
   border-bottom: 1px solid rgba(61, 71, 81, 0.3);
@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0073e6;
+  background-color: var(--button-background);
   padding: 10px 15px 10px 15px;
   border-radius: 5px;
   cursor: pointer;
@@ -35,17 +35,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--button-text);
+    /* color: black; */
   }
 }
 
 .nav-link {
   text-decoration: none;
-  color: white;
+  color: var(--text-color);
+  transition: border-bottom 2s ease,color 2s ease;
+  border-bottom: none;
 }
 
-.active-nav-link {
-  color: yellow;
-  .nav-button-value {
-    color: yellow;
-  }
+.nav-link.active {
+  color: #0073e6;
+  font-weight: 500;
+  border-bottom: 2px solid #0073e6;
 }

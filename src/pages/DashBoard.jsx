@@ -32,6 +32,10 @@ export default function DashBoard() {
       {data && (
         <div className="container">
           <div className="inside-container">
+            <div className="title">Username</div>
+            <div className="title-value">{authData.username}</div>
+          </div>
+          <div className="inside-container">
             <div className="title">SchemaName</div>
             <div className="title-value">{data.schemaName}</div>
           </div>
@@ -41,9 +45,9 @@ export default function DashBoard() {
           </div>
         </div>
       )}
-      <div>
+      {/* <div>
         <LocationSidebar />
-      </div>
+      </div> */}
     </div>
   );
 }

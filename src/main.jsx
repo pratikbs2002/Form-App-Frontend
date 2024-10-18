@@ -3,14 +3,17 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { AuthProvider } from "./context/AuthProvider.jsx";
-import { LoaderContext } from "./context/LoaderProvider.jsx";
+import { LoaderProvider } from "./context/LoaderProvider.jsx";
+import { ThemeProvider } from "./context/ThemeProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-  <LoaderContext>
+  <LoaderProvider>
     <AuthProvider>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </AuthProvider>
-  </LoaderContext>
+  </LoaderProvider>
   // </StrictMode>,
 );

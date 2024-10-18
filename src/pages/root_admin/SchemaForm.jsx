@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { addSchema } from "../../services/schema-service";
 import "./SchemaForm.css";
 import { Bounce, toast } from "react-toastify";
-export default function SchemaForm() {
+export default function SchemaForm(props) {
   const [schemaFormData, setSchemaFormData] = useState({});
   const [res, setRes] = useState({});
 
@@ -50,6 +50,7 @@ export default function SchemaForm() {
     const data = await response.json();
     console.log(data);
     setRes(data);
+    props.setLoad(!props.load);
   };
 
   return (

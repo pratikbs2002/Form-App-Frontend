@@ -1,6 +1,6 @@
 import React, { useContext, useReducer } from "react";
-import { LoaderContext } from "./LoaderContext";
 import "./Loader.css";
+import { LoaderContext } from "./LoaderProvider";
 
 export default function Loader() {
   const { state } = useContext(LoaderContext);
