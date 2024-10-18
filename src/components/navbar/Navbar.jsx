@@ -33,7 +33,12 @@ export default function Navbar(props) {
   return (
     <>
       <div className="navbar-container">
-        <div style={{ fontSize: "20px", fontWeight: 500 }}>FormApp</div>
+        <div
+          style={{ fontSize: "20px", fontWeight: 500, cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          FormApp
+        </div>
         <button
           style={{
             fontSize: "20px",
@@ -48,11 +53,15 @@ export default function Navbar(props) {
           {theme}
         </button>
         <div className="left-section">
-          <NavLink className="nav-link" to={"/dashboard"}>
-            <div className="nav-button-value">Dashboard</div>
-          </NavLink>
           {props.isAuthenticated && (
             <>
+              <NavLink
+                // activeClassName="active-nav-link"
+                className="nav-link"
+                to={"/dashboard"}
+              >
+                <div className="nav-button-value">Dashboard</div>
+              </NavLink>
               {props.userType === "global_admin" ? (
                 <>
                   <NavLink className="nav-link" to={"/schema"}>
@@ -60,7 +69,31 @@ export default function Navbar(props) {
                   </NavLink>
                 </>
               ) : (
-                <></>
+                <>
+                  <NavLink
+                    // activeClassName="active-nav-link"
+                    className="nav-link"
+                    to={"/createform"}
+                  >
+                    <div className="nav-button-value">Create New Form</div>
+                  </NavLink>
+
+                  <NavLink
+                    // activeClassName="active-nav-link"
+                    className="nav-link"
+                    to={"/createdforms"}
+                  >
+                    <div className="nav-button-value">Created Forms</div>
+                  </NavLink>
+
+                  <NavLink
+                    // activeClassName="active-nav-link"
+                    className="nav-link"
+                    to={"/fillform"}
+                  >
+                    <div className="nav-button-value">Fill Form</div>
+                  </NavLink>
+                  </>
               )}
 
               {props.userType === "admin" ? (

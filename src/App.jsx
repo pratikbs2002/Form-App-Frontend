@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -15,6 +15,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import LocationSidebar from "./components/LocationSidebar";
 import UserForm from "./pages/root_admin/UserForm";
+import FormContainer from "./pages/admin/FormContainer";
+import CreatedFormsContainer from "./pages/admin/CreatedForms";
+import FormPreview from "./pages/admin/FormPreview";
+import FormEdit from "./pages/admin/FormEdit";
+import FormFillList from "./pages/admin/FormFillList";
+import FormFill from "./pages/admin/FormFill";
 function App() {
   const auth = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -60,6 +66,139 @@ function App() {
             <Route
               path="/dashboard"
               element={isAuthenticated ? <DashBoard /> : <Navigate to={"/"} />}
+            />
+            <Route
+              path="/createform"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FormContainer />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
+            />
+            <Route
+              path="/createdforms"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <CreatedFormsContainer />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
+            />
+            <Route
+              path="/formpreview/:formId"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FormPreview />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
+            />
+            <Route
+              path="/editform/:formId"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FormEdit />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
+            />
+            <Route
+              path="/editform/:formId"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FormEdit />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
+            />
+            <Route
+              path="/fillform"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FormFillList />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
+            />
+            <Route
+              path="/fillform/:formId"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FormFill />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                )
+              }
             />
             {/* <Route
               path="/root-admin/dashboard"

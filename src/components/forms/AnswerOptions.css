@@ -1,0 +1,38 @@
+.answer-type-select {
+  width: 100%; 
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px; 
+  font-size: 1rem; 
+}
+
+.option-input-container {
+display: flex;
+align-items: center; 
+margin-bottom: 10px; 
+}
+
+.option-input {
+flex-grow: 1; 
+padding: 10px;
+border: none;
+border-radius: 4px;
+font-size: 1rem; 
+margin-right: 0px; 
+}
+
+.option-input:hover {
+border-color: #1DA1F2; 
+}
+
+.option-input:focus {
+outline: none; 
+border-color: #1DA1F2; 
+}
+
+.radio{
+  height: 20px;
+  width: 20px;
+  margin-right: 0.5rem;
+}
