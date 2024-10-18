@@ -123,7 +123,7 @@ export default function FormFillList() {
                   <td>{form.createdAt}</td>
                   <td>
                     <div className="button-div">
-                      <button className="rounded-button"onClick={()=>navigate(`/editform/${form.id}`)}>
+                      <button className="rounded-button"onClick={()=>navigate(`/fillform/${form.id}`)}>
                         <MdEdit />
                       </button>
                       {/* <button className="rounded-button" onClick={()=>navigate(`/formpreview/${form.id}`)}>

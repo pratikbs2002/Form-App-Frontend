@@ -21,6 +21,7 @@ export default function QuestionCardPreview({
   onAnswerTypeChange,
   removeQuestion,
   questionLength,
+  isFilling,
 }) {
   // console.log(question);
 
@@ -129,7 +130,7 @@ export default function QuestionCardPreview({
         onChange={(e) => onQuestionChange(index, e.target.value)}
         placeholder="Enter your question"
         className="question-input"
-        disabled={preview}
+        disabled={preview || isFilling}
       />
       {preview ? (
         <div style={{ display: "flex" }}>
@@ -164,7 +165,7 @@ export default function QuestionCardPreview({
           // disabled={preview}
         >
           {preview ? (
-            <span>{toggled && 'Required*'}</span>
+            <span>{toggled && "Required*"}</span>
           ) : (
             <>
               <label className="switch">

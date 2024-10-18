@@ -6,8 +6,9 @@ import AnswerOptions from "./AnswerOptions";
 
 import "./QuestionCard.css";
 import { MdClose } from "react-icons/md";
+import AnswerFill from "./AnswerFill";
 
-export default function QuestionCardPreview({
+export default function QuestionCardFill({
   id,
   index,
   question,
@@ -16,11 +17,11 @@ export default function QuestionCardPreview({
   answerType,
   propOptions,
   requiredProp,
-  preview,
+  isFilling,
   onQuestionChange,
   onAnswerTypeChange,
   removeQuestion,
-  questionLength,         
+  questionLength,
 }) {
   // console.log(question);
 
@@ -122,16 +123,17 @@ export default function QuestionCardPreview({
             <MdClose />
           </span>
         )}
+        
       </div>
-      <input
+      {/* <input
         type="text"
         value={question}
         onChange={(e) => onQuestionChange(index, e.target.value)}
         placeholder="Enter your question"
         className="question-input"
-        disabled={preview}
-      />
-      {preview ? (
+        disabled={isFilling}
+      /> */}
+      {isFilling ? (
         <div style={{ display: "flex" }}>
           <p>Anwer Type: {answer_type}</p>
         </div>
@@ -149,13 +151,13 @@ export default function QuestionCardPreview({
           <option value="dropdown">Dropdown</option>
         </select>
       )}
-      <AnswerOptions
+      <AnswerFill
         options={options}
         answerType={answerType}
         handleOptionChange={handleOptionChange}
         addOption={addOption}
         setOptions={setOptions}
-        preview={preview}
+        preview={isFilling}
       />
       <div style={{ height: "20px" }}>
         <div
@@ -163,24 +165,7 @@ export default function QuestionCardPreview({
           // onClick={handleToggleRequired}
           // disabled={preview}
         >
-          {preview ? (
-            <span>{toggled && 'Required*'}</span>
-          ) : (
-            <>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  onChange={handleToggleRequired}
-                  value={toggled}
-                  checked={toggled}
-                  disabled={preview}
-                  // disabled
-                />
-                <span className="slider round"></span>
-              </label>
-              <span className="required-text">Required*</span>
-            </>
-          )}
+          <span>{toggled && "Required*"}</span>
         </div>
       </div>
     </div>
