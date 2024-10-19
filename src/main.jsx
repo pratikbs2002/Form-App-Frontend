@@ -5,13 +5,16 @@ import "./index.css";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import { LoaderProvider } from "./context/LoaderProvider.jsx";
 import { ThemeProvider } from "./context/ThemeProvider.jsx";
+import { LocationTreeProvider } from "./context/LocationTreeProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
   <LoaderProvider>
     <AuthProvider>
       <ThemeProvider>
-        <App />
+        <LocationTreeProvider>
+          <App />
+        </LocationTreeProvider>
       </ThemeProvider>
     </AuthProvider>
   </LoaderProvider>
