@@ -22,3 +22,15 @@ export async function deleteLocation(data) {
     },
   });
 }
+
+export async function updateLocation(data) {
+  return await fetch(`${hostUrl}/api/locations/update/${data.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+    body: data.name,
+  });
+}
