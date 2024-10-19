@@ -10,7 +10,6 @@ import AnswerFill from "./AnswerFill";
 
 export default function QuestionCardFill({
   id,
-  key,
   index,
   question,
   form,
@@ -51,16 +50,9 @@ export default function QuestionCardFill({
   }
 
   useEffect(() => {
-    // const newMainAnswers = [...mainAnswers];
-    // newMainAnswers[index].answer = answer;
-    // setAnswerOnChange(newMainAnswers)
-    console.log("key" + key);
-    console.log(id);
-
     setAnswerOnChange((prev) =>
       prev.map((a) => (a.answer_id === id ? { ...a, answer: answer } : a))
     );
-    console.log(answer);
   }, [answer]);
 
   const handleCheckbox = (o) => {
@@ -93,12 +85,10 @@ export default function QuestionCardFill({
         <h1 style={{ float: "left", marginTop: 0 }}>{question}</h1>
       </div>
 
-      {/* <div>{JSON.stringify(form)}</div> */}
       <div>
         {answerType === "mcq" &&
           options.map((o, index) => (
-            // <p>hello</p>
-            <div key={index} className="option-container">
+            <div key={`${question} ${o}`} className="option-container">
               <input
                 type="radio"
                 id={o}
@@ -114,7 +104,7 @@ export default function QuestionCardFill({
         {answerType === "multiple-select" &&
           options.map((o) => {
             return (
-              <div key={index} className="option-container">
+              <div key={`${question} ${o}`} className="option-container">
                 <input
                   type="checkbox"
                   id={o}
@@ -130,18 +120,15 @@ export default function QuestionCardFill({
           })}
         {answerType === "dropdown" && (
           <select
-            name="cars"
-            id="cars"
+            name={question}
+            id={question}
             className="answer-type-select"
             onChange={(e) => setAnswer(e.target.value)}
           >
-            {options.map((o) => {
-              return (
-                <>
-                  <option value={o}>{o}</option>
-                </>
-              );
-            })}
+            <option style={{ display: "none" }}>Select an answer</option>
+            {options.map((o) => 
+              <option key={`${question} ${o}`} value={o}>{o}</option>
+            )}
           </select>
         )}
         {answerType === "short answer" && (

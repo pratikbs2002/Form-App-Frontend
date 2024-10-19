@@ -39,6 +39,15 @@ export default function QuestionCard({
     );
   }
 
+  function handleOptionRemove(i){
+    const newOptions = [...options];
+    newOptions.splice(i, 1);
+    setOptions(newOptions)
+    setQuestions((prev) =>
+      prev.map((p) => (p.question_id === id ? { ...p, options: newOptions } : p))
+    );
+  }
+
   function addOption() {
     setOptions([...options, ""]);
   }
@@ -107,6 +116,7 @@ export default function QuestionCard({
         options={options}
         answerType={answerType}
         handleOptionChange={handleOptionChange}
+        handleOptionRemove={handleOptionRemove}
         addOption={addOption}
         setOptions={setOptions}
       />

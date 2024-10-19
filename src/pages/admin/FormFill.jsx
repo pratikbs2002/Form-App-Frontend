@@ -4,12 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getFormById } from "../../services/form-service";
 import QuestionCardFill from "../../components/forms/QuestionCardFill";
+import { Bounce, toast } from "react-toastify";
 
 function FormFill() {
   const navigate = useNavigate();
   const [form, setForm] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const { formId } = useParams();
+  const [submittedAnswers, setSubmittedAnswers] = useState([]);
   // console.log(formId);
 
   const [answers, setAnswers] = useState([]);
@@ -38,12 +40,46 @@ function FormFill() {
   }, [formId]);
 
   const handleSubmitForm = () => {
+    for (let i = 0; i < answers.length; i++) {
+      const { answer, answer_id } = answers[i];
+      const [{ required }] = form.questions.filter(
+        (q) => q.question_id === answer_id
+      );
+      console.log(required);
+
+      // const answer = answers[i].answer;
+      if (required) {
+        if (answer.length === 0) {
+          toast.error(`Please fill all the required fields`, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            theme: "dark",
+            transition: Bounce,
+            pauseOnHover: false,
+          });
+          return;
+        }
+      }
+      else{
+        toast.success(`Form submitted successfully!`, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          theme: "dark",
+          transition: Bounce,
+          pauseOnHover: false,
+        });
+        // navigate('/fillform')
+      }
+    }
     const filledForm = {
       formId,
       userId: 50,
       answers,
       locationId: 1,
     };
+    setSubmittedAnswers(JSON.stringify(answers))
     console.log("Form Submitted!: " + JSON.stringify(filledForm));
   };
 
@@ -59,8 +95,8 @@ function FormFill() {
           className="form-title-input"
           disabled
         />
-        {!isLoading && JSON.stringify(form)}
-        {!isLoading && answers && JSON.stringify(answers)}
+        {/* {!isLoading && JSON.stringify(form)} */}
+        {/* {!isLoading && answers && JSON.stringify(answers)} */}
         {!isLoading &&
           form.questions.map((q, index) => (
             <QuestionCardFill
@@ -94,6 +130,7 @@ function FormFill() {
             Submit
           </button>
         </div>
+      {/* <p>{submittedAnswers}</p> */}
       </div>
     </>
   );

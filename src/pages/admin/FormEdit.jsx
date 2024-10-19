@@ -212,19 +212,14 @@ function FormEdit() {
         <input
           type="text"
           value="Form Title will go here"
-          // onChange={(e) => setFormTitle(e.target.value)}
+          onChange={(e) => {}}
           placeholder="Form Title"
           className="form-title-input"
           // disabled
         />
-        <div style={{ backgroundColor: "red" }}>
-          {/* {JSON.stringify(form?.questions)} */}
-        </div>
+        
         {form?.questions.map((q, index) => (
-          <>
-            <div style={{ backgroundColor: "blue" }}>
-              {/* {JSON.stringify(q.options)} */}
-            </div>{" "}
+            
             <QuestionCardPreview
               id={q.question_id}
               key={q.question_id}
@@ -241,7 +236,6 @@ function FormEdit() {
               onAnswerTypeChange={handleAnswerTypeChange}
               removeQuestion={removeQuestion}
             />
-          </>
         ))}
         <div className="button-container">
           <button

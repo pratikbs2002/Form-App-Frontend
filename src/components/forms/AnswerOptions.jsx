@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./AnswerOptions.css";
 import { MdClose } from "react-icons/md";
@@ -8,10 +8,15 @@ export default function AnswerOptions({
   answerType,
   options,
   handleOptionChange,
+  handleOptionRemove,
   addOption,
   setOptions,
   preview,
 }) {
+  useEffect(() => {
+    console.log(options);
+  }, [setOptions, options]);
+
   return (
     <div>
       {answerType === "mcq" ||
@@ -27,7 +32,9 @@ export default function AnswerOptions({
                 <input type="checkbox" disabled className="radio" />
               )}
               {answerType === "dropdown" && (
-                <p className="radio">{index + 1}.</p>
+                <div className="radio">
+                  <p style={{ margin: 0 }}>{index + 1}.</p>
+                </div>
               )}
               <input
                 type="text"
@@ -42,7 +49,9 @@ export default function AnswerOptions({
                 <span
                   className="remove-link"
                   onClick={() => {
+                    handleOptionRemove && handleOptionRemove(index)
                     const newOptions = options.filter((_, i) => i !== index);
+                    // // handleOptionChange(newOptions)
                     setOptions(newOptions);
                   }}
                   style={{
