@@ -5,9 +5,16 @@ import FormEntry from "../../components/forms/FormEntry";
 import "./CreatedForms.css";
 import Loader from "../../context/Loader";
 import { LoaderContext } from "../../context/LoaderProvider";
-import { MdDelete, MdEdit, MdRemoveRedEye } from "react-icons/md";
+import {
+  MdDelete,
+  MdEdit,
+  MdRemoveRedEye,
+  MdSkipNext,
+  MdSkipPrevious,
+} from "react-icons/md";
 import { deleteFormById, getAllForms } from "../../services/form-service";
 import { redirect, useNavigate } from "react-router";
+import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
 export default function FormFillList() {
   const navigate = useNavigate();
@@ -15,43 +22,114 @@ export default function FormFillList() {
   const [sortBy, setSortBy] = useState("default");
   const [viewStyle, setViewStyle] = useState("table");
   const { state, dispatch } = useContext(LoaderContext);
+  const [pageDetails, setPageDetails] = useState({
+    totalElements: 5,
+    totalPages: 1,
+    isLast: false,
+  });
+
+  const [pagination, setPagination] = useState({
+    pageNumber: 0,
+    pageSize: 5,
+  });
+
   useEffect(() => {
     const fetchForms = async () => {
       dispatch(true);
-      const response = await getAllForms();
+
+      let sort = null;
+      let sortDir = null;
+      if (sortBy === "default") {
+        sort = "id";
+        sortDir = "asc";
+      } else if (sortBy === "new") {
+        sort = "createdAt";
+        sortDir = "desc";
+      } else if (sortBy === "old") {
+        sort = "createdAt";
+        sortDir = "asc";
+      } else if (sortBy === "form-id-asc") {
+        sort = "id";
+        sortDir = "asc";
+      } else if (sortBy === "form-id-desc") {
+        sort = "id";
+        sortDir = "desc";
+        // } else if (sortBy === "name-asc") {
+        //   sort = "name";
+        //   sortDir = "asc";
+        // } else if (sortBy === "name-desc") {
+        //   sort = "name";
+        //   sortDir = "desc";
+      } else {
+        sort = "id";
+        sortDir = "asc";
+      }
+
+      const response = await getAllForms(
+        pagination.pageNumber,
+        pagination.pageSize,
+        sort,
+        sortDir
+      );
       const data = await response.json();
       console.log(data);
       if (!data) {
         return;
       }
-      // const formEntries = Object.entries(data).map(([key, value]) => ({
-      //   formId: value.id,
-      //   title: value.title,
-      //   createdAt: value.createdAt,
-      //   // createdBy: value.createdBy.slice(38),
-      // }));
-      setForms(data);
-      // console.log(forms);
+      console.log(data);
+
+      setForms(data.content);
+
+      setPageDetails({
+        totalElements: data.totalElements,
+        totalPages: data.totalPages,
+        isLast: data.lastPage,
+      });
 
       dispatch(false);
     };
-    // console.log(sortBy);
 
     fetchForms();
-  }, [sortBy]);
-  const handleDelete = async (formId) => {
-    await deleteFormById(formId);
-    const response = await getAllForms();
-    const data = await response.json();
-    console.log(data);
-    if (!data) {
-      return;
+  }, [pagination, sortBy]);
+
+  const handlePageChange = async (a) => {
+    if (a === "prev") {
+      setPagination((prev) => {
+        return { ...prev, pageNumber: prev.pageNumber - 1 };
+      });
+    } else if (a === "next") {
+      setPagination((prev) => {
+        return { ...prev, pageNumber: prev.pageNumber + 1 };
+      });
+    } else if (a === "first") {
+      setPagination((prev) => {
+        return { ...prev, pageNumber: 0 };
+      });
+    } else if (a === "last") {
+      setPagination((prev) => {
+        return { ...prev, pageNumber: pageDetails.totalPages - 1 };
+      });
     }
-    
-    setForms(data);
   };
 
-  
+  const handlePageOptionChange = (e) => {
+    console.log(e.target.value);
+    console.log(pageDetails);
+
+    setPagination({ pageNumber: 0, pageSize: e.target.value });
+  };
+
+  // const handleDelete = async (formId) => {
+  //   await deleteFormById(formId);
+  //   const response = await getAllForms();
+  //   const data = await response.json();
+  //   console.log(data);
+  //   if (!data) {
+  //     return;
+  //   }
+
+  //   setForms(data.content);
+  // };
 
   return (
     <div className="created-forms-container">
@@ -75,7 +153,7 @@ export default function FormFillList() {
               </p>
             </nav>
           </div>
-          {/* <select
+          <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="sort-by-select"
@@ -83,10 +161,11 @@ export default function FormFillList() {
             <option value="default">Sort By...</option>
             <option value="new">Newest</option>
             <option value="old">Oldest</option>
+            <option value="form-id-asc">Form ID - Ascending</option>
+            <option value="form-id-desc">Form ID - Descending</option>
             <option value="name-asc">Form Name - Ascending</option>
             <option value="name-des">Form Name - Descending</option>
-            <option value="form-id">Form ID</option>
-          </select> */}
+          </select>
         </div>
       )}
       <div>{state.loading}</div>
@@ -96,7 +175,7 @@ export default function FormFillList() {
           <FormEntry
             key={form.id}
             form={form}
-            onDelete={handleDelete}
+            // onDelete={handleDelete}
             edit={false}
           />
         ))}
@@ -121,7 +200,10 @@ export default function FormFillList() {
                   <td>{form.createdAt}</td>
                   <td>
                     <div className="button-div">
-                      <button className="rounded-button"onClick={()=>navigate(`/fillform/${form.id}`)}>
+                      <button
+                        className="rounded-button"
+                        onClick={() => navigate(`/fillform/${form.id}`)}
+                      >
                         <MdEdit />
                       </button>
                     </div>
@@ -132,6 +214,83 @@ export default function FormFillList() {
           </table>
         </div>
       )}
+      <div className="pagination-container">
+        <div>
+          <span>Items per page:</span>
+          <select value={pagination.pageSize} onChange={handlePageOptionChange}>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value={pageDetails.totalElements}>ALL</option>
+          </select>
+          <span>
+            Showing {pagination.pageNumber * pagination.pageSize + 1}-
+            {pagination.pageNumber * pagination.pageSize + forms.length} of{" "}
+            {pageDetails.totalElements} forms
+          </span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexWrap: "nowrap",
+          }}
+        >
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("first")}
+            disabled={pagination.pageNumber === 0}
+          >
+            {/* {"<<"} */}
+            <MdSkipPrevious />
+          </button>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("prev")}
+            disabled={pagination.pageNumber === 0}
+          >
+            {/* {"<"} */}
+            <IoMdArrowDropleft /> <span>Previous</span>
+          </button>
+          <span>
+            {pagination.pageNumber + 1} out of {pageDetails.totalPages}
+          </span>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("next")}
+            disabled={pageDetails.isLast}
+          >
+            {/* {">"} */}
+            <span>Next</span>
+            <IoMdArrowDropright />
+          </button>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("last")}
+            disabled={pageDetails.isLast}
+          >
+            {/* {">>"} */}
+            <MdSkipNext />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

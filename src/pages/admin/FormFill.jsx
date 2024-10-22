@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getFormById } from "../../services/form-service";
+import { getFormById, submitForm } from "../../services/form-service";
 import QuestionCardFill from "../../components/forms/QuestionCardFill";
 import { Bounce, toast } from "react-toastify";
 
@@ -39,7 +39,7 @@ function FormFill() {
     // console.log(form);
   }, [formId]);
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = async () => {
     for (let i = 0; i < answers.length; i++) {
       const { answer, answer_id } = answers[i];
       const [{ required }] = form.questions.filter(
@@ -60,17 +60,16 @@ function FormFill() {
           });
           return;
         }
-      }
-      else{
-        toast.success(`Form submitted successfully!`, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          theme: "dark",
-          transition: Bounce,
-          pauseOnHover: false,
-        });
-        // navigate('/fillform')
+      // } else {
+      //   toast.success(`Form submitted successfully!`, {
+      //     position: "top-center",
+      //     autoClose: 3000,
+      //     hideProgressBar: false,
+      //     theme: "dark",
+      //     transition: Bounce,
+      //     pauseOnHover: false,
+      //   });
+      //   // navigate('/fillform')
       }
     }
     const filledForm = {
@@ -79,8 +78,40 @@ function FormFill() {
       answers,
       locationId: 1,
     };
-    setSubmittedAnswers(JSON.stringify(answers))
+    setSubmittedAnswers(JSON.stringify(answers));
     console.log("Form Submitted!: " + JSON.stringify(filledForm));
+    const sendRequest = async () => {
+      const response = await submitForm(filledForm);
+      console.log(response);
+
+      if (!response.ok) {
+        // console.log(JSON.stringify(response));
+        throw new Error("Form Submission failure: Sending data failed");
+      }
+      // console.log(formData);
+    };
+    try {
+      await sendRequest();
+      // toast.success(`Form submitted successfully!`, {
+      //   position: "top-center",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   theme: "dark",
+      //   transition: Bounce,
+      //   pauseOnHover: false,
+      // });
+      navigate("/createdforms");
+    } catch (error) {
+      toast.error(`Error submitting the form: Sending data failed`, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      // return;
+    }
   };
 
   return (
@@ -130,7 +161,7 @@ function FormFill() {
             Submit
           </button>
         </div>
-      {/* <p>{submittedAnswers}</p> */}
+        {/* <p>{submittedAnswers}</p> */}
       </div>
     </>
   );
