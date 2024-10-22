@@ -3,6 +3,7 @@ import "./UserForm.css";
 import { Bounce, toast } from "react-toastify";
 import { addAdmin } from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
+
 export default function UserForm() {
   const [userFormData, setUserFormData] = useState({
     username: "",
@@ -21,62 +22,80 @@ export default function UserForm() {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    dispatch(true);
 
-    const response = await addAdmin(userFormData);
-    const data = await response.json();
-    console.log(data);
-    setRes(data);
+    try {
+      const response = await addAdmin(userFormData);
+      if (response.ok) {
+        const data = await response.json();
+        setRes(data);
+
+        toast.success("User added successfully!", {
+          transition: Bounce,
+        });
+      } else {
+        toast.error("Failed to add admin. Please try again.", {
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.", {
+        transition: Bounce,
+      });
+    } finally {
+      dispatch(false);
+    }
   };
+
   return (
     <div className="root-section">
       <div className="root-section-title">ADD Admin Form</div>
       <div className="root-section-data">
         <div>
           {!state.loading && (
-            <form noValidate className="form">
-              <div className="input-container">
-                <label>Username:</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={userFormData.username}
-                  onChange={handleChange}
-                />
-              </div>
+            <form noValidate className="userform-form">
+              <div className="userform-form-inside-container">
+                <div className="userform-text-input-container">
+                  <label>Username:</label>
+                  <div className="userform-text-container">
+                    <input
+                      type="text"
+                      name="username"
+                      value={userFormData.username}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
 
-              <div>
-                <label>Select Role of User: </label>
-                <select
-                  style={{ padding: "10px", backgroundColor: "transparent" }}
-                  value={userFormData.role}
-                  onChange={handleChange}
+                <div className="userform-select-input-container">
+                  <label>Select Role of User: </label>
+                  <div className="userform-select-container">
+                    <select
+                      value={userFormData.role}
+                      onChange={handleChange}
+                      name="role"
+                    >
+                      <option value="" disabled>
+                        -- select role --
+                      </option>
+                      <option value="admin">Admin User</option>
+                      <option value="reporting_user">Reporting User</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  className="add-user-button"
+                  disabled={!userFormData.username}
+                  style={{
+                    cursor: !userFormData.username ? "not-allowed" : "pointer",
+                  }}
+                  type="submit"
+                  onClick={handleAdd}
                 >
-                  <option
-                    style={{ backgroundColor: "transparent", color: "black" }}
-                    value="adminUser"
-                  >
-                    Admin User
-                  </option>
-                  <option
-                    style={{ backgroundColor: "transparent", color: "black" }}
-                    value="reportingUser"
-                  >
-                    Reporting User
-                  </option>
-                </select>
+                  Add
+                </button>
               </div>
-
-              <button
-                className="add-schema-button"
-                disabled={!userFormData.username}
-                style={{
-                  cursor: !userFormData.username ? "not-allowed" : "pointer",
-                }}
-                type="submit"
-                onClick={handleAdd}
-              >
-                Add
-              </button>
             </form>
           )}
         </div>
