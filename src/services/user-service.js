@@ -34,3 +34,15 @@ export async function addAdmin(data) {
     body: JSON.stringify(data),
   });
 }
+
+// Get Users by schemaName
+export async function getUserBySchemaName(schema) {
+  return await fetch(`${hostUrl}/api/user/all/${schema}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+  });
+}

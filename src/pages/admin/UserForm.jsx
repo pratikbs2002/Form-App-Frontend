@@ -4,7 +4,8 @@ import { Bounce, toast } from "react-toastify";
 import { addAdmin } from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
 
-export default function UserForm() {
+export default function UserForm(props) {
+  const { refresh, setRefresh } = props;
   const [userFormData, setUserFormData] = useState({
     username: "",
     password: "admin",
@@ -33,6 +34,7 @@ export default function UserForm() {
         toast.success("User added successfully!", {
           transition: Bounce,
         });
+        setRefresh(!refresh);
       } else {
         toast.error("Failed to add admin. Please try again.", {
           transition: Bounce,
@@ -49,7 +51,7 @@ export default function UserForm() {
 
   return (
     <div className="root-section">
-      <div className="root-section-title">ADD Admin Form</div>
+      <div className="root-section-title">User Form</div>
       <div className="root-section-data">
         <div>
           {!state.loading && (

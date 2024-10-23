@@ -14,13 +14,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer } from "react-toastify";
 import LocationSidebar from "./components/LocationSidebar";
-import UserForm from "./pages/root_admin/UserForm";
+import UserForm from "./pages/admin/UserForm";
 import FormContainer from "./pages/admin/FormContainer";
 import CreatedFormsContainer from "./pages/admin/CreatedForms";
 import FormPreview from "./pages/admin/FormPreview";
 import FormEdit from "./pages/admin/FormEdit";
 import FormFillList from "./pages/admin/FormFillList";
 import FormFill from "./pages/admin/FormFill";
+import UserManagement from "./pages/admin/UserManagement";
 function App() {
   const auth = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -220,7 +221,7 @@ function App() {
               path="user"
               element={
                 isAuthenticated && userType === "admin" ? (
-                  <UserForm />
+                  <UserManagement />
                 ) : (
                   <Navigate to={"/"} />
                 )
