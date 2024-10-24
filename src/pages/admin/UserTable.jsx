@@ -1,15 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-// import "./UserTable.css";
 import { useAuth } from "../../context/AuthProvider";
-import { getAllUser, getUserBySchemaName } from "../../services/user-service";
+import { getUserBySchemaName } from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
 import Loader from "../../context/Loader";
 import { getCurrentSchema } from "../../services/schema-service";
+import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
+import "./UserTable.css";
 
 export default function UserTable(props) {
   const [userData, setUserData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [filter, setFilter] = useState("ALL");
+  const [filter, setFilter] = useState("all");
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
   const auth = useAuth();
   const { state, dispatch } = useContext(LoaderContext);
   const [schemaData, setschemasData] = useState({});
@@ -27,13 +33,20 @@ export default function UserTable(props) {
 
         const schemaResult = await schemaResponse.json();
         setschemasData(schemaResult);
-        console.log(schemaResult);
 
-        const userResponse = await getUserBySchemaName(schemaResult.schemaUUID);
+        const userResponse = await getUserBySchemaName(
+          schemaResult.schemaUUID,
+          page,
+          size,
+          filter
+        );
+
         if (userResponse.status === 200) {
           const users = await userResponse.json();
-          setUserData(users);
-          setFilteredData(users);
+          setUserData(users.content);
+          setFilteredData(users.content);
+          setTotalPages(users.totalPages);
+          setTotalElements(users.totalElements);
           console.log(users);
         } else {
           console.log(await userResponse.text());
@@ -51,19 +64,23 @@ export default function UserTable(props) {
     auth.authData.username,
     props.load,
     props.refresh,
+    page,
+    size,
+    filter,
   ]);
 
-  useEffect(() => {
-    let filteredUsers;
-    if (filter === "ALL") {
-      filteredUsers = userData;
-    } else if (filter === "Admin") {
-      filteredUsers = userData.filter((user) => user.role === "admin");
-    } else if (filter === "Reporting User") {
-      filteredUsers = userData.filter((user) => user.role === "reporting_user");
+
+  const handleNextPage = () => {
+    if (page < totalPages - 1) {
+      setPage(page + 1);
     }
-    setFilteredData(filteredUsers);
-  }, [filter, userData]);
+  };
+
+  const handlePrevPage = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
 
   return (
     <div className="root-section">
@@ -91,25 +108,25 @@ export default function UserTable(props) {
                 >
                   <button
                     className={`table-role-button ${
-                      filter === "ALL" ? "activetag" : ""
+                      filter === "all" ? "activetag" : ""
                     }`}
-                    onClick={() => setFilter("ALL")}
+                    onClick={() => setFilter("all")}
                   >
                     ALL
                   </button>
                   <button
                     className={`table-role-button ${
-                      filter === "Admin" ? "activetag" : ""
+                      filter === "admin" ? "activetag" : ""
                     }`}
-                    onClick={() => setFilter("Admin")}
+                    onClick={() => setFilter("admin")}
                   >
                     Admin
                   </button>
                   <button
                     className={`table-role-button ${
-                      filter === "Reporting User" ? "activetag" : ""
+                      filter === "reporting_user" ? "activetag" : ""
                     }`}
-                    onClick={() => setFilter("Reporting User")}
+                    onClick={() => setFilter("reporting_user")}
                   >
                     Reporting User
                   </button>
@@ -117,29 +134,108 @@ export default function UserTable(props) {
               </div>
               <Loader />
               {!state.loading && (
-                <table className="user-table">
-                  <thead>
-                    <tr>
-                      <th>UserId</th>
-                      <th>Username</th>
-                      <th>SchemaName</th>
-                      <th>Role</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredData.map((data, key) => (
-                      <tr key={key}>
-                        <td>{key}</td>
-                        {/* <td>{data.id}</td> */}
-                        <td>{data.username}</td>
-                        <td>{data.schemaName}</td>
-                        <td>{data.role}</td>
-                        <td>{new Date(data.created_at).toLocaleString()}</td>
+                <>
+                  <table className="user-table">
+                    <thead>
+                      <tr>
+                        <th>UserId</th>
+                        <th>Username</th>
+                        <th>SchemaName</th>
+                        <th>Role</th>
+                        <th>Date</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {filteredData.map((data, key) => (
+                        <tr key={key}>
+                          <td>{key}</td>
+                          <td>{data.username}</td>
+                          <td>{data.schemaName}</td>
+                          <td>{data.role}</td>
+                          <td>{new Date(data.created_at).toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="pagination-container">
+                    <div>
+                      <span>Items per page:</span>
+                      <select
+                        value={size}
+                        onChange={(e) => setSize(Number(e.target.value))}
+                      >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value={totalElements}>All</option>
+                      </select>
+                      <span>
+                        Showing {page * size + 1}-
+                        {Math.min(
+                          (page + 1) * size,
+                          filteredData.length * (page * size + 1)
+                        )}{" "}
+                        of {totalElements}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexWrap: "nowrap",
+                      }}
+                    >
+                      <button
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        onClick={() => setPage(0)}
+                        disabled={page === 0}
+                      >
+                        <MdSkipPrevious />
+                      </button>
+                      <button
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        onClick={handlePrevPage}
+                        disabled={page === 0}
+                      >
+                        <IoMdArrowDropleft /> <span>Previous</span>
+                      </button>
+                      <span>
+                        {page + 1} of {totalPages}
+                      </span>
+                      <button
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        onClick={handleNextPage}
+                        disabled={page >= totalPages - 1}
+                      >
+                        <span>Next</span>
+                        <IoMdArrowDropright />
+                      </button>
+                      <button
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        onClick={() => setPage(totalPages - 1)}
+                        disabled={page >= totalPages - 1}
+                      >
+                        <MdSkipNext />
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>

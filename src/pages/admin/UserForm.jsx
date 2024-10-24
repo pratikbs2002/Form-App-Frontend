@@ -54,52 +54,51 @@ export default function UserForm(props) {
       <div className="root-section-title">User Form</div>
       <div className="root-section-data">
         <div>
-          {!state.loading && (
-            <form noValidate className="userform-form">
-              <div className="userform-form-inside-container">
-                <div className="userform-text-input-container">
-                  <label>Username:</label>
-                  <div className="userform-text-container">
-                    <input
-                      type="text"
-                      name="username"
-                      value={userFormData.username}
-                      onChange={handleChange}
-                    />
-                  </div>
+          <form noValidate className="userform-form">
+            <div className="userform-form-inside-container">
+              <div className="userform-text-input-container">
+                <label>Username:</label>
+                <div className="userform-text-container">
+                  <input
+                    type="text"
+                    name="username"
+                    value={userFormData.username}
+                    onChange={handleChange}
+                  />
                 </div>
-
-                <div className="userform-select-input-container">
-                  <label>Select Role of User: </label>
-                  <div className="userform-select-container">
-                    <select
-                      value={userFormData.role}
-                      onChange={handleChange}
-                      name="role"
-                    >
-                      <option value="" disabled>
-                        -- select role --
-                      </option>
-                      <option value="admin">Admin User</option>
-                      <option value="reporting_user">Reporting User</option>
-                    </select>
-                  </div>
-                </div>
-
-                <button
-                  className="add-user-button"
-                  disabled={!userFormData.username}
-                  style={{
-                    cursor: !userFormData.username ? "not-allowed" : "pointer",
-                  }}
-                  type="submit"
-                  onClick={handleAdd}
-                >
-                  Add
-                </button>
               </div>
-            </form>
-          )}
+
+              <div className="userform-select-input-container">
+                <label>Select Role of User: </label>
+                <div className="userform-select-container">
+                  <select
+                    value={userFormData.role}
+                    onChange={handleChange}
+                    name="role"
+                  >
+                    <option value="" disabled>
+                      -- select role --
+                    </option>
+                    <option value="admin">Admin User</option>
+                    <option value="reporting_user">Reporting User</option>
+                  </select>
+                </div>
+              </div>
+
+              <button
+                className="add-user-button"
+                disabled={!userFormData.username}
+                style={{
+                  cursor: !userFormData.username ? "not-allowed" : "pointer",
+                }}
+                type="submit"
+                onClick={handleAdd}
+              >
+                Add
+              </button>
+              {!state.loading && <></>}
+            </div>
+          </form>
         </div>
       </div>
     </div>

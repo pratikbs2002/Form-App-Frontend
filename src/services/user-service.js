@@ -36,13 +36,25 @@ export async function addAdmin(data) {
 }
 
 // Get Users by schemaName
-export async function getUserBySchemaName(schema) {
-  return await fetch(`${hostUrl}/api/user/all/${schema}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-    },
-  });
+export async function getUserBySchemaName(
+  schemaUUID,
+  page = 0,
+  size = 10,
+  role = null
+) {
+  if (role === "all") {
+    role = null;
+  }
+  console.log(role);
+  return await fetch(
+    `${hostUrl}/api/user/all/${schemaUUID}?page=${page}&size=${size}&role=${role}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+      },
+    }
+  );
 }
