@@ -7,7 +7,7 @@ import "./DashBoard.css";
 import { getAllSchema } from "../../services/schema-service";
 import SchemaMappingTable from "./SchemaMappingTable";
 import { useNavigate } from "react-router";
-import UserForm from "./UserForm";
+import UserForm from "../admin/UserForm";
 
 export default function DashBoard() {
   const [load, setLoad] = useState(false);
