@@ -23,6 +23,21 @@
   overflow-x: auto;
   flex-direction: column;
   border-radius: 8px;
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 1rem 0;
+    box-sizing: border-box;
+  }
+
+  .role-buttons {
+    background-color: #f6f6f6;
+    padding: 0.2rem;
+    border-radius: 2px;
+  }
 }
 
 .user-table {
@@ -48,4 +63,38 @@
   tbody {
     border-collapse: collapse;
   } */
+}
+
+.user-table-select-input-container {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  /* width: 80%; */
+  margin-bottom: 2rem;
+  label {
+    align-self: flex-start;
+  }
+  .user-table-select-container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    select {
+      background-color: #0073e600;
+      border: 1px solid var(--text-color);
+      border-radius: 5px;
+      padding: 1rem;
+      width: 100%;
+      color: var(--text-color);
+      outline: none;
+      font-size: 1rem;
+    }
+    option {
+      background-color: var(--secondary-background-color);
+    }
+  }
 }

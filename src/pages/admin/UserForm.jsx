@@ -14,6 +14,33 @@ export default function UserForm(props) {
   const [res, setRes] = useState({});
   const { state, dispatch } = useContext(LoaderContext);
 
+  const [errors, setErrors] = useState({
+    username: "",
+    role: "",
+  });
+
+  const validateForm = () => {
+    let valid = true;
+    let errors = {};
+
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!userFormData.username) {
+      errors.username = "Username is required";
+      valid = false;
+    } else if (!usernameRegex.test(userFormData.username)) {
+      errors.username = "Username can only contain letters and numbers";
+      valid = false;
+    }
+
+    if (!userFormData.role) {
+      errors.role = "Please select a role";
+      valid = false;
+    }
+
+    setErrors(errors);
+    return valid;
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUserFormData((prevState) => {
@@ -23,6 +50,14 @@ export default function UserForm(props) {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      toast.error("Please fix the validation errors.", {
+        transition: Bounce,
+      });
+      return;
+    }
+
     dispatch(true);
 
     try {
@@ -65,6 +100,9 @@ export default function UserForm(props) {
                     value={userFormData.username}
                     onChange={handleChange}
                   />
+                  {errors.username && (
+                    <span className="error-text">{errors.username}</span>
+                  )}
                 </div>
               </div>
 
@@ -82,14 +120,20 @@ export default function UserForm(props) {
                     <option value="admin">Admin User</option>
                     <option value="reporting_user">Reporting User</option>
                   </select>
+                  {errors.role && (
+                    <span className="error-text">{errors.role}</span>
+                  )}
                 </div>
               </div>
 
               <button
                 className="add-user-button"
-                disabled={!userFormData.username}
+                disabled={!userFormData.username || !userFormData.role}
                 style={{
-                  cursor: !userFormData.username ? "not-allowed" : "pointer",
+                  cursor:
+                    !userFormData.username || !userFormData.role
+                      ? "not-allowed"
+                      : "pointer",
                 }}
                 type="submit"
                 onClick={handleAdd}

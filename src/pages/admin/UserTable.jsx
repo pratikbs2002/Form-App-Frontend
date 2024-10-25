@@ -10,7 +10,6 @@ import "./UserTable.css";
 
 export default function UserTable(props) {
   const [userData, setUserData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [filter, setFilter] = useState("all");
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(5);
@@ -18,7 +17,6 @@ export default function UserTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const auth = useAuth();
   const { state, dispatch } = useContext(LoaderContext);
-  const [schemaData, setschemasData] = useState({});
 
   useEffect(() => {
     dispatch(true);
@@ -32,8 +30,6 @@ export default function UserTable(props) {
         }
 
         const schemaResult = await schemaResponse.json();
-        setschemasData(schemaResult);
-
         const userResponse = await getUserBySchemaName(
           schemaResult.schemaUUID,
           page,
@@ -44,7 +40,7 @@ export default function UserTable(props) {
         if (userResponse.status === 200) {
           const users = await userResponse.json();
           setUserData(users.content);
-          setFilteredData(users.content);
+          setUserData(users.content);
           setTotalPages(users.totalPages);
           setTotalElements(users.totalElements);
           console.log(users);
@@ -69,7 +65,6 @@ export default function UserTable(props) {
     filter,
   ]);
 
-
   const handleNextPage = () => {
     if (page < totalPages - 1) {
       setPage(page + 1);
@@ -89,23 +84,8 @@ export default function UserTable(props) {
         <div className="user-table-outside-container">
           <div className="user-table-inside-container">
             <div className="user-table-container">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                  width: "100%",
-                  padding: "1rem 0rem",
-                  boxSizing: "border-box",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "#f6f6f6",
-                    padding: "0.2rem",
-                    borderRadius: "2px",
-                  }}
-                >
+              <div className="filter-container">
+                <div className="role-buttons">
                   <button
                     className={`table-role-button ${
                       filter === "all" ? "activetag" : ""
@@ -146,7 +126,7 @@ export default function UserTable(props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredData.map((data, key) => (
+                      {userData.map((data, key) => (
                         <tr key={key}>
                           <td>{key}</td>
                           <td>{data.username}</td>
@@ -172,7 +152,7 @@ export default function UserTable(props) {
                         Showing {page * size + 1}-
                         {Math.min(
                           (page + 1) * size,
-                          filteredData.length * (page * size + 1)
+                          userData.length * (page * size + 1)
                         )}{" "}
                         of {totalElements}
                       </span>
