@@ -22,7 +22,6 @@ export async function addSchema(schemaName) {
   });
 }
 
-
 export async function getAllSchema() {
   return await fetch(`${hostUrl}/api/schema-map/all`, {
     method: "GET",
@@ -32,4 +31,18 @@ export async function getAllSchema() {
         "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
     },
   });
+}
+
+export async function getPageableAllSchema(page = 0, size = 10) {
+  return await fetch(
+    `${hostUrl}/api/schema-map/pageable/all?page=${page}&size=${size}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+      },
+    }
+  );
 }
