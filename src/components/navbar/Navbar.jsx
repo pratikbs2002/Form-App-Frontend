@@ -93,7 +93,15 @@ export default function Navbar(props) {
                   >
                     <div className="nav-button-value">Fill Form</div>
                   </NavLink>
-                  </>
+
+                  <NavLink
+                    // activeClassName="active-nav-link"
+                    className="nav-link"
+                    to={"/formresponses"}
+                  >
+                    <div className="nav-button-value">Form Responses</div>
+                  </NavLink>
+                </>
               )}
 
               {props.userType === "admin" ? (

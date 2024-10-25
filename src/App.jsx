@@ -21,6 +21,8 @@ import FormPreview from "./pages/admin/FormPreview";
 import FormEdit from "./pages/admin/FormEdit";
 import FormFillList from "./pages/admin/FormFillList";
 import FormFill from "./pages/admin/FormFill";
+import FilledFormResponses from "./pages/admin/FilledFormResponses";
+import FilledFormPreview from "./pages/admin/FilledFormPreview";
 function App() {
   const auth = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -200,6 +202,49 @@ function App() {
                 )
               }
             />
+            <Route
+              path="/formresponses"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FilledFormResponses />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                  
+                )
+              }
+            />
+            <Route
+              path="/formresponses/:responseId"
+              element={
+                isAuthenticated && userType === "admin" ? (
+                  <FilledFormPreview />
+                ) : (
+                  <>
+                    <h3>Authentication Error</h3>
+                    <p>Some error happened</p>
+                    <p>
+                      You need to be a country admin to access this page.
+                      <p>
+                        <Link to="/">Go back</Link>
+                      </p>
+                    </p>
+                  </>
+                  
+                )
+              }
+            />
+            
+
+            
             {/* <Route
               path="/root-admin/dashboard"
               element={

@@ -54,12 +54,12 @@ export default function FormFillList() {
       } else if (sortBy === "form-id-desc") {
         sort = "id";
         sortDir = "desc";
-        // } else if (sortBy === "name-asc") {
-        //   sort = "name";
-        //   sortDir = "asc";
-        // } else if (sortBy === "name-desc") {
-        //   sort = "name";
-        //   sortDir = "desc";
+      } else if (sortBy === "name-asc") {
+        sort = "title";
+        sortDir = "asc";
+      } else if (sortBy === "name-desc") {
+        sort = "title";
+        sortDir = "desc";
       } else {
         sort = "id";
         sortDir = "asc";
@@ -164,7 +164,7 @@ export default function FormFillList() {
             <option value="form-id-asc">Form ID - Ascending</option>
             <option value="form-id-desc">Form ID - Descending</option>
             <option value="name-asc">Form Name - Ascending</option>
-            <option value="name-des">Form Name - Descending</option>
+            <option value="name-desc">Form Name - Descending</option>
           </select>
         </div>
       )}
@@ -214,83 +214,92 @@ export default function FormFillList() {
           </table>
         </div>
       )}
-      <div className="pagination-container">
-        <div>
-          <span>Items per page:</span>
-          <select value={pagination.pageSize} onChange={handlePageOptionChange}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value={pageDetails.totalElements}>ALL</option>
-          </select>
-          <span>
-            Showing {pagination.pageNumber * pagination.pageSize + 1}-
-            {pagination.pageNumber * pagination.pageSize + forms.length} of{" "}
-            {pageDetails.totalElements} forms
-          </span>
+      {pagination.totalElements !== 0 && (
+        <div className="pagination-container">
+          <div>
+            <span>Items per page:</span>
+            <select
+              value={pagination.pageSize}
+              onChange={handlePageOptionChange}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value={pageDetails.totalElements}>ALL</option>
+            </select>
+            <span>
+              Showing{" "}
+              {pageDetails.totalElements === 0
+                ? "0"
+                : pagination.pageNumber * pagination.pageSize + 1}
+              -{pagination.pageNumber * pagination.pageSize + forms.length} of{" "}
+              {pageDetails.totalElements} forms
+            </span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "nowrap",
+            }}
+          >
+            <button
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => handlePageChange("first")}
+              disabled={pagination.pageNumber === 0}
+            >
+              {/* {"<<"} */}
+              <MdSkipPrevious />
+            </button>
+            <button
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => handlePageChange("prev")}
+              disabled={pagination.pageNumber === 0}
+            >
+              {/* {"<"} */}
+              <IoMdArrowDropleft /> <span>Previous</span>
+            </button>
+            <span>
+              {pagination.pageNumber + 1} out of{" "}
+              {pageDetails.totalPages === 0 ? "1" : pageDetails.totalPages}
+            </span>
+            <button
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => handlePageChange("next")}
+              disabled={pageDetails.isLast}
+            >
+              {/* {">"} */}
+              <span>Next</span>
+              <IoMdArrowDropright />
+            </button>
+            <button
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => handlePageChange("last")}
+              disabled={pageDetails.isLast}
+            >
+              {/* {">>"} */}
+              <MdSkipNext />
+            </button>
+          </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexWrap: "nowrap",
-          }}
-        >
-          <button
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={() => handlePageChange("first")}
-            disabled={pagination.pageNumber === 0}
-          >
-            {/* {"<<"} */}
-            <MdSkipPrevious />
-          </button>
-          <button
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={() => handlePageChange("prev")}
-            disabled={pagination.pageNumber === 0}
-          >
-            {/* {"<"} */}
-            <IoMdArrowDropleft /> <span>Previous</span>
-          </button>
-          <span>
-            {pagination.pageNumber + 1} out of {pageDetails.totalPages}
-          </span>
-          <button
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={() => handlePageChange("next")}
-            disabled={pageDetails.isLast}
-          >
-            {/* {">"} */}
-            <span>Next</span>
-            <IoMdArrowDropright />
-          </button>
-          <button
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={() => handlePageChange("last")}
-            disabled={pageDetails.isLast}
-          >
-            {/* {">>"} */}
-            <MdSkipNext />
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 .form-container {
-  background-color: rgb(37, 37, 37);
+  background-color: var(--form-entry);
   padding: 20px;
   border-radius: 8px; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
@@ -20,7 +20,7 @@
     border-bottom: 1px solid #0080ff;
     border-radius: 4px;
     font-size: 36px; 
-    background-color: rgb(37, 37, 37);
+    background-color: var(--form-entry);
     transition: border-bottom 0.2s, background-color 0.2s, color 0.2s;
   }
 
@@ -28,7 +28,7 @@
     border: none;
     border-bottom: 5px solid rgb(0, 71, 143);
     outline: none;
-    background-color: rgb(27, 27, 27);
+    background-color: var(--form-entry-input);
     color: white;
   }
 

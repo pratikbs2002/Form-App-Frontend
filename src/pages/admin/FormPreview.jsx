@@ -31,14 +31,18 @@ function FormPreview() {
       <h1>Form Preview</h1>
       <div className="form-container">
         {/* <p>Creating as india_admin</p> */}
-        <input
-          type="text"
-          value="Form Title will go here"
-          // onChange={(e) => setFormTitle(e.target.value)}
-          placeholder="Form Title"
-          className="form-title-input"
-          disabled
-        />
+
+        {!isLoading && (
+          <input
+            type="text"
+            value={form.title}
+            // onChange={(e) => setFormTitle(e.target.value)}
+            placeholder="Form Title"
+            className="form-title-input"
+            disabled
+          />
+        )}
+        
         {/* {!isLoading && JSON.stringify(form)} */}
         {!isLoading &&
           form.questions.map((q, index) => (

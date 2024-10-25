@@ -36,6 +36,9 @@ body {
   --button-text: #ffffff;
   --secondary-background-color: #dddddd;
   --primary-color: #0073e6;
+  --form-entry: #bdbdbd;
+  --form-entry-input: #979797;
+
 }
 
 .dark {
@@ -44,4 +47,7 @@ body {
   --button-background: #0073e6;
   --button-text: #ffffff;
   --secondary-background-color: #101316;
+  --form-entry: #202020;
+  --form-entry-input: #1b1b1b;
+
 }

@@ -60,16 +60,16 @@ function FormFill() {
           });
           return;
         }
-      // } else {
-      //   toast.success(`Form submitted successfully!`, {
-      //     position: "top-center",
-      //     autoClose: 3000,
-      //     hideProgressBar: false,
-      //     theme: "dark",
-      //     transition: Bounce,
-      //     pauseOnHover: false,
-      //   });
-      //   // navigate('/fillform')
+        // } else {
+        //   toast.success(`Form submitted successfully!`, {
+        //     position: "top-center",
+        //     autoClose: 3000,
+        //     hideProgressBar: false,
+        //     theme: "dark",
+        //     transition: Bounce,
+        //     pauseOnHover: false,
+        //   });
+        //   // navigate('/fillform')
       }
     }
     const filledForm = {
@@ -86,6 +86,9 @@ function FormFill() {
 
       if (!response.ok) {
         // console.log(JSON.stringify(response));
+        const message = await response.text();
+        console.log(message);
+
         throw new Error("Form Submission failure: Sending data failed");
       }
       // console.log(formData);
@@ -100,7 +103,7 @@ function FormFill() {
       //   transition: Bounce,
       //   pauseOnHover: false,
       // });
-      navigate("/createdforms");
+      navigate("/formresponses");
     } catch (error) {
       toast.error(`Error submitting the form: Sending data failed`, {
         position: "top-center",
@@ -118,14 +121,16 @@ function FormFill() {
     <>
       <h1>Form Fill</h1>
       <div className="form-container">
-        <input
-          type="text"
-          value="Form Title will go here"
-          // onChange={(e) => setFormTitle(e.target.value)}
-          placeholder="Form Title"
-          className="form-title-input"
-          disabled
-        />
+        {!isLoading && (
+          <input
+            type="text"
+            value={form.title}
+            // onChange={(e) => setFormTitle(e.target.value)}
+            placeholder="Form Title"
+            className="form-title-input"
+            disabled
+          />
+        )}
         {/* {!isLoading && JSON.stringify(form)} */}
         {/* {!isLoading && answers && JSON.stringify(answers)} */}
         {!isLoading &&

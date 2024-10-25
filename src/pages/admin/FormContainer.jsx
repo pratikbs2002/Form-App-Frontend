@@ -128,6 +128,7 @@ export default function FormContainer() {
     }
 
     const formData = {
+      title: formTitle,
       adminId: 1,
       questions: formQuestions,
     };

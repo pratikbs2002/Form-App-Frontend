@@ -32,6 +32,7 @@
   p{
     cursor: pointer;
     font-weight: 400;
+    color: var(--text-color);
     transition: text-decoration 0.2s, font-weight 0.2s;
 
     

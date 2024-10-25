@@ -1,5 +1,5 @@
 .question-div {
-  background-color: #303030; 
+  background-color: var(--form-entry-input); 
   border-radius: 8px; 
   width: 100%; 
   max-width: 580px; 
@@ -9,6 +9,7 @@
   margin-right: 5px;
   position: relative;
 
+  
   .question-input {
     width: calc(100% - 22px); 
     padding: 10px;
@@ -16,12 +17,12 @@
     margin-bottom: 10px; 
     font-size: 1rem; 
     border: none;
-    background-color: rgb(56, 56, 56);
+    background-color: var(--form-entry);
     transition: background-color 0.2s, border-bottom 0.4s;
   }
 
   .question-input:focus{
-    background-color: rgb(41, 41, 41);
+    background-color: var(--form-entry-input);
     outline: none;
     border-bottom: 3px solid rgb(0, 128, 255);  
   }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./FormEntry.css";
 import { deleteFormById, getAllForms } from "../../services/form-service";
 
-export default function FormEntry({ form, onDelete, edit }) {
+export default function FormEntry({ form, onDelete, edit, filledResponse }) {
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -39,12 +39,22 @@ export default function FormEntry({ form, onDelete, edit }) {
 
   return (
     <div className="form-entry">
-      <h3>Form ID: {form.id}</h3>
+      {filledResponse ? (
+        <>
+          <h4>#:{form.id}</h4>
+          <h3>Form ID: {form.formId}</h3>
+        </>
+      ) : (
+        <h3>Form ID: {form.id}</h3>
+      )}
       <h4>Form Name: {form.title}</h4>
-      <p>Created At: {form.createdAt}</p>
-        {edit ? (
-          <>
-      <div className="button-container">
+      <p>
+        {filledResponse ? "Filled At:" : "Created At:"} {form.createdAt}
+      </p>
+        {filledResponse && <p>Filled by: {form.userId}</p>}
+      {edit ? (
+        <>
+          <div className="button-container">
             <button className="styled-button" onClick={handleEdit}>
               Edit
             </button>
@@ -54,13 +64,22 @@ export default function FormEntry({ form, onDelete, edit }) {
             <button className="styled-button" onClick={() => onDelete(form.id)}>
               Delete
             </button>
-      </div>
-          </>
-        ) : (
+          </div>
+        </>
+      ) : filledResponse ? (
+        <>
           <button className="styled-button" onClick={handleFill}>
-            Fill
+            Preview
           </button>
-        )}
+          <button className="styled-button" onClick={handleFill}>
+            Delete
+          </button>
+        </>
+      ) : (
+        <button className="styled-button" onClick={handleFill}>
+          Fill
+        </button>
+      )}
     </div>
   );
 }

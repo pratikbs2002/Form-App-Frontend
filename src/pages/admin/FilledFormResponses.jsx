@@ -16,16 +16,17 @@ import {
   deleteFilledFormById,
   deleteFormById,
   getAllForms,
+  getAllSubmittedForms,
 } from "../../services/form-service";
 import { redirect, useNavigate } from "react-router";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
-export default function CreatedFormsContainer() {
+export default function FilledFormResponses() {
   const navigate = useNavigate();
-  const [forms, setForms] = useState([]);
+  const [filledForms, setFilledForms] = useState([]);
   const [sortBy, setSortBy] = useState("default");
-  const [viewStyle, setViewStyle] = useState("table");
   const [refresh, setRefresh] = useState(false);
+  const [viewStyle, setViewStyle] = useState("table");
   const { state, dispatch } = useContext(LoaderContext);
   const [pageDetails, setPageDetails] = useState({
     totalElements: 5,
@@ -39,7 +40,7 @@ export default function CreatedFormsContainer() {
   });
 
   useEffect(() => {
-    const fetchForms = async () => {
+    const fetchFilledForms = async () => {
       dispatch(true);
 
       let sort = null;
@@ -54,10 +55,10 @@ export default function CreatedFormsContainer() {
         sort = "createdAt";
         sortDir = "asc";
       } else if (sortBy === "form-id-asc") {
-        sort = "id";
+        sort = "formId";
         sortDir = "asc";
       } else if (sortBy === "form-id-desc") {
-        sort = "id";
+        sort = "formId";
         sortDir = "desc";
       } else if (sortBy === "name-asc") {
         sort = "title";
@@ -70,7 +71,14 @@ export default function CreatedFormsContainer() {
         sortDir = "asc";
       }
 
-      const response = await getAllForms(
+      // const response = await getAllForms(
+      //   pagination.pageNumber,
+      //   pagination.pageSize,
+      //   sort,
+      //   sortDir
+      // );
+
+      const response = await getAllSubmittedForms(
         pagination.pageNumber,
         pagination.pageSize,
         sort,
@@ -83,18 +91,18 @@ export default function CreatedFormsContainer() {
       }
       console.log(data);
 
-      setForms(data.content);
+      setFilledForms(data.content);
+      // setFilledForms(data.content);
 
       setPageDetails({
         totalElements: data.totalElements,
         totalPages: data.totalPages,
         isLast: data.lastPage,
       });
-
-      dispatch(false);
     };
 
-    fetchForms();
+    fetchFilledForms();
+    dispatch(false);
   }, [pagination, sortBy, refresh]);
 
   const handlePageChange = async (a) => {
@@ -118,7 +126,7 @@ export default function CreatedFormsContainer() {
   };
 
   const handleDelete = async (formId) => {
-    await deleteFormById(formId);
+    await deleteFilledFormById(formId);
     setRefresh(!refresh);
     // const response = await getAllForms();
     // const data = await response.json();
@@ -127,7 +135,7 @@ export default function CreatedFormsContainer() {
     //   return;
     // }
 
-    // setForms(data.content);
+    // setFilledForms(data);
   };
 
   const handlePageOptionChange = (e) => {
@@ -139,7 +147,7 @@ export default function CreatedFormsContainer() {
 
   return (
     <div className="created-forms-container">
-      <h1>Created Forms</h1>
+      <h1>Form Responses</h1>
       <Loader />
       {!state.loading && (
         <div className="form-view">
@@ -175,14 +183,17 @@ export default function CreatedFormsContainer() {
         </div>
       )}
       <div>{state.loading}</div>
-      {!state.loading && forms.length === 0 && <h2>No Form Data Available</h2>}
+      {!state.loading && filledForms.length === 0 && (
+        <h2>No Form Data Available</h2>
+      )}
       {viewStyle === "card" &&
-        forms.map((form) => (
+        filledForms.map((form) => (
           <FormEntry
             key={form.id}
             form={form}
             onDelete={handleDelete}
-            edit={true}
+            // edit={true}
+            filledResponse={true}
           />
         ))}
       {!state.loading && viewStyle === "table" && (
@@ -190,32 +201,28 @@ export default function CreatedFormsContainer() {
           <table className="user-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Form ID</th>
                 <th>Form Name</th>
-                <th>Created By</th>
-                <th>Created At</th>
+                <th>Filled By</th>
+                <th>Filled At</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {forms.map((form) => (
+              {filledForms.map((form) => (
                 <tr key={form.id}>
                   <td>{form.id}</td>
+                  <td>{form.formId}</td>
                   {/* <td>{data.id}</td> */}
                   <td>{form.title}</td>
-                  <td>{form.createdBy}</td>
+                  <td>{form.userId}</td>
                   <td>{form.createdAt}</td>
                   <td>
                     <div className="button-div">
                       <button
                         className="rounded-button"
-                        onClick={() => navigate(`/editform/${form.id}`)}
-                      >
-                        <MdEdit />
-                      </button>
-                      <button
-                        className="rounded-button"
-                        onClick={() => navigate(`/formpreview/${form.id}`)}
+                        onClick={() => navigate(`/formresponses/${form.id}`)}
                       >
                         <MdRemoveRedEye />
                       </button>
@@ -233,92 +240,82 @@ export default function CreatedFormsContainer() {
           </table>
         </div>
       )}
-      {pagination.totalElements !== 0 && (
-        <div className="pagination-container">
-          <div>
-            <span>Items per page:</span>
-            <select
-              value={pagination.pageSize}
-              onChange={handlePageOptionChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value={pageDetails.totalElements}>ALL</option>
-            </select>
-            <span>
-              Showing{" "}
-              {pageDetails.totalElements === 0
-                ? "0"
-                : pagination.pageNumber * pagination.pageSize + 1}
-              -{pagination.pageNumber * pagination.pageSize + forms.length} of{" "}
-              {pageDetails.totalElements} forms
-            </span>
-          </div>
-          <div
+      <div className="pagination-container">
+        <div>
+          <span>Items per page:</span>
+          <select value={pagination.pageSize} onChange={handlePageOptionChange}>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value={pageDetails.totalElements}>ALL</option>
+          </select>
+          <span>
+            Showing{" "}
+            {pageDetails.totalElements === 0
+              ? "0"
+              : pagination.pageNumber * pagination.pageSize + 1}
+            -{pagination.pageNumber * pagination.pageSize + filledForms.length}{" "}
+            of {pageDetails.totalElements} forms
+          </span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexWrap: "nowrap",
+          }}
+        >
+          <button
             style={{
               display: "flex",
-              alignItems: "center",
               justifyContent: "center",
-              flexWrap: "nowrap",
+              alignItems: "center",
             }}
+            onClick={() => handlePageChange("first")}
+            disabled={pagination.pageNumber === 0}
           >
-            <button
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => handlePageChange("first")}
-              disabled={pagination.pageNumber === 0}
-            >
-              {/* {"<<"} */}
-              <MdSkipPrevious />
-            </button>
-            <button
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => handlePageChange("prev")}
-              disabled={pagination.pageNumber === 0}
-            >
-              {/* {"<"} */}
-              <IoMdArrowDropleft /> <span>Previous</span>
-            </button>
-            <span>
-              {pagination.pageNumber + 1} out of{" "}
-              {pageDetails.totalPages === 0 ? "1" : pageDetails.totalPages}
-            </span>
-            <button
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => handlePageChange("next")}
-              disabled={pageDetails.isLast}
-            >
-              {/* {">"} */}
-              <span>Next</span>
-              <IoMdArrowDropright />
-            </button>
-            <button
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => handlePageChange("last")}
-              disabled={pageDetails.isLast}
-            >
-              {/* {">>"} */}
-              <MdSkipNext />
-            </button>
-          </div>
+            <MdSkipPrevious />
+          </button>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("prev")}
+            disabled={pagination.pageNumber === 0}
+          >
+            <IoMdArrowDropleft /> <span>Previous</span>
+          </button>
+          <span>
+            {pagination.pageNumber + 1} out of {pageDetails.totalPages}
+          </span>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("next")}
+            disabled={pageDetails.isLast}
+          >
+            <span>Next</span>
+            <IoMdArrowDropright />
+          </button>
+          <button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handlePageChange("last")}
+            disabled={pageDetails.isLast}
+          >
+            <MdSkipNext />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
