@@ -189,8 +189,8 @@ export default function UserTable(props) {
                         <td>{index}</td>
                         <td>{user.username}</td>
                         <td>{user.schemaName}</td>
-                        <td>{user.role}</td>
-                        <td>{new Date(user.created_at).toLocaleString()}</td>
+                        <td>{user.role.roleType}</td>
+                        <td>{new Date(user.createdAt).toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>

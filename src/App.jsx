@@ -24,6 +24,7 @@ import FormFill from "./pages/admin/FormFill";
 import UserManagement from "./pages/admin/UserManagement";
 import FilledFormResponses from "./pages/admin/FilledFormResponses";
 import FilledFormPreview from "./pages/admin/FilledFormPreview";
+import { Roles } from "./Roles";
 function App() {
   const auth = useAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -39,6 +40,7 @@ function App() {
         : ""
     );
   }, [isAuthenticated]);
+
   return (
     <>
       <BrowserRouter>
@@ -73,7 +75,7 @@ function App() {
             <Route
               path="/createform"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FormContainer />
                 ) : (
                   <>
@@ -92,7 +94,7 @@ function App() {
             <Route
               path="/createdforms"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <CreatedFormsContainer />
                 ) : (
                   <>
@@ -111,7 +113,7 @@ function App() {
             <Route
               path="/formpreview/:formId"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FormPreview />
                 ) : (
                   <>
@@ -130,7 +132,7 @@ function App() {
             <Route
               path="/editform/:formId"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FormEdit />
                 ) : (
                   <>
@@ -149,7 +151,7 @@ function App() {
             <Route
               path="/editform/:formId"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FormEdit />
                 ) : (
                   <>
@@ -168,7 +170,7 @@ function App() {
             <Route
               path="/fillform"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FormFillList />
                 ) : (
                   <>
@@ -187,7 +189,7 @@ function App() {
             <Route
               path="/fillform/:formId"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FormFill />
                 ) : (
                   <>
@@ -206,7 +208,7 @@ function App() {
             <Route
               path="/formresponses"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FilledFormResponses />
                 ) : (
                   <>
@@ -219,14 +221,13 @@ function App() {
                       </p>
                     </p>
                   </>
-                  
                 )
               }
             />
             <Route
               path="/formresponses/:responseId"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <FilledFormPreview />
                 ) : (
                   <>
@@ -239,13 +240,9 @@ function App() {
                       </p>
                     </p>
                   </>
-                  
                 )
               }
             />
-            
-
-            
             {/* <Route
               path="/root-admin/dashboard"
               element={
@@ -255,7 +252,7 @@ function App() {
             <Route
               path="schema"
               element={
-                isAuthenticated && userType === "global_admin" ? (
+                isAuthenticated && userType === Roles.GLOBAL_ADMIN ? (
                   <RootDashBoard />
                 ) : (
                   <Navigate to={"/"} />
@@ -265,7 +262,7 @@ function App() {
             <Route
               path="user"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <UserManagement />
                 ) : (
                   <Navigate to={"/"} />
@@ -275,7 +272,7 @@ function App() {
             <Route
               path="location"
               element={
-                isAuthenticated && userType === "admin" ? (
+                isAuthenticated && userType === Roles.ADMIN ? (
                   <LocationSidebar />
                 ) : (
                   <Navigate to={"/"} />

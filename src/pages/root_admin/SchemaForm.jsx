@@ -47,10 +47,31 @@ export default function SchemaForm(props) {
     }
 
     const response = await addSchema(schemaFormData.schemaName);
-    const data = await response.json();
-    console.log(data);
-    setRes(data);
-    props.setLoad(!props.load);
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log(data);
+      
+      toast.success(data.message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      setRes(data);
+      props.setLoad(!props.load);
+    } else {
+      const data = await response.text();
+      toast.error(data, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+    }
   };
 
   return (
@@ -73,7 +94,7 @@ export default function SchemaForm(props) {
           Add
         </button>
       </form>
-      <div>{JSON.stringify(res)}</div>
+      {/* <div>{JSON.stringify(res)}</div> */}
     </div>
   );
 }

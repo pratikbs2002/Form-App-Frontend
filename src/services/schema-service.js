@@ -33,7 +33,7 @@ export async function getAllSchema() {
   });
 }
 
-export async function getPageableAllSchema(page = 0, size = 10) {
+export async function getPageableAllSchema(page = 0, size = 5) {
   return await fetch(
     `${hostUrl}/api/schema-map/pageable/all?page=${page}&size=${size}`,
     {

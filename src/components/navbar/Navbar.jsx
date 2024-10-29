@@ -6,6 +6,7 @@ import { GiExitDoor } from "react-icons/gi";
 import { Bounce, toast } from "react-toastify";
 import { Link, NavLink } from "react-router-dom";
 import { ThemeContext, ThemeProvider } from "../../context/ThemeProvider";
+import { Roles } from "../../Roles";
 
 export default function Navbar(props) {
   console.log(props.userType);
@@ -62,7 +63,7 @@ export default function Navbar(props) {
               >
                 <div className="nav-button-value">Dashboard</div>
               </NavLink>
-              {props.userType === "global_admin" ? (
+              {props.userType === Roles.GLOBAL_ADMIN ? (
                 <>
                   <NavLink className="nav-link" to={"/schema"}>
                     <div className="nav-button-value">Schemas</div>
@@ -104,7 +105,7 @@ export default function Navbar(props) {
                 </>
               )}
 
-              {props.userType === "admin" ? (
+              {props.userType === Roles.ADMIN ? (
                 <>
                   <NavLink className="nav-link" to={"/user"}>
                     <div className="nav-button-value">User</div>
