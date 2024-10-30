@@ -13,7 +13,6 @@ import "./UserTable.css";
 
 export default function UserTable(props) {
   const [userData, setUserData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [filter, setFilter] = useState("all");
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(5);
@@ -37,7 +36,6 @@ export default function UserTable(props) {
 
         const users = await userResponse.json();
         setUserData(users.content);
-        setFilteredData(users.content);
         setTotalPages(users.totalPages);
         setTotalElements(users.totalElements);
       } else {
@@ -51,7 +49,6 @@ export default function UserTable(props) {
         const users = await userResponse.json();
 
         setUserData(users.content);
-        setFilteredData(users.content);
         setTotalPages(users.totalPages);
         setTotalElements(users.totalElements);
       }
@@ -80,14 +77,14 @@ export default function UserTable(props) {
 
   useEffect(() => {
     fetchAllSchemas();
-  }, [props.refresh]);
+  }, [props.load]);
 
   useEffect(() => {
     fetchData();
   }, [
     auth.authData.password,
     auth.authData.username,
-    props.refresh,
+    props.load,
     page,
     size,
     filter,
@@ -184,7 +181,7 @@ export default function UserTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredData.map((user, index) => (
+                    {userData.map((user, index) => (
                       <tr key={index}>
                         <td>{index}</td>
                         <td>{user.username}</td>
@@ -210,7 +207,7 @@ export default function UserTable(props) {
                       Showing {page * size + 1}-
                       {Math.min(
                         (page + 1) * size,
-                        filteredData.length * (page * size + 1)
+                        userData.length * (page * size + 1)
                       )}{" "}
                       of {totalElements}
                     </span>

@@ -42,9 +42,9 @@ export async function getUserBySchemaName(
   size = 10,
   role = null
 ) {
-  if (role === "all") {
-    role = null;
-  }
+  // if (role === "all") {
+  //   role = null;
+  // }
   return await fetch(
     `${hostUrl}/api/user/all/${schemaUUID}?page=${page}&size=${size}&role=${role}`,
     {
