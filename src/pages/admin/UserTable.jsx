@@ -7,16 +7,25 @@ import { getCurrentSchema } from "../../services/schema-service";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import "./UserTable.css";
+import Pagination from "../../components/pagination/Pagination";
+import usePagination from "../../hooks/usePagination";
 
 export default function UserTable(props) {
   const [userData, setUserData] = useState([]);
   const [filter, setFilter] = useState("all");
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalElements, setTotalElements] = useState(0);
   const auth = useAuth();
   const { state, dispatch } = useContext(LoaderContext);
+
+  const {
+    page,
+    size,
+    totalPages,
+    totalElements,
+    setPage,
+    setSize,
+    setTotalPages,
+    setTotalElements,
+  } = usePagination();
 
   useEffect(() => {
     dispatch(true);
@@ -64,18 +73,6 @@ export default function UserTable(props) {
     size,
     filter,
   ]);
-
-  const handleNextPage = () => {
-    if (page < totalPages - 1) {
-      setPage(page + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (page > 0) {
-      setPage(page - 1);
-    }
-  };
 
   return (
     <div className="root-section">
@@ -131,90 +128,20 @@ export default function UserTable(props) {
                           <td>{key}</td>
                           <td>{data.username}</td>
                           <td>{data.schemaName}</td>
-                          <td>{data.role}</td>
+                          <td>{data.role.roleType}</td>
                           <td>{new Date(data.created_at).toLocaleString()}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  <div className="pagination-container">
-                    <div>
-                      <span>Items per page:</span>
-                      <select
-                        value={size}
-                        onChange={(e) => setSize(Number(e.target.value))}
-                      >
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value={totalElements}>All</option>
-                      </select>
-                      <span>
-                        Showing {page * size + 1}-
-                        {Math.min(
-                          (page + 1) * size,
-                          userData.length * (page * size + 1)
-                        )}{" "}
-                        of {totalElements}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexWrap: "nowrap",
-                      }}
-                    >
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={() => setPage(0)}
-                        disabled={page === 0}
-                      >
-                        <MdSkipPrevious />
-                      </button>
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={handlePrevPage}
-                        disabled={page === 0}
-                      >
-                        <IoMdArrowDropleft /> <span>Previous</span>
-                      </button>
-                      <span>
-                        {page + 1} of {totalPages}
-                      </span>
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={handleNextPage}
-                        disabled={page >= totalPages - 1}
-                      >
-                        <span>Next</span>
-                        <IoMdArrowDropright />
-                      </button>
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={() => setPage(totalPages - 1)}
-                        disabled={page >= totalPages - 1}
-                      >
-                        <MdSkipNext />
-                      </button>
-                    </div>
-                  </div>
+                  <Pagination
+                    page={page}
+                    size={size}
+                    totalPages={totalPages}
+                    totalElements={totalElements}
+                    setPage={setPage}
+                    setSize={setSize}
+                  />
                 </>
               )}
             </div>

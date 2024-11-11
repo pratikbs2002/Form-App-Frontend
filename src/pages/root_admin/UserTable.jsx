@@ -6,51 +6,70 @@ import {
 } from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
 import Loader from "../../context/Loader";
-import { getAllSchema, getCurrentSchema } from "../../services/schema-service";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
+import { getAllSchema } from "../../services/schema-service";
 import "./UserTable.css";
+import Pagination from "../../components/pagination/Pagination";
+import usePagination from "../../hooks/usePagination";
 
 export default function UserTable(props) {
-  const [userData, setUserData] = useState([]);
-  const [filter, setFilter] = useState("all");
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalElements, setTotalElements] = useState(0);
   const auth = useAuth();
   const { state, dispatch } = useContext(LoaderContext);
+  const [userData, setUserData] = useState([]);
   const [schemasData, setSchemasData] = useState([]);
   const [selectedSchema, setSelectedSchema] = useState("root");
+  const [filter, setFilter] = useState("all");
+
+  const {
+    page,
+    size,
+    totalPages,
+    totalElements,
+    setPage,
+    setSize,
+    setTotalPages,
+    setTotalElements,
+  } = usePagination();
 
   // Fetches schema and user data based on selected schema
   const fetchData = async () => {
     dispatch(true);
-    console.log(selectedSchema);
-
     try {
+      let userResponse;
       if (selectedSchema === "root") {
-        const userResponse = await getAllUserForRoot(page, size, filter);
-
-        if (!userResponse.ok) throw new Error("Failed to fetch user data");
-
-        const users = await userResponse.json();
-        setUserData(users.content);
-        setTotalPages(users.totalPages);
-        setTotalElements(users.totalElements);
+        userResponse = await getAllUserForRoot(page, size, filter);
       } else {
-        const userResponse = await getUserBySchemaName(
+        userResponse = await getUserBySchemaName(
           selectedSchema,
           page,
           size,
           filter
         );
+      }
 
-        const users = await userResponse.json();
+      if (!userResponse.ok) {
+        throw new Error(`Error: ${userResponse.status}`);
+      }
 
+      if (userResponse.status === 204) {
+        console.log("No content available");
+        setUserData([]);
+        setTotalPages(0);
+        setTotalElements(0);
+        setPage(0);
+        return;
+      }
+
+      const users = await userResponse.json();
+
+      if (users.content && users.content.length > 0) {
         setUserData(users.content);
         setTotalPages(users.totalPages);
         setTotalElements(users.totalElements);
+      } else {
+        setUserData([]);
+        setTotalPages(0);
+        setTotalElements(0);
+        setPage(0);
       }
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -91,18 +110,10 @@ export default function UserTable(props) {
     selectedSchema,
   ]);
 
-  // Handlers for pagination
-  const handleNextPage = () => {
-    if (page < totalPages - 1) setPage(page + 1);
-  };
-
-  const handlePrevPage = () => {
-    if (page > 0) setPage(page - 1);
-  };
-
   // Handler for schema selection change
   const handleChange = (e) => {
     setSelectedSchema(e.target.value);
+    setFilter("all");
   };
 
   return (
@@ -113,12 +124,12 @@ export default function UserTable(props) {
             <div className="user-table-select-input-container">
               <label>Select Schema: </label>
               <div className="user-table-select-container">
-                <Loader />
                 {!state.loading && (
                   <select
                     onChange={handleChange}
                     name="role"
                     value={selectedSchema}
+                    aria-label="Select Schema"
                   >
                     <option value="root">All</option>
                     {schemasData.map((schema, key) => (
@@ -170,73 +181,42 @@ export default function UserTable(props) {
             <Loader />
             {!state.loading && (
               <>
-                <table className="user-table">
-                  <thead>
-                    <tr>
-                      <th>UserId</th>
-                      <th>Username</th>
-                      <th>SchemaName</th>
-                      <th>Role</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userData.map((user, index) => (
-                      <tr key={index}>
-                        <td>{index}</td>
-                        <td>{user.username}</td>
-                        <td>{user.schemaName}</td>
-                        <td>{user.role.roleType}</td>
-                        <td>{new Date(user.createdAt).toLocaleString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="pagination-container">
-                  <div>
-                    <span>Items per page:</span>
-                    <select
-                      value={size}
-                      onChange={(e) => setSize(Number(e.target.value))}
-                    >
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value={totalElements}>All</option>
-                    </select>
-                    <span>
-                      Showing {page * size + 1}-
-                      {Math.min(
-                        (page + 1) * size,
-                        userData.length * (page * size + 1)
-                      )}{" "}
-                      of {totalElements}
-                    </span>
-                  </div>
-                  <div className="pagination-buttons">
-                    <button onClick={() => setPage(0)} disabled={page === 0}>
-                      <MdSkipPrevious />
-                    </button>
-                    <button onClick={handlePrevPage} disabled={page === 0}>
-                      <IoMdArrowDropleft /> <span>Previous</span>
-                    </button>
-                    <span>
-                      {page + 1} of {totalPages}
-                    </span>
-                    <button
-                      onClick={handleNextPage}
-                      disabled={page >= totalPages - 1}
-                    >
-                      <span>Next</span>
-                      <IoMdArrowDropright />
-                    </button>
-                    <button
-                      onClick={() => setPage(totalPages - 1)}
-                      disabled={page >= totalPages - 1}
-                    >
-                      <MdSkipNext />
-                    </button>
-                  </div>
-                </div>
+                {userData.length > 0 ? (
+                  <>
+                    <table className="user-table">
+                      <thead>
+                        <tr>
+                          <th>UserId</th>
+                          <th>Username</th>
+                          <th>SchemaName</th>
+                          <th>Role</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {userData.map((user, index) => (
+                          <tr key={index}>
+                            <td>{index}</td>
+                            <td>{user.username}</td>
+                            <td>{user.schemaName}</td>
+                            <td>{user.role.roleType}</td>
+                            <td>{new Date(user.createdAt).toLocaleString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <Pagination
+                      page={page}
+                      size={size}
+                      totalPages={totalPages}
+                      totalElements={totalElements}
+                      setPage={setPage}
+                      setSize={setSize}
+                    />
+                  </>
+                ) : (
+                  <div>No users found</div>
+                )}
               </>
             )}
           </div>

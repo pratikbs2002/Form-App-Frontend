@@ -1,56 +1,54 @@
 .created-forms-container {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  margin: auto; 
-  width: 80%; 
+  margin: auto;
+  width: 80%;
 }
 
 .sort-by-select {
-  width: 40%; 
+  width: 40%;
   padding: 10px;
   border: none;
   border-radius: 4px;
-  margin-bottom: 25px; 
-  margin-top: 20px; 
+  margin-bottom: 25px;
+  margin-top: 20px;
   margin-left: 5rem;
-  font-size: 1rem; 
+  font-size: 1rem;
 }
 
-.sort-by-select:focus{
+.sort-by-select:focus {
   outline: none;
 }
 
-.header{
+.header {
   display: flex;
   column-gap: 2rem;
   align-items: center;
   padding: 20px;
   color: white;
-  p{
+  p {
     cursor: pointer;
     font-weight: 400;
     color: var(--text-color);
     transition: text-decoration 0.2s, font-weight 0.2s;
-
-    
   }
-  .active{
+  .active {
     text-decoration: 3px underline #0080ff;
     font-weight: 700;
   }
 }
 
-.form-view{
+.form-view {
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 600px;
   justify-content: center;
 }
-.rounded-button{
+.rounded-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,18 +61,18 @@
   transition: color 0.1s, background-color 0.1s;
 }
 
-.button-div{
+.button-div {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.rounded-button:active{
+.rounded-button:active {
   color: #0080ff;
   background-color: white;
 }
 
-.rounded-button-delete{
+.rounded-button-delete {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,54 +85,8 @@
   transition: color 0.1s, background-color 0.1s;
 }
 
-.rounded-button-delete:active{
+.rounded-button-delete:active {
   color: red;
   background-color: white;
 }
 
-.pagination-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 80%;
-  margin: 20px 0;
-  font-family: Arial, sans-serif;
-}
-
-.pagination-container select {
-  padding: 5px;
-  margin-right: 10px;
-  /* border: 1px solid #ccc; */
-  border-radius: 4px;
-}
-
-.pagination-container select:focus {
-  outline: none;
-}
-
-.pagination-container button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  margin: 0 5px;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.pagination-container button:disabled {
-  background-color: #4d4d4d;
-  cursor: not-allowed;
-}
-
-.pagination-container button:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.pagination-container span {
-  margin: 0 10px;
-  font-size: 14px;
-  color: #ffffff;
-}
