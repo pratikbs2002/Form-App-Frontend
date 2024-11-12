@@ -21,8 +21,18 @@ export default function Login(props) {
       loginData.username,
       loginData.password
     );
+    if (res.status === 403) {
+      toast.error(await res.text(), {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+    }
     if (res.status === 401) {
-      toast.error("Wrong credentials", {
+      toast.error(await res.text(), {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,

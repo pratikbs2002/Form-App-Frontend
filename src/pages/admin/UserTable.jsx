@@ -1,14 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
-import { getUserBySchemaName } from "../../services/user-service";
+import {
+  getUserBySchemaName,
+  restoreUser,
+  softDeleteUser,
+} from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
 import Loader from "../../context/Loader";
 import { getCurrentSchema } from "../../services/schema-service";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
+import { MdDelete, MdRestore } from "react-icons/md";
 import "./UserTable.css";
 import Pagination from "../../components/pagination/Pagination";
 import usePagination from "../../hooks/usePagination";
+import { Bounce, toast } from "react-toastify";
 
 export default function UserTable(props) {
   const [userData, setUserData] = useState([]);
@@ -74,13 +78,55 @@ export default function UserTable(props) {
     filter,
   ]);
 
+  const handleSoftDelete = async (userId) => {
+    const response = await softDeleteUser(userId);
+    if (response.ok) {
+      toast.success("User Deleted successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      setUserData((prevData) =>
+        prevData.map((user) =>
+          user.id === userId ? { ...user, deleted: true } : user
+        )
+      );
+    } else {
+      console.error("Error soft-deleting user:", await response.text());
+    }
+  };
+
+  const handleRestoreUser = async (userId) => {
+    const response = await restoreUser(userId);
+    if (response.ok) {
+      toast.success("User restored successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      setUserData((prevData) =>
+        prevData.map((user) =>
+          user.id === userId ? { ...user, deleted: false } : user
+        )
+      );
+    } else {
+      console.error("Error restoring user:", await response.text());
+    }
+  };
+
   return (
     <div className="root-section">
       <div className="root-section-title">User Table</div>
       <div className="root-section-data">
         <div className="user-table-outside-container">
           <div className="user-table-inside-container">
-            <div className="user-table-container">
+            <div className="user-table-root-container">
               <div className="filter-container">
                 <div className="role-buttons">
                   <button
@@ -112,28 +158,71 @@ export default function UserTable(props) {
               <Loader />
               {!state.loading && (
                 <>
-                  <table className="user-table">
-                    <thead>
-                      <tr>
-                        <th>UserId</th>
-                        <th>Username</th>
-                        <th>SchemaName</th>
-                        <th>Role</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {userData.map((data, key) => (
-                        <tr key={key}>
-                          <td>{key}</td>
-                          <td>{data.username}</td>
-                          <td>{data.schemaName}</td>
-                          <td>{data.role.roleType}</td>
-                          <td>{new Date(data.created_at).toLocaleString()}</td>
+                  <div className="user-table-container">
+                    <table className="user-table">
+                      <thead>
+                        <tr>
+                          <th>UserId</th>
+                          <th>Username</th>
+                          <th>SchemaName</th>
+                          <th>Role</th>
+                          <th>Date</th>
+                          <th>Status</th>
+                          <th>Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {userData.map((data, key) => (
+                          <tr key={key}>
+                            <td>{key}</td>
+                            <td>{data.username}</td>
+                            <td>{data.schemaName}</td>
+                            <td>{data.role.roleType}</td>
+                            <td>{new Date(data.createdAt).toLocaleString()}</td>
+                            <td>
+                              <span
+                                style={{
+                                  backgroundColor: data.deleted
+                                    ? "#d32f2f"
+                                    : "#81c150",
+                                  padding: "0.3rem 0.8rem 0.3rem 0.8rem",
+                                  borderRadius: "3rem",
+                                  fontWeight: "600",
+                                  color: data.deleted && "white",
+                                }}
+                              >
+                                {data.deleted ? "Deactivated" : "Active"}
+                              </span>
+                            </td>
+                            <td>
+                              <span
+                                style={{
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  fontSize: "1.5rem",
+                                }}
+                              >
+                                {!data.deleted && (
+                                  <MdDelete
+                                    className="delete-icon"
+                                    onClick={() => handleSoftDelete(data.id)}
+                                  />
+                                )}
+                                {data.deleted && (
+                                  <MdRestore
+                                    className="restore-icon"
+                                    onClick={() => handleRestoreUser(data.id)}
+                                  />
+                                )}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                   <Pagination
                     page={page}
                     size={size}
