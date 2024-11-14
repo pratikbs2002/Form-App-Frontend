@@ -1,22 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
-import { getUserBySchemaName } from "../../services/user-service";
+import {
+  getUserBySchemaName,
+  restoreUser,
+  softDeleteUser,
+} from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
 import Loader from "../../context/Loader";
 import { getCurrentSchema } from "../../services/schema-service";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
+import { MdDelete, MdRestore } from "react-icons/md";
 import "./UserTable.css";
+import Pagination from "../../components/pagination/Pagination";
+import usePagination from "../../hooks/usePagination";
+import { Bounce, toast } from "react-toastify";
 
 export default function UserTable(props) {
   const [userData, setUserData] = useState([]);
   const [filter, setFilter] = useState("all");
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalElements, setTotalElements] = useState(0);
   const auth = useAuth();
   const { state, dispatch } = useContext(LoaderContext);
+
+  const {
+    page,
+    size,
+    totalPages,
+    totalElements,
+    setPage,
+    setSize,
+    setTotalPages,
+    setTotalElements,
+  } = usePagination();
 
   useEffect(() => {
     dispatch(true);
@@ -65,15 +78,45 @@ export default function UserTable(props) {
     filter,
   ]);
 
-  const handleNextPage = () => {
-    if (page < totalPages - 1) {
-      setPage(page + 1);
+  const handleSoftDelete = async (userId) => {
+    const response = await softDeleteUser(userId);
+    if (response.ok) {
+      toast.success("User Deleted successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      setUserData((prevData) =>
+        prevData.map((user) =>
+          user.id === userId ? { ...user, deleted: true } : user
+        )
+      );
+    } else {
+      console.error("Error soft-deleting user:", await response.text());
     }
   };
 
-  const handlePrevPage = () => {
-    if (page > 0) {
-      setPage(page - 1);
+  const handleRestoreUser = async (userId) => {
+    const response = await restoreUser(userId);
+    if (response.ok) {
+      toast.success("User restored successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      setUserData((prevData) =>
+        prevData.map((user) =>
+          user.id === userId ? { ...user, deleted: false } : user
+        )
+      );
+    } else {
+      console.error("Error restoring user:", await response.text());
     }
   };
 
@@ -83,7 +126,7 @@ export default function UserTable(props) {
       <div className="root-section-data">
         <div className="user-table-outside-container">
           <div className="user-table-inside-container">
-            <div className="user-table-container">
+            <div className="user-table-root-container">
               <div className="filter-container">
                 <div className="role-buttons">
                   <button
@@ -115,106 +158,79 @@ export default function UserTable(props) {
               <Loader />
               {!state.loading && (
                 <>
-                  <table className="user-table">
-                    <thead>
-                      <tr>
-                        <th>UserId</th>
-                        <th>Username</th>
-                        <th>SchemaName</th>
-                        <th>Role</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {userData.map((data, key) => (
-                        <tr key={key}>
-                          <td>{key}</td>
-                          <td>{data.username}</td>
-                          <td>{data.schemaName}</td>
-                          <td>{data.role}</td>
-                          <td>{new Date(data.created_at).toLocaleString()}</td>
+                  <div className="user-table-container">
+                    <table className="user-table">
+                      <thead>
+                        <tr>
+                          <th>UserId</th>
+                          <th>Username</th>
+                          <th>SchemaName</th>
+                          <th>Role</th>
+                          <th>Date</th>
+                          <th>Status</th>
+                          <th>Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <div className="pagination-container">
-                    <div>
-                      <span>Items per page:</span>
-                      <select
-                        value={size}
-                        onChange={(e) => setSize(Number(e.target.value))}
-                      >
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value={totalElements}>All</option>
-                      </select>
-                      <span>
-                        Showing {page * size + 1}-
-                        {Math.min(
-                          (page + 1) * size,
-                          userData.length * (page * size + 1)
-                        )}{" "}
-                        of {totalElements}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexWrap: "nowrap",
-                      }}
-                    >
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={() => setPage(0)}
-                        disabled={page === 0}
-                      >
-                        <MdSkipPrevious />
-                      </button>
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={handlePrevPage}
-                        disabled={page === 0}
-                      >
-                        <IoMdArrowDropleft /> <span>Previous</span>
-                      </button>
-                      <span>
-                        {page + 1} of {totalPages}
-                      </span>
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={handleNextPage}
-                        disabled={page >= totalPages - 1}
-                      >
-                        <span>Next</span>
-                        <IoMdArrowDropright />
-                      </button>
-                      <button
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        onClick={() => setPage(totalPages - 1)}
-                        disabled={page >= totalPages - 1}
-                      >
-                        <MdSkipNext />
-                      </button>
-                    </div>
+                      </thead>
+                      <tbody>
+                        {userData.map((data, key) => (
+                          <tr key={key}>
+                            <td>{key}</td>
+                            <td>{data.username}</td>
+                            <td>{data.schemaName}</td>
+                            <td>{data.role.roleType}</td>
+                            <td>{new Date(data.createdAt).toLocaleString()}</td>
+                            <td>
+                              <span
+                                style={{
+                                  backgroundColor: data.deleted
+                                    ? "#d32f2f"
+                                    : "#81c150",
+                                  padding: "0.3rem 0.8rem 0.3rem 0.8rem",
+                                  borderRadius: "3rem",
+                                  fontWeight: "600",
+                                  color: data.deleted && "white",
+                                }}
+                              >
+                                {data.deleted ? "Deactivated" : "Active"}
+                              </span>
+                            </td>
+                            <td>
+                              <span
+                                style={{
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  fontSize: "1.5rem",
+                                }}
+                              >
+                                {!data.deleted && (
+                                  <MdDelete
+                                    className="delete-icon"
+                                    onClick={() => handleSoftDelete(data.id)}
+                                  />
+                                )}
+                                {data.deleted && (
+                                  <MdRestore
+                                    className="restore-icon"
+                                    onClick={() => handleRestoreUser(data.id)}
+                                  />
+                                )}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
+                  <Pagination
+                    page={page}
+                    size={size}
+                    totalPages={totalPages}
+                    totalElements={totalElements}
+                    setPage={setPage}
+                    setSize={setSize}
+                  />
                 </>
               )}
             </div>

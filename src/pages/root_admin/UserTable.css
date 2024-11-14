@@ -13,14 +13,13 @@
   flex-direction: column;
   padding: 40px;
 }
-.user-table-container {
-  width: 90%;
+.user-table-root-container {
+  width: 100%;
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(61, 71, 81, 0.3);
-  overflow-x: auto;
   flex-direction: column;
   border-radius: 8px;
 
@@ -39,39 +38,38 @@
     border-radius: 2px;
   }
 }
-
-.user-table {
-  table-layout: auto;
+.user-table-container {
   width: 100%;
-  box-sizing: border-box;
+  border: 1px solid rgba(61, 71, 81, 0.3);
+  overflow-x: auto;
+}
+.user-table {
+  width: 100%;
   border-collapse: collapse;
-  padding: 50px;
   border: 1px solid rgba(61, 71, 81, 0.3);
   box-shadow: 0 1px 5px 0 rgba(117, 63, 63, 0.2),
     0 1px 5px 0 rgba(255, 255, 255, 0.19);
 
   th,
   td {
-    border-collapse: collapse;
+    /* text-overflow: ellipsis; */
+    /* box-sizing: border-box; */
     padding: 10px 20px 10px 20px;
     border: 1px solid rgba(61, 71, 81, 0.3);
-    white-space: nowrap;
-    padding: 15px;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
   }
-
-  /* thead,
-  tbody {
-    border-collapse: collapse;
-  } */
+  th {
+    /* background-color: #f5f5f5; */
+    font-weight: bold;
+  }
 }
-
 .user-table-select-input-container {
   display: flex;
   flex-direction: column;
   align-self: flex-start;
   align-items: center;
   justify-content: center;
-  /* width: 80%; */
   margin-bottom: 2rem;
   label {
     align-self: flex-start;

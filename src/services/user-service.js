@@ -1,36 +1,28 @@
 const hostUrl = `${import.meta.env.VITE_SERVER_URL}`;
-
+const headers = {
+  "Content-Type": "application/json",
+  Authorization:
+    "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+};
 export async function getAllUser() {
   return await fetch(`${hostUrl}/api/user/all`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-    },
+    headers,
   });
 }
 
 export async function getUserWithUsername(username) {
   return await fetch(`${hostUrl}/api/user/${username}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-    },
+    headers,
   });
 }
 
 // to add admin (add by existing admin)
 export async function addAdmin(data) {
-  return await fetch(`${hostUrl}/api/user/add/admin`, {
+  return await fetch(`${hostUrl}/api/user/add/user`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-    },
+    headers,
     body: JSON.stringify(data),
   });
 }
@@ -49,11 +41,7 @@ export async function getUserBySchemaName(
     `${hostUrl}/api/user/all/${schemaUUID}?page=${page}&size=${size}&role=${role}`,
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-      },
+      headers,
     }
   );
 }
@@ -66,11 +54,23 @@ export async function getAllUserForRoot(page = 0, size = 5, role = null) {
     `${hostUrl}/api/user/all/root?page=${page}&size=${size}&role=${role}`,
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-      },
+      headers,
     }
   );
+}
+
+// Soft delete a user by ID
+export async function softDeleteUser(userId) {
+  return await fetch(`${hostUrl}/api/user/soft-delete/${userId}`, {
+    method: "DELETE",
+    headers,
+  });
+}
+
+// Restore a soft-deleted user by ID
+export async function restoreUser(userId) {
+  return await fetch(`${hostUrl}/api/user/restore/${userId}`, {
+    method: "PUT",
+    headers,
+  });
 }
