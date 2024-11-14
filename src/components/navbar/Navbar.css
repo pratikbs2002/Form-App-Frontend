@@ -52,3 +52,107 @@
   font-weight: 500;
   border-bottom: 2px solid #0073e6;
 }
+/* 
+.profile-button{
+  cursor: pointer;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-bottom 2s ease,color 2s ease;
+  position: relative;
+  
+}
+
+.profile-dropdown{
+  position: absolute;
+  top: 3rem;
+  right: -0.7rem;
+  background-color: var(--background-color);
+  border: var(--text-color) 1px solid;
+  padding: 0.5rem ;
+  border-radius: 0.8rem;
+  min-width: 9rem;
+  max-height: 8.42rem;
+
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+      li{
+        
+        padding: 0.5rem 1rem;
+        border-radius: 0.4rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.4rem;
+        transition: background-color 0.2s, color 0.2s, font-size 0.2s;
+      }
+      li:hover{
+        background-color: var(--button-background);
+        color: #fff;
+        font-size: 1.3rem;
+      }
+  }
+} */
+
+
+.profile-button {
+  cursor: pointer;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-bottom 0.3s ease, color 0.3s ease; /* Faster transition */
+  position: relative;
+  /* color: var(--button-text); */
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 3rem;
+  right: -0.7rem;
+  background-color: var(--background-color);
+  border: 1px solid var(--text-color);
+  padding: 0.5rem;
+  border-radius: 0.8rem;
+  min-width: 9rem;
+  max-height: 8.42rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+  }
+
+  li {
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background-color 0.2s ease, color 0.2s ease, font-size 0.2s ease;
+    cursor: pointer;
+  }
+
+  li:hover {
+    background-color: var(--button-background);
+    color: #fff;
+    font-size: 1.3rem;
+  }
+}
+
+
+.user-icon {
+  cursor: pointer;
+  /* transition: color 1s ease-out;  */
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drop-active {
+  color: #0073e6;
+}
