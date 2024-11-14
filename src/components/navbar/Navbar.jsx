@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthProvider";
 import "./Navbar.css";
@@ -6,10 +6,14 @@ import { GiExitDoor } from "react-icons/gi";
 import { Bounce, toast } from "react-toastify";
 import { Link, NavLink } from "react-router-dom";
 import { ThemeContext, ThemeProvider } from "../../context/ThemeProvider";
+import { CgProfile } from "react-icons/cg";
+import ProfileDropdown from "./ProfileDropdown";
+import { FaCircleUser } from "react-icons/fa6";
 import { Roles } from "../../Roles";
 
 export default function Navbar(props) {
   console.log(props.userType);
+  const [dropdown, setDropdown] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
@@ -18,6 +22,7 @@ export default function Navbar(props) {
     localStorage.setItem("username", "");
     localStorage.setItem("password", "");
     localStorage.setItem("role", "");
+    setDropdown(false);
 
     toast.success("Logged out successfully", {
       position: "top-center",
@@ -119,11 +124,19 @@ export default function Navbar(props) {
                 <></>
               )}
 
-              <div onClick={handleLogout} className="logout-button">
+              {/* <div onClick={handleLogout} className="logout-button">
                 <button>Logout</button>
                 <div className="button-icon">
                   <GiExitDoor />
                 </div>
+              </div> */}
+              <div className="profile-button">
+                <FaCircleUser
+                  className={`user-icon ${dropdown ? "drop-active" : ""}`}
+                  onClick={() => setDropdown((prev) => !prev)}
+                />
+
+                {dropdown && <ProfileDropdown logoutClick={handleLogout} />}
               </div>
             </>
           )}
