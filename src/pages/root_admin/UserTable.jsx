@@ -120,7 +120,7 @@ export default function UserTable(props) {
     <>
       <div className="user-table-outside-container">
         <div className="user-table-inside-container">
-          <div className="user-table-container">
+          <div className="user-table-root-container">
             <div className="user-table-select-input-container">
               <label>Select Schema: </label>
               <div className="user-table-select-container">
@@ -183,36 +183,40 @@ export default function UserTable(props) {
               <>
                 {userData.length > 0 ? (
                   <>
-                    <table className="user-table">
-                      <thead>
-                        <tr>
-                          <th>UserId</th>
-                          <th>Username</th>
-                          <th>SchemaName</th>
-                          <th>Role</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {userData.map((user, index) => (
-                          <tr key={index}>
-                            <td>{index}</td>
-                            <td>{user.username}</td>
-                            <td>{user.schemaName}</td>
-                            <td>{user.role.roleType}</td>
-                            <td>{new Date(user.createdAt).toLocaleString()}</td>
+                    <div className="user-table-container">
+                      <table className="user-table">
+                        <thead>
+                          <tr>
+                            <th>UserId</th>
+                            <th>Username</th>
+                            <th>SchemaName</th>
+                            <th>Role</th>
+                            <th>Date</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <Pagination
-                      page={page}
-                      size={size}
-                      totalPages={totalPages}
-                      totalElements={totalElements}
-                      setPage={setPage}
-                      setSize={setSize}
-                    />
+                        </thead>
+                        <tbody>
+                          {userData.map((user, index) => (
+                            <tr key={index}>
+                              <td>{index}</td>
+                              <td>{user.username}</td>
+                              <td>{user.schemaName}</td>
+                              <td>{user.role.roleType}</td>
+                              <td>
+                                {new Date(user.createdAt).toLocaleString()}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <Pagination
+                        page={page}
+                        size={size}
+                        totalPages={totalPages}
+                        totalElements={totalElements}
+                        setPage={setPage}
+                        setSize={setSize}
+                      />
+                    </div>
                   </>
                 ) : (
                   <div>No users found</div>
