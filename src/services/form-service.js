@@ -42,6 +42,26 @@ export async function getAllForms(
   );
 }
 
+export async function getAllFormsForReportingUser(
+  pageNumber = 0,
+  pageSize = 5,
+  sortBy = "id",
+  sortDir = "asc",
+  userId
+) {
+  return await fetch(
+    `${hostUrl}/api/fillform/all/${userId}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+      },
+    }
+  );
+}
+
 export async function deleteFormById(formId) {
   return await fetch(`${hostUrl}/api/forms/${formId}`, {
     method: "DELETE",
@@ -68,8 +88,8 @@ export async function editFormById(data, formId) {
 export async function submitForm(data) {
   console.log(data);
 
-  return await fetch(`${hostUrl}/api/fillform/add`, {
-    method: "POST",
+  return await fetch(`${hostUrl}/api/fillform/update`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization:
@@ -87,14 +107,17 @@ export async function getAllSubmittedForms(
 ) {
   // console.log(data);
 
-  return await fetch(`${hostUrl}/api/fillform/all?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
-    },
-  });
+  return await fetch(
+    `${hostUrl}/api/fillform/all?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+      },
+    }
+  );
 }
 
 export async function getFilledFormById(formId) {
@@ -142,6 +165,17 @@ export function setQuestionAnswer(answerData, questionData) {
 export async function deleteFilledFormById(formId) {
   return await fetch(`${hostUrl}/api/fillform/remove/${formId}`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+  });
+}
+
+export async function assignForm(locationId, formId) {
+  return await fetch(`${hostUrl}/api/fillform/assign/${locationId}/${formId}`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization:

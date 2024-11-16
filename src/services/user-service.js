@@ -18,8 +18,8 @@ export async function getUserWithUsername(username) {
   });
 }
 
-// to add admin (add by existing admin)
-export async function addAdmin(data) {
+// to add user (add by existing admin)
+export async function addUser(data) {
   return await fetch(`${hostUrl}/api/user/add/user`, {
     method: "POST",
     headers,
@@ -73,4 +73,14 @@ export async function restoreUser(userId) {
     method: "PUT",
     headers,
   });
+}
+
+export async function updateReportingUserLocation(userId, locationId) {
+  return await fetch(
+    `${hostUrl}/api/userinfo/${userId}/location/${locationId}`,
+    {
+      method: "PUT",
+      headers,
+    }
+  );
 }

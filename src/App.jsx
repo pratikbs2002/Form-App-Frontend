@@ -170,7 +170,7 @@ function App() {
             <Route
               path="/fillform"
               element={
-                isAuthenticated && userType === Roles.ADMIN ? (
+                isAuthenticated && userType === Roles.REPORTING_USER ? (
                   <FormFillList />
                 ) : (
                   <>
@@ -189,7 +189,7 @@ function App() {
             <Route
               path="/fillform/:formId"
               element={
-                isAuthenticated && userType === Roles.ADMIN ? (
+                isAuthenticated && userType === Roles.REPORTING_USER ? (
                   <FormFill />
                 ) : (
                   <>

@@ -73,13 +73,16 @@ function FormFill() {
       }
     }
     const filledForm = {
-      formId,
-      userId: 50,
+      fillFormId: formId,
+      // userId: localStorage.getItem("id") ,
+      // userId: 3,
       answers,
-      locationId: 1,
+      // locationId: 1,
+      isSubmitted: true,
     };
     setSubmittedAnswers(JSON.stringify(answers));
     console.log("Form Submitted!: " + JSON.stringify(filledForm));
+
     const sendRequest = async () => {
       const response = await submitForm(filledForm);
       console.log(response);
@@ -95,14 +98,14 @@ function FormFill() {
     };
     try {
       await sendRequest();
-      // toast.success(`Form submitted successfully!`, {
-      //   position: "top-center",
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      //   theme: "dark",
-      //   transition: Bounce,
-      //   pauseOnHover: false,
-      // });
+      toast.success(`Form submitted successfully!`, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
       navigate("/formresponses");
     } catch (error) {
       toast.error(`Error submitting the form: Sending data failed`, {

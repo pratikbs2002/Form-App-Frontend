@@ -12,7 +12,11 @@ import {
   MdSkipNext,
   MdSkipPrevious,
 } from "react-icons/md";
-import { deleteFormById, getAllForms } from "../../services/form-service";
+import {
+  deleteFormById,
+  getAllForms,
+  getAllFormsForReportingUser,
+} from "../../services/form-service";
 import { redirect, useNavigate } from "react-router";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
@@ -65,11 +69,12 @@ export default function FormFillList() {
         sortDir = "asc";
       }
 
-      const response = await getAllForms(
+      const response = await getAllFormsForReportingUser(
         pagination.pageNumber,
         pagination.pageSize,
         sort,
-        sortDir
+        sortDir,
+        localStorage.getItem("id")
       );
       const data = await response.json();
       console.log(data);
@@ -184,6 +189,7 @@ export default function FormFillList() {
           <table className="user-table">
             <thead>
               <tr>
+                <th>Form Res ID</th>
                 <th>Form ID</th>
                 <th>Form Name</th>
                 <th>Created By</th>
@@ -195,6 +201,7 @@ export default function FormFillList() {
               {forms.map((form) => (
                 <tr key={form.id}>
                   <td>{form.id}</td>
+                  <td>{form.formId}</td>
                   <td>{form.title}</td>
                   <td>{form.createdBy}</td>
                   <td>{form.createdAt}</td>
@@ -202,7 +209,7 @@ export default function FormFillList() {
                     <div className="button-div">
                       <button
                         className="rounded-button"
-                        onClick={() => navigate(`/fillform/${form.id}`)}
+                        onClick={() => navigate(`/fillform/${form.formId}`)}
                       >
                         <MdEdit />
                       </button>

@@ -1,8 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./UserForm.css";
 import { Bounce, toast } from "react-toastify";
-import { addAdmin } from "../../services/user-service";
+import {
+  addUser,
+  updateReportingUserLocation,
+} from "../../services/user-service";
 import { LoaderContext } from "../../context/LoaderProvider";
+import Dialog from "../../components/Dialog";
 
 export default function UserForm(props) {
   const { refresh, setRefresh } = props;
@@ -18,6 +22,8 @@ export default function UserForm(props) {
     username: "",
     role: "",
   });
+
+  const [location, setLocation] = useState({ id: 1, name: "root" });
 
   const validateForm = () => {
     let valid = true;
@@ -61,17 +67,23 @@ export default function UserForm(props) {
     dispatch(true);
 
     try {
-      const response = await addAdmin(userFormData);
+      const response = await addUser(userFormData);
       if (response.ok) {
         const data = await response.json();
         setRes(data);
 
-        toast.success("User added successfully!", {
-          transition: Bounce,
-        });
+        const locationRes = await updateReportingUserLocation(
+          data.id,
+          location.id
+        );
+        if (locationRes.ok) {
+          toast.success("User added successfully!", {
+            transition: Bounce,
+          });
+        }
         setRefresh(!refresh);
       } else {
-        toast.error("Failed to add admin. Please try again.", {
+        toast.error("Failed to add User. Please try again.", {
           transition: Bounce,
         });
       }
@@ -89,7 +101,7 @@ export default function UserForm(props) {
       <div className="root-section-title">User Form</div>
       <div className="root-section-data">
         <div>
-          <form noValidate className="userform-form">
+          <form noValidate className="userform-form" autoComplete="false">
             <div className="userform-form-inside-container">
               <div className="userform-text-input-container">
                 <label>Username:</label>
@@ -126,6 +138,12 @@ export default function UserForm(props) {
                 </div>
               </div>
 
+              {userFormData.role === "reporting_user" && (
+                <>
+                  <Dialog location={location} setLocation={setLocation} />
+                </>
+              )}
+
               <button
                 className="add-user-button"
                 disabled={!userFormData.username || !userFormData.role}
@@ -135,7 +153,7 @@ export default function UserForm(props) {
                       ? "not-allowed"
                       : "pointer",
                 }}
-                type="submit"
+                // type="submit"
                 onClick={handleAdd}
               >
                 Add

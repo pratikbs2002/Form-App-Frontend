@@ -1,0 +1,65 @@
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog {
+  background: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  height: 80%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+.dialog-footer {
+}
+
+.dialog-footer-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+
+  .done-button {
+    background-color: var(--button-background);
+    color: var(--button-text);
+    padding: 10px 15px 10px 15px;
+    border: none;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: 100px;
+  }
+
+  .close-button {
+    background-color: var(--button-background);
+    color: var(--button-text);
+    padding: 10px 15px 10px 15px;
+    border: none;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: 100px;
+  }
+}

@@ -174,7 +174,7 @@ export default function UserTable(props) {
                       <tbody>
                         {userData.map((data, key) => (
                           <tr key={key}>
-                            <td>{key}</td>
+                            <td>{data.id}</td>
                             <td>{data.username}</td>
                             <td>{data.schemaName}</td>
                             <td>{data.role.roleType}</td>

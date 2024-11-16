@@ -55,6 +55,7 @@ export default function Login(props) {
       localStorage.setItem("auth", true);
       const data = await res.json();
       localStorage.setItem("role", data.role.roleType);
+      localStorage.setItem("id",data.id)
       auth.setAuthData({ ...loginData });
       console.log(data);
 

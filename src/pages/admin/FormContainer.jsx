@@ -82,14 +82,17 @@ export default function FormContainer() {
       const { question_text, answerType, options } = formQuestions[i];
 
       if (!question_text) {
-        toast.error(`Question field of question number ${i + 1} cannot be empty.`, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          theme: "dark",
-          transition: Bounce,
-          pauseOnHover: false,
-        });
+        toast.error(
+          `Question field of question number ${i + 1} cannot be empty.`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            theme: "dark",
+            transition: Bounce,
+            pauseOnHover: false,
+          }
+        );
         return;
       }
       if (
@@ -101,35 +104,41 @@ export default function FormContainer() {
           console.log(options);
 
           if (!options[j]) {
-            toast.error(`Option field of question number ${i + 1} cannot be empty.`, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              theme: "dark",
-              transition: Bounce,
-              pauseOnHover: false,
-            });
+            toast.error(
+              `Option field of question number ${i + 1} cannot be empty.`,
+              {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                theme: "dark",
+                transition: Bounce,
+                pauseOnHover: false,
+              }
+            );
             return;
           }
         }
       }
 
       if (answerType === "default") {
-        toast.error(`Please select an answer type for question number ${i + 1}.`, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          theme: "dark",
-          transition: Bounce,
-          pauseOnHover: false,
-        });
+        toast.error(
+          `Please select an answer type for question number ${i + 1}.`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            theme: "dark",
+            transition: Bounce,
+            pauseOnHover: false,
+          }
+        );
         return;
       }
     }
 
     const formData = {
       title: formTitle,
-      adminId: 1,
+      adminId: localStorage.getItem("id"),
       questions: formQuestions,
     };
 
@@ -198,10 +207,7 @@ export default function FormContainer() {
           <button className="styled-button" onClick={addQuestion}>
             Add Question
           </button>
-          <button
-            className="styled-button"
-            onClick={handleCreate}
-          >
+          <button className="styled-button" onClick={handleCreate}>
             Create
           </button>
         </div>

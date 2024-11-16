@@ -13,15 +13,21 @@ import {
   MdSkipPrevious,
 } from "react-icons/md";
 import {
+  assignForm,
   deleteFilledFormById,
   deleteFormById,
   getAllForms,
 } from "../../services/form-service";
 import { redirect, useNavigate } from "react-router";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
+import LocationCard from "../../components/LocationCardView";
+import Dialog from "../../components/Dialog";
 
 export default function CreatedFormsContainer() {
   const navigate = useNavigate();
+  const [assignDialog, setAssignDialog] = useState(false);
+  const [location, setLocation] = useState({ id: null, name: null });
+  const [isAssignDialog, setIsAssignDialog] = useState(true);
   const [forms, setForms] = useState([]);
   const [sortBy, setSortBy] = useState("default");
   const [viewStyle, setViewStyle] = useState("table");
@@ -137,6 +143,19 @@ export default function CreatedFormsContainer() {
     setPagination({ pageNumber: 0, pageSize: e.target.value });
   };
 
+  const handleAssignForm = async (formId) => {
+    console.log(formId);
+    const res = await assignForm(location.id, formId);
+    const data = await res.text();
+    if (res.status === 201) {
+      alert(data || "Form successfully assigned.");
+    } else if (res.status === 400) {
+      alert(data || "Bad request. Please check your input.");
+    } else {
+      alert("Unexpected error occurred. Please try again later.");
+    }
+  };
+
   return (
     <div className="created-forms-container">
       <h1>Created Forms</h1>
@@ -224,6 +243,13 @@ export default function CreatedFormsContainer() {
                         onClick={() => handleDelete(form.id)}
                       >
                         <MdDelete />
+                      </button>
+
+                      <button
+                        className="rounded-button"
+                        onClick={() => setAssignDialog(true)}
+                      >
+                        =
                       </button>
                     </div>
                   </td>
@@ -318,6 +344,17 @@ export default function CreatedFormsContainer() {
             </button>
           </div>
         </div>
+      )}
+      {assignDialog && (
+        <>
+          <Dialog
+            isAssignDialog={isAssignDialog}
+            setAssignDialog={setAssignDialog}
+            location={location}
+            handleAssignForm={handleAssignForm}
+            setLocation={setLocation}
+          />
+        </>
       )}
     </div>
   );

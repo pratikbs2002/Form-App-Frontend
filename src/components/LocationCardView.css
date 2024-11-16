@@ -1,0 +1,43 @@
+.location-view-inside-container {
+  cursor: pointer;
+  background-color: var(--background-color);
+}
+
+.location-view-inside-container :hover {
+  /* border-radius: 10px; */
+  background-color: var(--secondary-background-color);
+}
+
+.location-view-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem;
+  gap: 10px;
+  .location-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .location-icon {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .location-name::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.hover2 {
+  background-color: var(--secondary-background-color);
+}
+
+.add-location-view-button {
+  font-size: 1rem;
+  /* font-weight: 600; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
