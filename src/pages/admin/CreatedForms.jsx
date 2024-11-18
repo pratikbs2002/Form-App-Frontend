@@ -33,6 +33,7 @@ export default function CreatedFormsContainer() {
   const [viewStyle, setViewStyle] = useState("table");
   const [refresh, setRefresh] = useState(false);
   const { state, dispatch } = useContext(LoaderContext);
+  const [targetedForm, setTargetedForm] = useState(null);
   const [pageDetails, setPageDetails] = useState({
     totalElements: 5,
     totalPages: 1,
@@ -144,8 +145,9 @@ export default function CreatedFormsContainer() {
   };
 
   const handleAssignForm = async (formId) => {
-    console.log(formId);
-    const res = await assignForm(location.id, formId);
+    setAssignDialog(false);
+    console.log(targetedForm);
+    const res = await assignForm(location.id, targetedForm);
     const data = await res.text();
     if (res.status === 201) {
       alert(data || "Form successfully assigned.");
@@ -247,7 +249,10 @@ export default function CreatedFormsContainer() {
 
                       <button
                         className="rounded-button"
-                        onClick={() => setAssignDialog(true)}
+                        onClick={() => {
+                          setAssignDialog(true);
+                          setTargetedForm(form.id);
+                        }}
                       >
                         =
                       </button>

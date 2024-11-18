@@ -12,7 +12,7 @@ export default function FormEntry({ form, onDelete, edit, filledResponse }) {
     navigate(`/editform/${form.id}`); // Update with the actual path to your edit form page
   };
   const handleFill = () => {
-    navigate(`/fillform/${form.id}`); // Update with the actual path to your edit form page
+    navigate(`/fillform/${form.fillformId}`); // Update with the actual path to your edit form page
   };
   const handlePreview = () => {
     navigate(`/formpreview/${form.id}`); // Redirect to preview

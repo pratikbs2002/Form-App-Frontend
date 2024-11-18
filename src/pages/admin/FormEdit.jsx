@@ -116,20 +116,23 @@ function FormEdit() {
     //   // alert("Form title cannot be empty.");
     //   return;
     // }
-////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
     for (let i = 0; i < form.questions.length; i++) {
       const { question_text, answerType, options } = form.questions[i];
 
       if (!question_text) {
-        toast.error(`Question field of question number ${i + 1} cannot be empty.`, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          theme: "dark",
-          transition: Bounce,
-          pauseOnHover: false,
-        });
+        toast.error(
+          `Question field of question number ${i + 1} cannot be empty.`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            theme: "dark",
+            transition: Bounce,
+            pauseOnHover: false,
+          }
+        );
         // alert(`Question field of question number ${i + 1} cannot be empty.`);
         return;
       }
@@ -142,14 +145,17 @@ function FormEdit() {
           console.log(options);
 
           if (!options[j]) {
-            toast.error(`Option field of question number ${i + 1} cannot be empty.`, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              theme: "dark",
-              transition: Bounce,
-              pauseOnHover: false,
-            });
+            toast.error(
+              `Option field of question number ${i + 1} cannot be empty.`,
+              {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                theme: "dark",
+                transition: Bounce,
+                pauseOnHover: false,
+              }
+            );
             // alert(`Option field of question number ${i + 1} cannot be empty.`);
             return;
           }
@@ -157,19 +163,21 @@ function FormEdit() {
       }
 
       if (answerType === "default") {
-        toast.error(`Please select an answer type for question number ${i + 1}.`, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          theme: "dark",
-          transition: Bounce,
-          pauseOnHover: false,
-        });
+        toast.error(
+          `Please select an answer type for question number ${i + 1}.`,
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            theme: "dark",
+            transition: Bounce,
+            pauseOnHover: false,
+          }
+        );
         // alert(`Please select an answer type for question number ${i + 1}.`);
         return;
       }
     }
-
 
     const sendRequest = async () => {
       const response = await editFormById(form, form.id);
@@ -211,31 +219,30 @@ function FormEdit() {
         {/* <p>Creating as india_admin</p> */}
         <input
           type="text"
-          value="Form Title will go here"
+          value={form?.title}
           onChange={(e) => {}}
           placeholder="Form Title"
           className="form-title-input"
           // disabled
         />
-        
+
         {form?.questions.map((q, index) => (
-            
-            <QuestionCardPreview
-              id={q.question_id}
-              key={q.question_id}
-              index={index}
-              question={q.question_text}
-              form = {form}
-              setQuestions={setForm}
-              answerType={q.answerType}
-              requiredProp={q.required}
-              propOptions={q.options}
-              preview={false}
-              questionLength={form.questions.length}
-              onQuestionChange={handleQuestionChange}
-              onAnswerTypeChange={handleAnswerTypeChange}
-              removeQuestion={removeQuestion}
-            />
+          <QuestionCardPreview
+            id={q.question_id}
+            key={q.question_id}
+            index={index}
+            question={q.question_text}
+            form={form}
+            setQuestions={setForm}
+            answerType={q.answerType}
+            requiredProp={q.required}
+            propOptions={q.options}
+            preview={false}
+            questionLength={form.questions.length}
+            onQuestionChange={handleQuestionChange}
+            onAnswerTypeChange={handleAnswerTypeChange}
+            removeQuestion={removeQuestion}
+          />
         ))}
         <div className="button-container">
           <button

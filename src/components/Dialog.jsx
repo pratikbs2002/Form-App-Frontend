@@ -75,7 +75,7 @@ export default function Dialog(props) {
                       <button
                         className="close-button"
                         type="button"
-                        onClick={props.handleAssignForm(location.id)}
+                        onClick={() => props.handleAssignForm(location.id)}
                       >
                         Assign
                       </button>
