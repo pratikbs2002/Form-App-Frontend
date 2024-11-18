@@ -99,6 +99,7 @@
   width: 80%;
   margin: 20px 0;
   font-family: Arial, sans-serif;
+  color: var(--text-color);
 }
 
 .pagination-container select {
@@ -136,5 +137,4 @@
 .pagination-container span {
   margin: 0 10px;
   font-size: 14px;
-  color: #ffffff;
 }
