@@ -118,8 +118,8 @@
   border: 1px solid var(--text-color);
   padding: 0.5rem;
   border-radius: 0.8rem;
-  min-width: 9rem;
-  max-height: 8.42rem;
+  min-width: 10.4rem;
+  /* max-height: 8.42rem; */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
 
   ul {
@@ -155,4 +155,10 @@
 
 .drop-active {
   color: #0073e6;
+}
+
+.dropdown-icon{
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }

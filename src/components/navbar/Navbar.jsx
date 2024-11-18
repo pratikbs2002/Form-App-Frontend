@@ -1,22 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthProvider";
 import "./Navbar.css";
 import { GiExitDoor } from "react-icons/gi";
 import { Bounce, toast } from "react-toastify";
-import { Link, NavLink } from "react-router-dom";
-import { ThemeContext, ThemeProvider } from "../../context/ThemeProvider";
-import { CgProfile } from "react-icons/cg";
-import ProfileDropdown from "./ProfileDropdown";
+import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../../context/ThemeProvider";
 import { FaCircleUser } from "react-icons/fa6";
+import ProfileDropdown from "./ProfileDropdown";
 import { Roles } from "../../Roles";
 
 export default function Navbar(props) {
-  console.log(props.userType);
   const [dropdown, setDropdown] = useState(false);
+  const dropdownRef = useRef(null);
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.setItem("auth", false);
     localStorage.setItem("username", "");
@@ -35,6 +35,23 @@ export default function Navbar(props) {
     props.setIsAuthenticated(false);
     navigate("/");
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    if (dropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdown]);
 
   return (
     <>
@@ -124,12 +141,18 @@ export default function Navbar(props) {
                   onClick={() => setDropdown((prev) => !prev)}
                 />
 
-                {dropdown && <ProfileDropdown logoutClick={handleLogout} />}
-              </div>
-            </>
-          )}
-        </div>
+              {dropdown && (
+                <ProfileDropdown
+                  logoutClick={handleLogout}
+                  // setDropdown={setDropdown}
+                  toggleTheme={toggleTheme}
+                  theme={theme}
+                />
+              )}
+            </div>
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 }
