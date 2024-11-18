@@ -75,41 +75,17 @@ export default function Navbar(props) {
                   </NavLink>
                 </>
               ) : (
+                <></>
+              )}
+              {props.userType === Roles.REPORTING_USER ? (
                 <>
-                  <NavLink
-                    // activeClassName="active-nav-link"
-                    className="nav-link"
-                    to={"/createform"}
-                  >
-                    <div className="nav-button-value">Create New Form</div>
-                  </NavLink>
-
-                  <NavLink
-                    // activeClassName="active-nav-link"
-                    className="nav-link"
-                    to={"/createdforms"}
-                  >
-                    <div className="nav-button-value">Created Forms</div>
-                  </NavLink>
-
-                  <NavLink
-                    // activeClassName="active-nav-link"
-                    className="nav-link"
-                    to={"/fillform"}
-                  >
+                  <NavLink className="nav-link" to={"/fillform"}>
                     <div className="nav-button-value">Fill Form</div>
                   </NavLink>
-
-                  <NavLink
-                    // activeClassName="active-nav-link"
-                    className="nav-link"
-                    to={"/formresponses"}
-                  >
-                    <div className="nav-button-value">Form Responses</div>
-                  </NavLink>
                 </>
+              ) : (
+                <></>
               )}
-
               {props.userType === Roles.ADMIN ? (
                 <>
                   <NavLink className="nav-link" to={"/user"}>
@@ -118,6 +94,18 @@ export default function Navbar(props) {
 
                   <NavLink className="nav-link" to={"/location"}>
                     <div className="nav-button-value">Location</div>
+                  </NavLink>
+
+                  <NavLink className="nav-link" to={"/createform"}>
+                    <div className="nav-button-value">Create New Form</div>
+                  </NavLink>
+
+                  <NavLink className="nav-link" to={"/createdforms"}>
+                    <div className="nav-button-value">Created Forms</div>
+                  </NavLink>
+
+                  <NavLink className="nav-link" to={"/formresponses"}>
+                    <div className="nav-button-value">Form Responses</div>
                   </NavLink>
                 </>
               ) : (
