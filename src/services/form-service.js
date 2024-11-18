@@ -99,6 +99,20 @@ export async function submitForm(data) {
   });
 }
 
+export async function saveForm(data) {
+  console.log(data);
+
+  return await fetch(`${hostUrl}/api/fillform/update/save`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+    },
+    body: JSON.stringify(data),
+  });
+}
+
 export async function getAllSubmittedForms(
   pageNumber = 0,
   pageSize = 5,

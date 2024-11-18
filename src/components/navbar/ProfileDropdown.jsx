@@ -10,9 +10,9 @@ import {
   MdOutlineSettings,
 } from "react-icons/md";
 
-function ProfileDropdown({ logoutClick, toggleTheme, theme }) {
+function ProfileDropdown({ logoutClick, toggleTheme, theme, dropdownRef }) {
   return (
-    <div className="profile-dropdown show">
+    <div ref={dropdownRef} className="profile-dropdown show">
       <ul>
         <li>
           <div className="dropdown-icon">

@@ -174,7 +174,7 @@ export default function FormFillList() {
         </div>
       )}
       <div>{state.loading}</div>
-      {!state.loading && forms.length === 0 && <h2>No Form Data Available</h2>}
+      {!state.loading && forms.length === 0 && <h2>No Forms Are Assigned</h2>}
       {viewStyle === "card" &&
         forms.map((form) => (
           <FormEntry
