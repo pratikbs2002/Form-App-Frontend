@@ -17,6 +17,7 @@ import {
   deleteFormById,
   getAllForms,
   getAllSubmittedForms,
+  getAllSubmittedFormsByAdminId,
 } from "../../services/form-service";
 import { redirect, useNavigate } from "react-router";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
@@ -78,11 +79,12 @@ export default function FilledFormResponses() {
       //   sortDir
       // );
 
-      const response = await getAllSubmittedForms(
+      const response = await getAllSubmittedFormsByAdminId(
         pagination.pageNumber,
         pagination.pageSize,
         sort,
-        sortDir
+        sortDir,
+        localStorage.getItem("id")
       );
       const data = await response.json();
       console.log(data);

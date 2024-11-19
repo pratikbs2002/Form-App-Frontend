@@ -183,3 +183,26 @@ export async function assignForm(locationId, formId) {
     },
   });
 }
+
+
+
+//Form response for admin
+export async function getAllSubmittedFormsByAdminId(
+  pageNumber = 0,
+  pageSize = 5,
+  sortBy = "id",
+  sortDir = "asc",
+  adminId
+) {
+  return await fetch(
+    `${hostUrl}/api/fillform/all/admin/${adminId}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Basic " + btoa(`${localStorage.username}:${localStorage.password}`),
+      },
+    }
+  );
+}

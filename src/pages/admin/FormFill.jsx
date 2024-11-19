@@ -73,8 +73,8 @@ function FormFill() {
       }
     }
     const filledForm = {
-      fillFormId: formId,
-      // userId: localStorage.getItem("id") ,
+      fillFormId: form.id,
+      userId: localStorage.getItem("id"),
       // userId: 3,
       answers,
       // locationId: 1,
@@ -106,7 +106,7 @@ function FormFill() {
         transition: Bounce,
         pauseOnHover: false,
       });
-      navigate("/formresponses");
+      navigate("/fillform");
     } catch (error) {
       toast.error(`Error submitting the form: Sending data failed`, {
         position: "top-center",
