@@ -209,7 +209,7 @@ export default function FormFillList() {
                     <div className="button-div">
                       <button
                         className="rounded-button"
-                        onClick={() => navigate(`/fillform/${form.formId}`)}
+                        onClick={() => navigate(`/fillform/${form.id}`)}
                       >
                         <MdEdit />
                       </button>

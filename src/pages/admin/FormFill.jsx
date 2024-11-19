@@ -2,7 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getFormById, saveForm, submitForm } from "../../services/form-service";
+import {
+  getFilledFormById,
+  getFormById,
+  saveForm,
+  submitForm,
+} from "../../services/form-service";
 import QuestionCardFill from "../../components/forms/QuestionCardFill";
 import { Bounce, toast } from "react-toastify";
 
@@ -10,7 +15,7 @@ function FormFill() {
   const navigate = useNavigate();
   const [form, setForm] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const { formId } = useParams();
+  const { formId: formResponseId } = useParams();
   const [submittedAnswers, setSubmittedAnswers] = useState([]);
   // console.log(formId);
 
@@ -18,7 +23,11 @@ function FormFill() {
 
   useEffect(() => {
     const formDetails = async () => {
-      const response = await getFormById(formId);
+      const fillFormRes = await getFilledFormById(formResponseId);
+      const fillFormData = await fillFormRes.json();
+      console.log(fillFormData);
+      
+      const response = await getFormById(fillFormData.formId);
       if (response.ok) {
         const data = await response.json();
         setForm(data);
@@ -37,7 +46,7 @@ function FormFill() {
     };
     formDetails();
     // console.log(form);
-  }, [formId]);
+  }, [formResponseId]);
 
   const handleSubmitForm = async () => {
     for (let i = 0; i < answers.length; i++) {
@@ -121,10 +130,9 @@ function FormFill() {
   };
 
   const handleSaveForm = async () => {
-    
     const filledForm = {
-      fillFormId: formId,
-      // userId: localStorage.getItem("id") ,
+      fillFormId: form.id,
+      userId: localStorage.getItem("id") ,
       // userId: 3,
       answers,
       // locationId: 1,
@@ -156,7 +164,7 @@ function FormFill() {
         transition: Bounce,
         pauseOnHover: false,
       });
-      // navigate("/formresponses");
+      navigate("/fillform");
     } catch (error) {
       toast.error(`Error submitting the form: Sending data failed`, {
         position: "top-center",
@@ -169,8 +177,6 @@ function FormFill() {
       // return;
     }
   };
-  
-  
 
   return (
     <>
