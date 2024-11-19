@@ -42,13 +42,22 @@ export default function Navbar(props) {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape" && dropdown) {
+      setDropdown(false);
+    }
+  };
+
   useEffect(() => {
     if (dropdown) {
+      document.addEventListener("keydown", handleKeyDown);
       document.addEventListener("mousedown", handleClickOutside);
     } else {
+      document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("mousedown", handleClickOutside);
     }
     return () => {
+      document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdown]);
@@ -129,30 +138,35 @@ export default function Navbar(props) {
                 <></>
               )}
 
-              {/* <div onClick={handleLogout} className="logout-button">
-                <button>Logout</button>
-                <div className="button-icon">
-                  <GiExitDoor />
-                </div>
-              </div> */}
+              
               <div className="profile-button">
+                {/* <FaCircleUser
+                  
+                  className={`user-icon ${dropdown ? "drop-active" : ""}`}
+                  onClick={() => setDropdown((prev) => (prev ? false : true))}
+                /> */}
                 <FaCircleUser
                   className={`user-icon ${dropdown ? "drop-active" : ""}`}
-                  onClick={() => setDropdown((prev) => !prev)}
+                  onPointerDown={(e) => {
+                    e.preventDefault();
+                    setDropdown((prev) => !prev); 
+                  }}
                 />
 
-              {dropdown && (
-                <ProfileDropdown
-                  logoutClick={handleLogout}
-                  // setDropdown={setDropdown}
-                  toggleTheme={toggleTheme}
-                  theme={theme}
-                />
-              )}
-            </div>
-          </>
-        )}
+                {dropdown && (
+                  <ProfileDropdown
+                    logoutClick={handleLogout}
+                    dropdownRef={dropdownRef}
+                    // setDropdown={setDropdown}
+                    toggleTheme={toggleTheme}
+                    theme={theme}
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

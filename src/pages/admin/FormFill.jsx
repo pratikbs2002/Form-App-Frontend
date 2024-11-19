@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getFormById, submitForm } from "../../services/form-service";
+import { getFormById, saveForm, submitForm } from "../../services/form-service";
 import QuestionCardFill from "../../components/forms/QuestionCardFill";
 import { Bounce, toast } from "react-toastify";
 
@@ -120,6 +120,58 @@ function FormFill() {
     }
   };
 
+  const handleSaveForm = async () => {
+    
+    const filledForm = {
+      fillFormId: formId,
+      // userId: localStorage.getItem("id") ,
+      // userId: 3,
+      answers,
+      // locationId: 1,
+      // isSubmitted: true,
+    };
+    // setSubmittedAnswers(JSON.stringify(answers));
+    console.log("Form Saved!: " + JSON.stringify(filledForm));
+
+    const sendRequest = async () => {
+      const response = await saveForm(filledForm);
+      console.log(response);
+
+      if (!response.ok) {
+        // console.log(JSON.stringify(response));
+        const message = await response.text();
+        console.log(message);
+
+        throw new Error("Form Saving failure: Saving data failed");
+      }
+      // console.log(formData);
+    };
+    try {
+      await sendRequest();
+      toast.success(`Form saved successfully!`, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      // navigate("/formresponses");
+    } catch (error) {
+      toast.error(`Error submitting the form: Sending data failed`, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        theme: "dark",
+        transition: Bounce,
+        pauseOnHover: false,
+      });
+      // return;
+    }
+  };
+  
+  
+
   return (
     <>
       <h1>Form Fill</h1>
@@ -158,6 +210,15 @@ function FormFill() {
             onClick={() => navigate("/fillform")}
           >
             Back
+          </button>
+          <button
+            className="styled-button"
+            onClick={
+              handleSaveForm
+              // navigate(`/editform/${formId}`);
+            }
+          >
+            Save
           </button>
           <button
             className="styled-button"
