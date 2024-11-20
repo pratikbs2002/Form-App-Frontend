@@ -134,8 +134,8 @@ export async function getAllSubmittedForms(
   );
 }
 
-export async function getFilledFormById(formId) {
-  return await fetch(`${hostUrl}/api/fillform/${formId}`, {
+export async function getFilledFormById(formResId) {
+  return await fetch(`${hostUrl}/api/fillform/${formResId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
