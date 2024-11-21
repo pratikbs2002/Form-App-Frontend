@@ -75,7 +75,21 @@ export default function Dialog(props) {
                       <button
                         className="close-button"
                         type="button"
-                        onClick={() => props.handleAssignForm(location.id)}
+                        onClick={() => {
+                          setIsOpen(false);
+                          props.setAssignDialog(false);
+                        }}
+                      >
+                        Close
+                      </button>
+                      <button
+                        className="close-button"
+                        type="button"
+                        onClick={() => {
+                          props.handleAssignForm(location.id);
+                          setIsOpen(false);
+                          props.setAssignDialog(false);
+                        }}
                       >
                         Assign
                       </button>
