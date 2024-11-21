@@ -2,65 +2,45 @@
 /* eslint-disable react/prop-types */
 
 import React, { useState, useEffect } from "react";
-import AnswerOptions from "./AnswerOptions";
-
 import "./QuestionCard.css";
-import { MdClose } from "react-icons/md";
-import AnswerFill from "./AnswerFill";
 
 export default function QuestionCardFill({
   id,
   index,
   question,
-  form,
   setQuestions,
   answerType,
   mainAnswers,
   propOptions,
   requiredProp,
   setAnswerOnChange,
-  isFilling,
-  onQuestionChange,
-  onAnswerTypeChange,
-  removeQuestion,
-  questionLength,
 }) {
-  // console.log(question);
-
   const [options, setOptions] = useState(propOptions ? propOptions : [""]);
   const [toggled, setIsToggled] = useState(requiredProp);
-  const [testForm, setTestForm] = useState(form);
-  const [answer, setAnswer] = useState([]);
 
   useEffect(() => {
     setOptions(propOptions);
   }, [propOptions]);
 
-  let answer_type = "Default";
-  if (answerType === "short answer") {
-    answer_type = "Short Answer";
-  } else if (answerType === "long answer") {
-    answer_type = "Long Answer";
-  } else if (answerType === "mcq") {
-    answer_type = "Multiple Choice (MCQ)";
-  } else if (answerType === "multiple-select") {
-    answer_type = "Multiple Select (MSQ)";
-  } else if (answerType === "dropdown") {
-    answer_type = "Dropdown";
-  }
-
-  useEffect(() => {
+  const setAnswer = (selectedOption) => {
     setAnswerOnChange((prev) =>
-      prev.map((a) => (a.answer_id === id ? { ...a, answer: answer } : a))
+      prev.map((a) =>
+        a.answer_id === id ? { ...a, answer: selectedOption } : a
+      )
     );
-  }, [answer]);
+  };
 
-  const handleCheckbox = (o) => {
-    if (answer.includes(o)) {
-      setAnswer((prev) => prev.filter((a) => a !== o));
-    } else {
-      setAnswer((prev) => [...prev, o]);
-    }
+  const handleCheckbox = (option) => {
+    const currentAnswer = mainAnswers[index]?.answer || [];
+    const updatedAnswer = currentAnswer.includes(option)
+      ? currentAnswer.filter((a) => a !== option)
+      : [...currentAnswer, option];
+
+    setAnswerOnChange((prev) =>
+      prev.map((a) =>
+        a.answer_id === id ? { ...a, answer: updatedAnswer } : a
+      )
+    );
   };
 
   return (
@@ -76,6 +56,7 @@ export default function QuestionCardFill({
           Question {index + 1}
         </h2>
       </div>
+
       <div
         style={{
           display: "flex",
@@ -87,74 +68,75 @@ export default function QuestionCardFill({
 
       <div>
         {answerType === "mcq" &&
-          options.map((o, index) => (
+          options.map((o, optionIndex) => (
             <div key={`${question} ${o}`} className="option-container">
               <input
                 type="radio"
                 id={o}
                 name={`name_${question}`}
                 value={o}
+                checked={mainAnswers[index]?.answer === o}
                 className="radio"
-                onClick={() => setAnswer(o)}
+                onChange={() => setAnswer(o)}
               />
               <label className="option">{o}</label>
               <br />
             </div>
           ))}
+
         {answerType === "multiple-select" &&
-          options.map((o) => {
-            return (
-              <div key={`${question} ${o}`} className="option-container">
-                <input
-                  type="checkbox"
-                  id={o}
-                  name={o}
-                  value={o}
-                  onClick={() => handleCheckbox(o)}
-                  className="radio"
-                />
-                <label className="option"> {o}</label>
-                <br />
-              </div>
-            );
-          })}
+          options.map((o) => (
+            <div key={`${question} ${o}`} className="option-container">
+              <input
+                type="checkbox"
+                id={o}
+                name={o}
+                value={o}
+                checked={mainAnswers[index]?.answer?.includes(o)}
+                onChange={() => handleCheckbox(o)}
+                className="radio"
+              />
+              <label className="option"> {o}</label>
+              <br />
+            </div>
+          ))}
+
         {answerType === "dropdown" && (
           <select
             name={question}
             id={question}
             className="answer-type-select"
+            value={mainAnswers[index]?.answer || ""}
             onChange={(e) => setAnswer(e.target.value)}
           >
             <option style={{ display: "none" }}>Select an answer</option>
-            {options.map((o) => 
-              <option key={`${question} ${o}`} value={o}>{o}</option>
-            )}
+            {options.map((o) => (
+              <option key={`${question} ${o}`} value={o}>
+                {o}
+              </option>
+            ))}
           </select>
         )}
+
         {answerType === "short answer" && (
           <input
             placeholder="Short Answer"
             className="answer-input"
+            value={mainAnswers[index]?.answer || ""}
             onChange={(e) => setAnswer(e.target.value)}
           />
         )}
+
         {answerType === "long answer" && (
           <textarea
             placeholder="Long Answer"
             className="answer-textbox"
+            value={mainAnswers[index]?.answer || ""}
             onChange={(e) => setAnswer(e.target.value)}
           />
         )}
       </div>
 
-      {/* <AnswerFill
-        options={options}
-        answerType={answerType}
-        handleOptionChange={handleOptionChange}
-        addOption={addOption}
-        setOptions={setOptions}
-        preview={isFilling}
-      /> */}
       <div style={{ height: "20px" }}>
         <div className="required-toggle">
           <span>{toggled && "Required*"}</span>

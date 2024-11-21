@@ -128,7 +128,7 @@ export default function AnswerCardPreview({
       </div>
       <div>
         {answerType === "long answer" && (
-          <textarea readOnly className="answer-textbox" value={answerProp} />
+          <textarea readOnly disabled className="answer-textbox" value={answerProp} />
         )}
         {answerType === "multiple-select" && (
           <>

@@ -99,7 +99,8 @@ export async function submitForm(data) {
   });
 }
 
-export async function saveForm(data) {
+export async function 
+saveForm(data) {
   console.log(data);
 
   return await fetch(`${hostUrl}/api/fillform/update/save`, {

@@ -25,17 +25,24 @@ function FormFill() {
     const formDetails = async () => {
       const fillFormRes = await getFilledFormById(formResponseId);
       const fillFormData = await fillFormRes.json();
-      console.log(fillFormData);
-      
+      // console.log(fillFormData);
+
       const response = await getFormById(fillFormData.formId);
       if (response.ok) {
         const data = await response.json();
         setForm(data);
         setIsLoading(false);
         // console.log(data.questions.length);
-        setAnswers(
-          data.questions.map((q) => ({ answer_id: q.question_id, answer: "" }))
-        );
+        if (fillFormData.answers === null) {
+          setAnswers(
+            data.questions.map((q) => ({
+              answer_id: q.question_id,
+              answer: "",
+            }))
+          );
+        } else {
+          setAnswers(fillFormData.answers);
+        }
         // if (!isLoading) {
         //   for (let i = 0; i < data.question.length; i++) {
         //     setAnswers((prev) => [...prev, { answer: "" }]);
@@ -47,7 +54,8 @@ function FormFill() {
     formDetails();
     // console.log(form);
   }, [formResponseId]);
-
+  
+  // console.log(answers); 
   const handleSubmitForm = async () => {
     for (let i = 0; i < answers.length; i++) {
       const { answer, answer_id } = answers[i];
@@ -132,7 +140,7 @@ function FormFill() {
   const handleSaveForm = async () => {
     const filledForm = {
       fillFormId: form.id,
-      userId: localStorage.getItem("id") ,
+      userId: localStorage.getItem("id"),
       // userId: 3,
       answers,
       // locationId: 1,
@@ -143,7 +151,7 @@ function FormFill() {
 
     const sendRequest = async () => {
       const response = await saveForm(filledForm);
-      console.log(response);
+      // console.log(response);
 
       if (!response.ok) {
         // console.log(JSON.stringify(response));
